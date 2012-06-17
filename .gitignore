@@ -1,0 +1,24 @@
+backups/
+databases/
+logs/
+resource-cache/
+
+# map editor files
+editor.conf
+editor_acl.xml
+local.conf
+
+# databases
+internal.db
+registry.db
+
+# files bundled with the mta server
+dbconmy.dll
+dbconmy.so
+deathmatch.dll
+deathmatch.so
+libmysql.dll
+lua5.1.dll
+pcre3.dll
+pthreadVC2.dll
+sqlite3.dll

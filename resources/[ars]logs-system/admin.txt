@@ -1,0 +1,827 @@
+[2012-05-31 20:01:40] [MAKEVEH] Server Owner Jason Perkins created Previon with ID 1.
+[2012-05-31 20:23:28] [VEH] Server Owner Jason Perkins created Turismo with ID -1.
+[2012-05-31 20:23:59] [VEH] Server Owner Jason Perkins created Turismo with ID -2.
+[2012-05-31 20:26:05] [GIVEMONEY] Server Owner Jason Perkins gave Jason Perkins $60000.
+[2012-05-31 20:47:59] [VEH] Server Owner Jason Perkins created Infernus with ID -1.
+[2012-05-31 20:56:59] [DELVEH] Server Owner Jason Perkins deleted vehicle with ID -1.
+[2012-05-31 20:57:26] [VEH] Server Owner Jason Perkins created NRG-500 with ID -2.
+[2012-06-02 20:03:38] [MAKECIVVEH] Server Owner Jason Perkins created Bus with ID 2.
+[2012-06-02 21:18:59] [MAKECIVVEH] Server Owner Jason Perkins created Sweeper with ID 3.
+[2012-06-02 21:21:15] [DELVEH] Server Owner Jason Perkins deleted vehicle with ID 3.
+[2012-06-02 21:21:21] [MAKECIVVEH] Server Owner Jason Perkins created Sweeper with ID 4.
+[2012-06-02 21:28:17] [VEH] Server Owner Jason Perkins created Primo with ID -1.
+[2012-06-02 21:39:39] [GIVEITEM] Server Owner Jason Perkins gave Jason Perkins a Vehicle Key with value 1000.
+[2012-06-02 22:03:09] [VEH] Server Owner Matthew Anderson created Turismo with ID -1.
+[2012-06-02 22:03:14] [VEH] Server Owner Matthew Anderson created Bullet with ID -2.
+[2012-06-02 22:08:21] [VEH] Server Owner Matthew Anderson created Hunter with ID -3.
+[2012-06-02 22:11:57] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Minigun with 50000000 Ammo.
+[2012-06-03 15:38:28] [GIVEMONEY] High Administrator Ephraim Kishon gave Ephraim Kishon $50000.
+[2012-06-03 15:48:38] [VEH] High Administrator Ephraim Kishon created Infernus with ID -4.
+[2012-06-03 15:48:43] [VEH] High Administrator Ephraim Kishon created Infernus with ID -5.
+[2012-06-03 15:50:26] [FIXVEH] High Administrator Ephraim Kishon fixed Ephraim Kishon's vehicle.
+[2012-06-03 15:50:44] [FIXVEH] High Administrator Ephraim Kishon fixed Mark Doherty's vehicle.
+[2012-06-03 15:50:49] [FIXVEH] High Administrator Ephraim Kishon fixed Ephraim Kishon's vehicle.
+[2012-06-03 15:50:50] [FIXVEH] High Administrator Ephraim Kishon fixed Mark Doherty's vehicle.
+[2012-06-03 15:52:39] [DELVEH] High Administrator Ephraim Kishon deleted vehicle with ID -4.
+[2012-06-03 15:52:42] [DELVEH] High Administrator Ephraim Kishon deleted vehicle with ID -5.
+[2012-06-03 19:05:43] [VEH] Server Owner Matthew Anderson created Bus with ID -1.
+[2012-06-03 19:05:49] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID -1.
+[2012-06-03 21:59:14] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 1 Ammo.
+[2012-06-03 22:02:25] [SETMONEY] Sub-Owner Neil Halden set Neil Halden's money to $100.
+[2012-06-03 22:08:18] [MAKEVEH] Sub-Owner Neil Halden created Previon with ID 36.
+[2012-06-03 22:09:26] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Brassknuckle with 50 Ammo.
+[2012-06-03 22:09:31] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 500 Ammo.
+[2012-06-03 22:19:57] [DISARM] Sub-Owner Neil Halden disarmed Neil Halden.
+[2012-06-03 22:21:06] [GIVEMONEY] Sub-Owner Neil Halden gave Kevin Sloan $1000.50.
+[2012-06-03 22:21:12] [GIVEMONEY] Sub-Owner Neil Halden gave Arseni Petrachkov $1000.50.
+[2012-06-03 22:22:25] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 1.
+[2012-06-03 22:22:44] [GIVEMONEY] Sub-Owner Neil Halden gave Neil Halden $1000.50.
+[2012-06-03 22:24:11] [VEH] Sub-Owner Neil Halden created Caddy with ID -2.
+[2012-06-03 22:24:14] [VEH] Sub-Owner Neil Halden created Caddy with ID -3.
+[2012-06-03 22:24:16] [VEH] Sub-Owner Neil Halden created Caddy with ID -4.
+[2012-06-03 22:26:33] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 50 Ammo.
+[2012-06-03 22:26:40] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a AK-47 with 50 Ammo.
+[2012-06-03 22:28:49] [VEH] Sub-Owner Neil Halden created Infernus with ID -5.
+[2012-06-03 22:28:54] [VEH] Sub-Owner Neil Halden created Bullet with ID -6.
+[2012-06-03 22:40:08] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-03 22:40:15] [GIVEGUN] Sub-Owner Neil Halden gave Arseni Petrachkov a Colt 45 with 5 Ammo.
+[2012-06-03 22:40:21] [GIVEGUN] Sub-Owner Neil Halden gave Kevin Sloan a Colt 45 with 5 Ammo.
+[2012-06-03 22:40:50] [GIVEGUN] Sub-Owner Neil Halden gave Arseni Petrachkov a Colt 45 with 100 Ammo.
+[2012-06-03 22:40:55] [GIVEGUN] Sub-Owner Neil Halden gave Kevin Sloan a Colt 45 with 100 Ammo.
+[2012-06-03 22:43:05] [GIVEGUN] Sub-Owner Neil Halden gave Arseni Petrachkov a Colt 45 with 1 Ammo.
+[2012-06-03 22:43:09] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 100 Ammo.
+[2012-06-03 22:43:21] [GIVEGUN] Sub-Owner Neil Halden gave Kevin Sloan a Colt 45 with 1 Ammo.
+[2012-06-03 22:43:51] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-03 22:44:00] [GIVEGUN] Sub-Owner Neil Halden gave Kevin Sloan a Colt 45 with 5 Ammo.
+[2012-06-03 22:44:06] [GIVEGUN] Sub-Owner Neil Halden gave Arseni Petrachkov a Colt 45 with 5 Ammo.
+[2012-06-03 22:45:28] [GIVEGUN] Sub-Owner Neil Halden gave Arseni Petrachkov a Colt 45 with 5 Ammo.
+[2012-06-03 22:45:31] [GIVEGUN] Sub-Owner Neil Halden gave Kevin Sloan a Colt 45 with 5 Ammo.
+[2012-06-03 22:53:06] [JAIL] Sub-Owner Neil Halden jailed Arseni Petrachkov for 5 minute(s). ( [BETA] - Check out our awesome (temp) jail system. )
+[2012-06-03 22:53:17] [JAIL] Sub-Owner Neil Halden jailed Kevin Sloan for [BETA] minute(s). ( - Check out our awesoem (temp) jail system. )
+[2012-06-03 22:53:56] [UNJAIL] Sub-Owner Neil Halden unjailed Kevin Sloan.
+[2012-06-03 22:54:12] [JAIL] Sub-Owner Neil Halden jailed Kevin Sloan for [BETA] minute(s). ( 1 )
+[2012-06-03 22:54:20] [UNJAIL] Sub-Owner Neil Halden unjailed Arseni Petrachkov.
+[2012-06-09 04:11:46] [GIVEITEM] Server Owner Matthew Anderson gave Matthew Anderson a LSPD Badge with value 1.
+[2012-06-09 04:28:15] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 36.
+[2012-06-09 04:54:17] [GIVEITEM] Server Owner Matthew Anderson gave Matthew Anderson a LSVS ID with value #01 - CEO - M.Doherty.
+[2012-06-09 15:59:07] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 37.
+[2012-06-09 15:59:44] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 38.
+[2012-06-09 15:59:56] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 39.
+[2012-06-09 16:01:05] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 37.
+[2012-06-09 16:01:08] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 38.
+[2012-06-09 16:01:11] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 39.
+[2012-06-09 16:01:32] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 40.
+[2012-06-09 16:01:50] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 41.
+[2012-06-09 16:01:57] [MAKECIVVEH] Server Owner Matthew Anderson created Taxi with ID 42.
+[2012-06-09 16:02:29] [MAKECIVVEH] Server Owner Matthew Anderson created Bus with ID 43.
+[2012-06-09 16:02:38] [MAKECIVVEH] Server Owner Matthew Anderson created Bus with ID 44.
+[2012-06-09 16:02:44] [MAKECIVVEH] Server Owner Matthew Anderson created Bus with ID 45.
+[2012-06-09 16:02:53] [MAKECIVVEH] Server Owner Matthew Anderson created Bus with ID 46.
+[2012-06-09 16:09:00] [MAKEADMIN] Server Owner Matthew Anderson set Mark Andrews's administrative rank to Sub Owner.
+[2012-06-09 16:09:23] [MAKEADMIN] Server Owner Matthew Anderson set Mark Andrews's administrative rank to High Administrator.
+[2012-06-09 16:15:28] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Deagle with 50 Ammo.
+[2012-06-09 16:49:19] [VEH] High Administrator Juan Vasquez created Turismo with ID -1.
+[2012-06-09 16:56:43] [GIVEGUN] High Administrator Juan Vasquez gave Juan Vasquez a Deagle with 10 Ammo.
+[2012-06-09 16:57:00] [GIVEGUN] High Administrator Juan Vasquez gave Juan Vasquez a Tec-9 with 1 Ammo.
+[2012-06-09 16:57:06] [GIVEGUN] High Administrator Juan Vasquez gave Juan Vasquez a Tec-9 with 1000 Ammo.
+[2012-06-09 16:58:04] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Shotgun with 50 Ammo.
+[2012-06-09 16:58:47] [GIVEGUN] High Administrator Juan Vasquez gave Juan Vasquez a Silenced with 10 Ammo.
+[2012-06-09 17:01:31] [GIVEITEM] High Administrator Juan Vasquez gave Juan Vasquez a LSPD Badge with value 1.
+[2012-06-09 17:01:51] [GIVEITEM] High Administrator Juan Vasquez gave Juan Vasquez a LSPD Badge with value Police Officer I - J. Vasquez - #100.
+[2012-06-09 17:19:03] [MAKECIVVEH] Server Owner Matthew Anderson created Sweeper with ID 47.
+[2012-06-09 17:29:14] [SETMONEY] High Administrator Juan Vasquez set Juan Vasquez's money to $75000.
+[2012-06-09 18:37:03] [SETMOTD] Server Owner Matthew Anderson changed MOTD to 'Welcome to Blueshift Gaming's opening! We hope you enjoy the music and your stay!'.
+[2012-06-09 18:37:42] [SETAMOTD] Server Owner Matthew Anderson changed AMOTD to 'Make sure everyone's questions are answered. Welcome EVERYONE with a warm PM.'.
+[2012-06-09 19:41:10] [MAKEADMIN] Server Owner Matthew Anderson set Charles Kegler's administrative rank to High Administrator.
+[2012-06-09 19:45:48] [SETMONEY] Server Owner Matthew Anderson set Matthew Anderson's money to $500.
+[2012-06-09 19:51:23] [GIVEGUN] Server Owner Matthew Anderson gave Charles Kegler a Shotgun with 50 Ammo.
+[2012-06-09 20:06:53] [VEH] Server Owner Matthew Anderson created Police LS with ID -1.
+[2012-06-10 08:07:13] [MAKECIVVEH] Server Owner Matthew Anderson created Sweeper with ID 48.
+[2012-06-10 08:08:24] [MAKECIVVEH] Server Owner Matthew Anderson created Sweeper with ID 49.
+[2012-06-10 08:11:31] [VEH] Server Owner Matthew Anderson created  with ID -2.
+[2012-06-10 08:11:40] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID -2.
+[2012-06-10 08:17:33] [MAKECIVVEH] Server Owner Matthew Anderson created Roadtrain with ID 50.
+[2012-06-10 08:18:11] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 50.
+[2012-06-10 08:19:53] [VEH] Server Owner Matthew Anderson created Tanker with ID -3.
+[2012-06-10 08:20:04] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID -3.
+[2012-06-10 08:20:14] [MAKECIVVEH] Server Owner Matthew Anderson created Tanker with ID 51.
+[2012-06-10 08:20:59] [MAKECIVVEH] Server Owner Matthew Anderson created Tanker with ID 52.
+[2012-06-10 08:21:22] [MAKECIVVEH] Server Owner Matthew Anderson created Tanker with ID 53.
+[2012-06-10 08:22:18] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 54.
+[2012-06-10 08:22:25] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 54.
+[2012-06-10 08:22:35] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 55.
+[2012-06-10 08:23:22] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 55.
+[2012-06-10 08:23:33] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 56.
+[2012-06-10 08:23:40] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 56.
+[2012-06-10 08:23:52] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 57.
+[2012-06-10 08:24:04] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 58.
+[2012-06-10 08:24:09] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 58.
+[2012-06-10 08:24:19] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 59.
+[2012-06-10 08:24:24] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 59.
+[2012-06-10 08:24:32] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 60.
+[2012-06-10 08:24:42] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 60.
+[2012-06-10 08:24:53] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 61.
+[2012-06-10 08:25:07] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 62.
+[2012-06-10 08:25:17] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 62.
+[2012-06-10 08:25:26] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 63.
+[2012-06-10 08:27:05] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 57.
+[2012-06-10 08:27:29] [VEH] Server Owner Matthew Anderson created Sabre with ID -1.
+[2012-06-10 08:27:33] [VEH] Server Owner Matthew Anderson created Sabre with ID -2.
+[2012-06-10 08:28:17] [VEH] Server Owner Matthew Anderson created Police LS with ID -1.
+[2012-06-10 08:28:22] [VEH] Server Owner Matthew Anderson created Police LS with ID -2.
+[2012-06-10 08:34:35] [UNFLIP] Server Owner Matthew Anderson unflipped Matthew Anderson's vehicle.
+[2012-06-10 08:35:04] [SETHP] Server Owner Matthew Anderson set Romi Anderson's health to 100.
+[2012-06-10 08:35:10] [SETHP] Server Owner Matthew Anderson set David Sheffeild's health to 100.
+[2012-06-10 08:39:25] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Shotgun with 500 Ammo.
+[2012-06-10 08:47:20] [VEH] Server Owner Matthew Anderson created Premier with ID -3.
+[2012-06-10 08:47:48] [VEH] Server Owner Matthew Anderson created Rancher with ID -4.
+[2012-06-10 08:47:54] [VEH] Server Owner Matthew Anderson created Police Ranger with ID -5.
+[2012-06-10 08:48:09] [VEH] Server Owner Matthew Anderson created FBI Rancher with ID -6.
+[2012-06-10 08:48:21] [VEH] Server Owner Matthew Anderson created FBI Rancher with ID -7.
+[2012-06-10 08:48:37] [CHANGENAME] Server Owner Matthew Anderson changed David Sheffeild's name to Ron Paul.
+[2012-06-10 08:54:07] [VEH] Server Owner Matthew Anderson created Buffalo with ID -8.
+[2012-06-10 08:54:46] [GIVEGUN] Server Owner Matthew Anderson gave Dmity Medvedev a Deagle with 500 Ammo.
+[2012-06-10 08:54:56] [GIVEGUN] Server Owner Matthew Anderson gave Romi Anderson a Deagle with 500 Ammo.
+[2012-06-10 08:55:03] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Deagle with 500 Ammo.
+[2012-06-10 08:58:58] [GIVEGUN] Server Owner Matthew Anderson gave Dmity Medvedev a Deagle with 500 Ammo.
+[2012-06-10 09:07:52] [GIVEGUN] Server Owner Matthew Anderson gave Matthew Anderson a Sniper with 51 Ammo.
+[2012-06-10 09:08:41] [VEH] Server Owner Matthew Anderson created Buffalo with ID -9.
+[2012-06-10 09:14:37] [VEH] Server Owner Matthew Anderson created Hydra with ID -10.
+[2012-06-10 16:25:33] [MAKECIVVEH] Server Owner Matthew Anderson created  with ID 64.
+[2012-06-10 17:26:54] [MAKEADMIN] Server Owner Matthew Anderson set Mark Doherty's administrative rank to Trial Moderator.
+[2012-06-10 17:55:17] [CHANGENAME] Server Owner Matthew Anderson changed Ron Paul's name to David Sheffield.
+[2012-06-10 18:30:49] [VEH] Trial Moderator Mark Doherty created Turismo with ID -1.
+[2012-06-10 18:31:35] [MAKEADMIN] Server Owner Matthew Anderson set Mark Doherty's administrative rank to Player.
+[2012-06-10 19:43:26] [VEH] Server Owner Matthew Anderson created Newsvan with ID -1.
+[2012-06-10 20:01:28] [MAKEVEH] High Administrator Ephraim Kishon created Merit with ID 65.
+[2012-06-10 20:03:33] [GIVEGUN] Server Owner John White gave Mark Doherty a Deagle with 50 Ammo.
+[2012-06-10 20:04:03] [GIVEGUN] Server Owner John White gave John White a Deagle with 50 Ammo.
+[2012-06-10 20:05:29] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 20.
+[2012-06-10 20:05:31] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 21.
+[2012-06-10 20:08:43] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-10 20:09:57] [TPCAR] High Administrator Ephraim Kishon teleported vehicle ID 65 to them.
+[2012-06-10 20:10:14] [FIXVEH] High Administrator Ephraim Kishon fixed Mark Doherty's vehicle.
+[2012-06-10 20:10:23] [FIXVEH] High Administrator Ephraim Kishon fixed Ephraim Kishon's vehicle.
+[2012-06-10 20:12:27] [SETMONEY] Sub-Owner Neil Halden set Kevin Sloan's money to $250.
+[2012-06-10 20:12:30] [DISARM] Sub-Owner Neil Halden disarmed Kevin Sloan.
+[2012-06-10 20:13:39] [GIVEMONEY] High Administrator Ephraim Kishon gave Ephraim Kishon $140000.
+[2012-06-10 20:15:20] [MAKEVEH] High Administrator Bryan Sikro created Towtruck with ID 66.
+[2012-06-10 20:15:58] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 22.
+[2012-06-10 20:16:00] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 23.
+[2012-06-10 20:16:02] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 24.
+[2012-06-10 20:16:17] [MAKEVEH] High Administrator Bryan Sikro created Towtruck with ID 67.
+[2012-06-10 20:16:29] [MAKEVEH] High Administrator Bryan Sikro created Towtruck with ID 68.
+[2012-06-10 20:17:07] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a LSPD Badge with value FBI Special agent Neil Halden.
+[2012-06-10 20:18:20] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 26.
+[2012-06-10 20:18:53] [MAKEVEH] High Administrator Bryan Sikro created DFT-30 with ID 69.
+[2012-06-10 20:19:16] [MAKEVEH] High Administrator Bryan Sikro created Utility Van with ID 70.
+[2012-06-10 20:22:08] [GIVEITEM] Server Owner John White gave John White a LSPD Badge with value 0.
+[2012-06-10 20:22:16] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a LSPD Badge with value Officer David Sheffield.
+[2012-06-10 20:54:41] [GIVEITEM] Server Owner Matthew Anderson gave Matthew Anderson a Hotdog with value 0.
+[2012-06-10 21:09:50] [MAKEVEH] High Administrator Ephraim Kishon created Newsvan with ID 71.
+[2012-06-10 21:11:25] [GIVEITEM] Server Owner Matthew Anderson gave Matthew Anderson a LSPD Badge with value 0.
+[2012-06-10 21:11:40] [GIVEITEM] Server Owner Matthew Anderson gave Matthew Anderson a Beer with value 0.
+[2012-06-10 21:35:07] [MAKEVEH] High Administrator Bryan Sikro created Faggio with ID 72.
+[2012-06-10 21:35:29] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 72.
+[2012-06-10 21:35:39] [MAKEVEH] High Administrator Bryan Sikro created Faggio with ID 73.
+[2012-06-10 21:35:52] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 73.
+[2012-06-10 21:36:12] [MAKEVEH] High Administrator Bryan Sikro created Faggio with ID 74.
+[2012-06-10 21:36:23] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 74.
+[2012-06-10 21:36:36] [MAKEVEH] High Administrator Bryan Sikro created Faggio with ID 75.
+[2012-06-10 21:37:01] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 75.
+[2012-06-10 21:37:06] [VEH] High Administrator Bryan Sikro created Faggio with ID -1.
+[2012-06-10 21:37:12] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -1.
+[2012-06-10 21:37:25] [MAKECIVVEH] High Administrator Bryan Sikro created Faggio with ID 76.
+[2012-06-10 21:37:30] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 76.
+[2012-06-10 21:37:36] [MAKECIVVEH] High Administrator Bryan Sikro created Faggio with ID 77.
+[2012-06-10 21:37:50] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 77.
+[2012-06-10 21:38:18] [MAKEVEH] High Administrator Bryan Sikro created Faggio with ID 78.
+[2012-06-10 21:38:33] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Vehicle Key with value 78.
+[2012-06-10 21:43:21] [MAKEVEH] Server Owner Matthew Anderson created Sultan with ID 79.
+[2012-06-10 21:44:43] [DELVEH] Server Owner Matthew Anderson deleted vehicle with ID 79.
+[2012-06-10 21:46:09] [MAKEVEH] Server Owner Matthew Anderson created Sultan with ID 80.
+[2012-06-10 21:59:31] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Shelf with value 1.
+[2012-06-10 22:02:56] [VEH] Sub-Owner Neil Halden created Intruder with ID -2.
+[2012-06-10 22:04:24] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 22:05:04] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 22:29:13] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 22:38:28] [GIVEMONEY] Sub-Owner Neil Halden gave James Dorgan $500.
+[2012-06-10 22:43:28] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 22:43:36] [REFUELVEH] Sub-Owner Neil Halden refilled James Dorgan's vehicle.
+[2012-06-10 22:49:11] [DELVEH] High Administrator Ephraim Kishon deleted vehicle with ID 71.
+[2012-06-10 22:49:41] [TPTOCAR] High Administrator Ephraim Kishon teleported to vehicle ID 68.
+[2012-06-10 22:55:09] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 78.
+[2012-06-10 22:56:21] [FIXVEH] Sub-Owner Neil Halden fixed Martin Murley's vehicle.
+[2012-06-10 22:56:38] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Brassknuckle with 1 Ammo.
+[2012-06-10 22:56:41] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Golfclub with 1 Ammo.
+[2012-06-10 22:56:43] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Nightstick with 1 Ammo.
+[2012-06-10 22:56:46] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Knife with 1 Ammo.
+[2012-06-10 22:56:48] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Bat with 1 Ammo.
+[2012-06-10 22:56:58] [DISARM] Sub-Owner Neil Halden disarmed Neil Halden.
+[2012-06-10 22:57:40] [GIVEGUN] Sub-Owner Neil Halden gave Martin Murley a Bat with 1 Ammo.
+[2012-06-10 22:57:43] [GIVEGUN] Sub-Owner Neil Halden gave James Gallagher a Bat with 1 Ammo.
+[2012-06-10 22:58:51] [FIXVEH] Sub-Owner Neil Halden fixed Martin Murley's vehicle.
+[2012-06-10 22:59:06] [UNFLIP] Sub-Owner Neil Halden unflipped Neil Halden's vehicle.
+[2012-06-10 22:59:08] [FIXVEH] Sub-Owner Neil Halden fixed Neil Halden's vehicle.
+[2012-06-10 22:59:19] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 23:05:35] [VEH] Sub-Owner Neil Halden created Manana with ID -3.
+[2012-06-10 23:08:00] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 80.
+[2012-06-10 23:12:57] [VEH] Sub-Owner Neil Halden created Flash with ID -4.
+[2012-06-10 23:13:01] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID -4 to them.
+[2012-06-10 23:13:09] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -4.
+[2012-06-10 23:13:37] [MAKEVEH] Sub-Owner Neil Halden created Flash with ID 81.
+[2012-06-10 23:14:05] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 81.
+[2012-06-10 23:22:08] [MAKEVEH] Sub-Owner Neil Halden created Intruder with ID 82.
+[2012-06-10 23:22:20] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 82 to them.
+[2012-06-10 23:22:36] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 81.
+[2012-06-10 23:22:45] [FIXVEH] Sub-Owner Neil Halden fixed James Dorgan's vehicle.
+[2012-06-10 23:23:06] [SETMONEY] Sub-Owner Neil Halden set James Dorgan's money to $10000.
+[2012-06-10 23:24:01] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 82.
+[2012-06-10 23:32:31] [MAKEVEH] Sub-Owner Neil Halden created Uranus with ID 83.
+[2012-06-10 23:32:52] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 83.
+[2012-06-10 23:37:04] [GIVEMONEY] Sub-Owner Neil Halden gave Nick Moran $130.
+[2012-06-10 23:48:15] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Tec-9 with 1 Ammo.
+[2012-06-10 23:48:38] [SLAP] Sub-Owner Neil Halden slapped Ronald McKay.
+[2012-06-10 23:53:08] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Assistant Chief B.Sikro.
+[2012-06-10 23:56:06] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a LSPD Badge with value Jeff Noble.
+[2012-06-10 23:57:10] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a LSPD Badge with value Ronald McKay.
+[2012-06-10 23:59:56] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a LSPD Badge with value Nick Moran.
+[2012-06-11 00:05:08] [CHANGENAME] High Administrator Steven Mosley changed Charles Kegler's name to Steven_Mosley.
+[2012-06-11 00:06:53] [VEH] Sub-Owner Neil Halden created FBI Rancher with ID -5.
+[2012-06-11 00:09:02] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 00:19:03] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 00:19:12] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 00:19:41] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Police Officer III F.Brown.
+[2012-06-11 15:42:22] [GIVEGUN] Server Owner John White gave Jason Thorne a Deagle with 50 Ammo.
+[2012-06-11 15:42:45] [SETMONEY] Server Owner John White set Jason Thorne's money to $25000.
+[2012-06-11 15:45:47] [MAKEVEH] Server Owner John White created Esperanto with ID 84.
+[2012-06-11 15:46:08] [SETMONEY] Server Owner John White set Mark Johnson's money to $5000.
+[2012-06-11 15:46:33] [SETHP] Server Owner John White set Jason Thorne's health to 0.
+[2012-06-11 15:47:32] [SLAP] Server Owner John White slapped Jason Thorne.
+[2012-06-11 15:48:16] [SETMONEY] Server Owner John White set Jason Thorne's money to $0.
+[2012-06-11 15:48:34] [DISARM] Server Owner John White disarmed Jason Thorne.
+[2012-06-11 15:48:56] [UNFLIP] Server Owner John White unflipped Jason Thorne's vehicle.
+[2012-06-11 15:48:59] [FIXVEH] Server Owner John White fixed Jason Thorne's vehicle.
+[2012-06-11 16:16:17] [TPCAR] Server Owner John White teleported vehicle ID 33 to them.
+[2012-06-11 16:16:22] [TPCAR] Server Owner John White teleported vehicle ID 34 to them.
+[2012-06-11 16:19:22] [MAKEVEH] High Administrator Bryan Sikro created BMX with ID 85.
+[2012-06-11 16:19:33] [GIVEMONEY] High Administrator Bryan Sikro gave Nilo Prince $5000.
+[2012-06-11 16:21:14] [TPCAR] Server Owner John White teleported vehicle ID 33 to them.
+[2012-06-11 16:24:27] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Vehicle Key with value 85.
+[2012-06-11 16:26:24] [RESPAWNVEH] High Administrator Bryan Sikro respawned vehicle ID 85.
+[2012-06-11 16:26:40] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 85.
+[2012-06-11 16:26:56] [MAKEVEH] High Administrator Bryan Sikro created BMX with ID 86.
+[2012-06-11 16:27:04] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Vehicle Key with value 86.
+[2012-06-11 16:28:08] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 86.
+[2012-06-11 16:28:23] [MAKEVEH] High Administrator Bryan Sikro created BMX with ID 87.
+[2012-06-11 16:29:57] [RESPAWNVEH] High Administrator Bryan Sikro respawned vehicle ID 87.
+[2012-06-11 16:32:21] [FIXVEH] Server Owner John White fixed John White's vehicle.
+[2012-06-11 16:32:26] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 87.
+[2012-06-11 16:32:43] [MAKEVEH] High Administrator Bryan Sikro created BMX with ID 88.
+[2012-06-11 16:33:12] [SLAP] Server Owner John White slapped Bryan Sikro.
+[2012-06-11 16:34:12] [VEH] Server Owner John White created Bike with ID -1.
+[2012-06-11 16:34:24] [DELVEH] Server Owner John White deleted vehicle with ID -1.
+[2012-06-11 16:41:20] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 28.
+[2012-06-11 16:45:46] [GIVEITEM] Server Owner John White gave John White a Marijuana with value 1.
+[2012-06-11 16:45:58] [CHECKINV] High Administrator Bryan Sikro checked Nilo Prince's inventory.
+[2012-06-11 16:46:15] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 7.
+[2012-06-11 16:46:16] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 7.
+[2012-06-11 16:46:16] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 7.
+[2012-06-11 16:46:17] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 7.
+[2012-06-11 16:47:11] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:12] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:12] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:13] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:13] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:14] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:14] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:47:15] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 1.
+[2012-06-11 16:49:41] [CHECKINV] High Administrator Bryan Sikro checked Nilo Prince's inventory.
+[2012-06-11 16:49:59] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Marijuana with value 21.
+[2012-06-11 16:51:28] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Safe with value 1.
+[2012-06-11 16:52:57] [GIVEGUN] High Administrator Bryan Sikro gave Nilo Prince a Knife with 1 Ammo.
+[2012-06-11 17:34:15] [MAKEVEH] High Administrator Bryan Sikro created Merit with ID 89.
+[2012-06-11 17:34:34] [CHECKINV] High Administrator Bryan Sikro checked Liza Burrows's inventory.
+[2012-06-11 17:34:39] [CHECKINV] High Administrator Bryan Sikro checked Bryan Sikro's inventory.
+[2012-06-11 17:36:22] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Vehicle Key with value 89.
+[2012-06-11 17:47:39] [CHECKINV] High Administrator Bryan Sikro checked Bryan Sikro's inventory.
+[2012-06-11 17:56:46] [MAKEVEH] High Administrator Bryan Sikro created Bus with ID 90.
+[2012-06-11 17:56:57] [MAKEVEH] High Administrator Bryan Sikro created Bus with ID 91.
+[2012-06-11 17:57:15] [MAKEVEH] High Administrator Bryan Sikro created Bus with ID 92.
+[2012-06-11 18:08:02] [FIXVEH] High Administrator Bryan Sikro fixed Liza Burrows's vehicle.
+[2012-06-11 18:23:53] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 18:24:03] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Captain J.Granders.
+[2012-06-11 18:24:14] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 18:24:26] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Lieutenant S.Siasca.
+[2012-06-11 18:28:54] [SETHP] High Administrator Bryan Sikro set Samuel Siasca's health to 100.
+[2012-06-11 19:01:11] [TPTOCAR] High Administrator Bryan Sikro teleported to vehicle ID 11.
+[2012-06-11 19:19:52] [MAKEVEH] Server Owner John White created Stafford with ID 93.
+[2012-06-11 19:25:12] [VEH] High Administrator Steven Mosley created Sentinel with ID -1.
+[2012-06-11 19:50:28] [GIVEGUN] Server Owner John White gave John White a Deagle with 20 Ammo.
+[2012-06-11 20:05:14] [GIVEITEM] Server Owner John White gave John White a LSVS ID with value #01 - Chief Executive Officer - M.Doherty.
+[2012-06-11 20:07:02] [VEH] High Administrator Steven Mosley created Hunter with ID -1.
+[2012-06-11 20:07:18] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -1.
+[2012-06-11 20:19:22] [SETHP] Server Owner John White set Jeff Noble's health to 100.
+[2012-06-11 20:22:27] [GIVEMONEY] Server Owner John White gave Mark Doherty $180.
+[2012-06-11 20:33:58] [GIVEMONEY] Server Owner John White gave John White $500.
+[2012-06-11 20:44:12] [SETHP] Server Owner John White set Romi Anderson's health to 100.
+[2012-06-11 20:46:17] [VEH] Server Owner John White created Flatbed with ID -2.
+[2012-06-11 20:46:21] [DELVEH] Server Owner John White deleted vehicle with ID -2.
+[2012-06-11 20:46:47] [MAKEVEH] Server Owner John White created Flatbed with ID 94.
+[2012-06-11 20:47:48] [RESPAWNVEH] Server Owner John White respawned vehicle ID 94.
+[2012-06-11 20:48:55] [VEH] Server Owner John White created Cement Truck with ID -3.
+[2012-06-11 20:49:00] [DELVEH] Server Owner John White deleted vehicle with ID -3.
+[2012-06-11 20:49:14] [MAKEVEH] Server Owner John White created Cement Truck with ID 95.
+[2012-06-11 20:50:54] [MAKEVEH] Server Owner John White created Utility Van with ID 96.
+[2012-06-11 20:52:04] [SETHP] High Administrator Bryan Sikro set Mark Doherty's health to 100.
+[2012-06-11 20:54:04] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Police Officer II R.Anderson.
+[2012-06-11 21:02:19] [VEH] Server Owner John White created Sabre with ID -4.
+[2012-06-11 21:05:05] [DELVEH] Server Owner John White deleted vehicle with ID -4.
+[2012-06-11 21:05:39] [MAKEVEH] High Administrator Ephraim Kishon created Premier with ID 97.
+[2012-06-11 21:05:49] [MAKEVEH] Server Owner John White created Premier with ID 98.
+[2012-06-11 21:06:03] [DELVEH] Server Owner John White deleted vehicle with ID 98.
+[2012-06-11 21:06:13] [RESPAWNVEH] High Administrator Ephraim Kishon respawned vehicle ID 97.
+[2012-06-11 21:06:23] [DELVEH] High Administrator Ephraim Kishon deleted vehicle with ID 97.
+[2012-06-11 21:13:51] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 21:14:18] [SETMOTD] Server Owner Matthew Anderson changed MOTD to 'Welcome to Blueshift Gaming! We hope you enjoy your stay.'.
+[2012-06-11 21:16:27] [CHECKINV] Sub-Owner Neil Halden checked Nilo Prince's inventory.
+[2012-06-11 21:23:40] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 0.
+[2012-06-11 21:25:51] [CHECKINV] Sub-Owner Neil Halden checked Steven Mosley's inventory.
+[2012-06-11 21:27:35] [GIVEMONEY] High Administrator Rebecca Benson gave Rebecca Benson $30000.
+[2012-06-11 21:30:34] [CHECKINV] Sub-Owner Neil Halden checked Theodore Stanfield's inventory.
+[2012-06-11 21:31:23] [MAKEVEH] High Administrator Rebecca Benson created Willard with ID 99.
+[2012-06-11 21:32:19] [ADDUPGRADE] High Administrator Rebecca Benson upgraded Wheels' to Rebecca Benson's vehicle.
+[2012-06-11 21:35:48] [CHECKINV] High Administrator Rebecca Benson checked Rebecca Benson's inventory.
+[2012-06-11 21:46:37] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a SCUBA Equipment with value 1.
+[2012-06-11 21:48:30] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Lighter with value 1.
+[2012-06-11 21:48:31] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Cigarette with value 1.
+[2012-06-11 21:57:00] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 16.
+[2012-06-11 21:57:06] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 15.
+[2012-06-11 21:57:09] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID 11.
+[2012-06-11 21:58:18] [MAKEVEH] High Administrator Bryan Sikro created Police LS with ID 100.
+[2012-06-11 21:58:50] [MAKEVEH] High Administrator Bryan Sikro created Police LS with ID 101.
+[2012-06-11 22:01:27] [MAKEVEH] High Administrator Bryan Sikro created HPV1000 with ID 102.
+[2012-06-11 22:03:06] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Silenced with 5 Ammo.
+[2012-06-11 22:08:52] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Silenced with 100 Ammo.
+[2012-06-11 22:10:24] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Sergeant M.Bischop #112.
+[2012-06-11 22:10:44] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Assistant Chief B.Sikro #102.
+[2012-06-11 22:12:37] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Motorcycle Helmet with value 1.
+[2012-06-11 23:48:24] [GIVEITEM] Server Owner John White gave John White a FBI Badge with value 0.
+[2012-06-11 23:48:47] [GIVEGUN] High Administrator Bryan Sikro gave Martin Murley a Bat with 1 Ammo.
+[2012-06-11 23:48:52] [GIVEGUN] High Administrator Bryan Sikro gave Martin Murley a Knife with 1 Ammo.
+[2012-06-11 23:52:11] [GIVEGUN] High Administrator Bryan Sikro gave James Gallagher a Knife with 1 Ammo.
+[2012-06-11 23:57:26] [GIVEITEM] Server Owner John White gave John White a FBI Badge with value 0.
+[2012-06-11 23:57:56] [GIVEITEM] Server Owner John White gave John White a FBI Badge with value 1.
+[2012-06-11 23:58:12] [GIVEITEM] Server Owner John White gave John White a FBI Badge with value 0.
+[2012-06-12 00:27:20] [TPTOCAR] High Administrator Rebecca Benson teleported to vehicle ID 99.
+[2012-06-12 00:27:38] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Vehicle Key with value 99.
+[2012-06-12 00:29:00] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-12 00:29:21] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-12 00:29:22] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-12 00:31:40] [REFUELVEH] High Administrator Rebecca Benson refilled Rebecca Benson's vehicle.
+[2012-06-12 00:31:47] [REFUELVEH] High Administrator Rebecca Benson refilled Rebecca Benson's vehicle.
+[2012-06-12 00:33:03] [VEH] High Administrator Steven Mosley created Rancher with ID -1.
+[2012-06-12 00:33:07] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -1.
+[2012-06-12 00:33:20] [VEH] High Administrator Steven Mosley created FBI Rancher with ID -2.
+[2012-06-12 00:33:36] [CHECKINV] High Administrator Rebecca Benson checked Steven Mosley's inventory.
+[2012-06-12 00:37:13] [GIVEITEM] High Administrator Steven Mosley gave Steven Mosley a FBI Badge with value 1.
+[2012-06-12 00:44:51] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Water Bottle with value 1.
+[2012-06-12 00:44:53] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Wine with value 1.
+[2012-06-12 00:44:55] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Beer with value 1.
+[2012-06-12 00:44:57] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Champagne with value 1.
+[2012-06-12 00:44:59] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Coca Cola with value 1.
+[2012-06-12 01:05:32] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -2.
+[2012-06-12 01:12:24] [VEH] Sub-Owner Neil Halden created Washington with ID -3.
+[2012-06-12 01:24:36] [GIVEGUN] Sub-Owner Raymond Vespucci gave Raymond Vespucci a Minigun with 500 Ammo.
+[2012-06-12 01:24:48] [DISARM] Sub-Owner Raymond Vespucci disarmed Raymond Vespucci.
+[2012-06-12 02:19:22] [GIVEGUN] Sub-Owner Raymond Vespucci gave Raymond Vespucci a M4 with 100 Ammo.
+[2012-06-12 02:19:55] [GIVEGUN] Sub-Owner Raymond Vespucci gave Raymond Vespucci a Colt 45 with 1 Ammo.
+[2012-06-12 02:20:02] [GIVEGUN] Sub-Owner Raymond Vespucci gave Raymond Vespucci a Tec-9 with 1 Ammo.
+[2012-06-12 02:28:24] [UNFLIP] Sub-Owner Raymond Vespucci unflipped Benjamin Caravella's vehicle.
+[2012-06-12 02:28:26] [FIXVEH] Sub-Owner Raymond Vespucci fixed Benjamin Caravella's vehicle.
+[2012-06-12 03:05:07] [VEH] Sub-Owner Raymond Vespucci created FBI Rancher with ID -1.
+[2012-06-12 03:19:49] [VEH] Sub-Owner Raymond Vespucci created FBI Rancher with ID -2.
+[2012-06-12 03:20:32] [VEH] Server Owner John White created FBI Rancher with ID -3.
+[2012-06-12 03:21:48] [GIVEGUN] Sub-Owner Raymond Vespucci gave Raymond Vespucci a Colt 45 with 50 Ammo.
+[2012-06-12 03:22:08] [FIXVEH] Sub-Owner Raymond Vespucci fixed Steven Mosley's vehicle.
+[2012-06-12 03:23:23] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Radio with value 1.
+[2012-06-12 03:24:03] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Police Officer III F.Brown #111.
+[2012-06-12 03:30:05] [VEH] Sub-Owner Raymond Vespucci created FBI Rancher with ID -4.
+[2012-06-12 03:32:37] [FIXVEH] Sub-Owner Raymond Vespucci fixed Raymond Vespucci's vehicle.
+[2012-06-12 03:32:39] [UNFLIP] Sub-Owner Raymond Vespucci unflipped Raymond Vespucci's vehicle.
+[2012-06-12 03:38:40] [FIXVEH] Sub-Owner Raymond Vespucci fixed Steven Mosley's vehicle.
+[2012-06-12 03:42:06] [SETHP] High Administrator Bryan Sikro set Floyd Brown's health to 100.
+[2012-06-12 03:45:11] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-12 03:49:02] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -2.
+[2012-06-12 03:49:35] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -1.
+[2012-06-12 03:49:38] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -3.
+[2012-06-12 03:53:59] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 103.
+[2012-06-12 03:54:41] [DELVEH] High Administrator Steven Mosley deleted vehicle with ID -4.
+[2012-06-12 03:56:24] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 103.
+[2012-06-12 03:56:43] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 104.
+[2012-06-12 03:57:12] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 105.
+[2012-06-12 03:57:40] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 106.
+[2012-06-12 03:58:02] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 107.
+[2012-06-12 03:58:11] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 104.
+[2012-06-12 03:58:25] [MAKEVEH] Sub-Owner Neil Halden created FBI Rancher with ID 108.
+[2012-06-12 04:03:03] [DISARM] Sub-Owner Neil Halden disarmed Neil Halden.
+[2012-06-12 04:03:06] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 5 Ammo.
+[2012-06-12 04:03:18] [FIXVEH] Sub-Owner Neil Halden fixed Steven Mosley's vehicle.
+[2012-06-12 04:04:54] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Minigun with 5000 Ammo.
+[2012-06-12 04:05:37] [DISARM] Sub-Owner Neil Halden disarmed Neil Halden.
+[2012-06-12 04:06:05] [CHANGENAME] High Administrator Blueshift Gaming changed Steven Mosley's name to Blueshift_Gaming.
+[2012-06-12 04:12:44] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a M4 with 50 Ammo.
+[2012-06-12 04:12:57] [SETHP] Sub-Owner Neil Halden set Steven Mosley's health to 100.
+[2012-06-12 04:13:01] [DISARM] Sub-Owner Neil Halden disarmed Neil Halden.
+[2012-06-12 05:12:40] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-12 05:13:16] [SETARMOR] High Administrator Steven Mosley set Floyd Brown's armor to 100.
+[2012-06-12 05:13:53] [RESPAWNVEH] High Administrator Steven Mosley respawned vehicle ID 1.
+[2012-06-12 05:14:08] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 6 to them.
+[2012-06-12 05:14:20] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 6 to them.
+[2012-06-12 05:14:26] [RESPAWNVEH] High Administrator Steven Mosley respawned vehicle ID 6.
+[2012-06-12 05:14:28] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 1 to them.
+[2012-06-12 05:14:49] [RESPAWNVEH] High Administrator Steven Mosley respawned vehicle ID 1.
+[2012-06-12 05:14:53] [RESPAWNVEH] High Administrator Steven Mosley respawned vehicle ID 6.
+[2012-06-12 05:14:57] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 1 to them.
+[2012-06-12 05:16:08] [SETARMOR] High Administrator Steven Mosley set Steven Mosley's armor to 100.
+[2012-06-12 07:23:55] [SETMOTD] Server Owner John White changed MOTD to 'We are aware of the issues on the server. We're currently changing hosting. Thanks.'.
+[2012-06-12 17:11:09] [GIVEGUN] Server Owner John White gave John White a Sniper with 50 Ammo.
+[2012-06-12 17:13:23] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a MP5 with 66 Ammo.
+[2012-06-12 17:13:45] [GIVEGUN] Server Owner John White gave John White a Bat with 1 Ammo.
+[2012-06-12 17:14:32] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 99 Ammo.
+[2012-06-12 17:17:06] [GIVEGUN] Server Owner John White gave John White a Minigun with 500 Ammo.
+[2012-06-12 17:18:45] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Katana with 1 Ammo.
+[2012-06-12 17:21:54] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Sniper with 100 Ammo.
+[2012-06-12 17:24:14] [SETHP] Server Owner John White set Steven Mosley's health to 0.
+[2012-06-12 17:24:54] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 999 Ammo.
+[2012-06-12 18:50:24] [RESPAWNVEH] High Administrator Steven Mosley respawned vehicle ID 108.
+[2012-06-12 18:50:43] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-13 03:36:46] [VEH] Server Owner John White created Sabre with ID -1.
+[2012-06-13 03:36:59] [VEH] Server Owner John White created Taxi with ID -2.
+[2012-06-13 03:37:05] [VEH] Server Owner John White created Turismo with ID -3.
+[2012-06-13 05:05:59] [FRISK] Player Floyd Brown checked Julio Sanchez's inventory.
+[2012-06-13 05:07:51] [FRISK] Player Floyd Brown checked Julio Sanchez's inventory.
+[2012-06-13 13:51:20] [MAKEVEH] Server Owner John White created Premier with ID 115.
+[2012-06-13 13:53:20] [GIVEMONEY] Server Owner John White gave Antoine Francisci $10000.
+[2012-06-13 15:23:07] [GIVEGUN] Sub-Owner Daniel Burrowfield gave Giovanna Espinoza a Silenced with 3 Ammo.
+[2012-06-13 15:23:35] [DISARM] Sub-Owner Daniel Burrowfield disarmed Giovanna Espinoza.
+[2012-06-13 15:25:29] [VEH] Sub-Owner Daniel Burrowfield created FBI Rancher with ID -1.
+[2012-06-13 15:26:29] [DELVEH] Sub-Owner Daniel Burrowfield deleted vehicle with ID -1.
+[2012-06-13 19:28:31] [GIVEMONEY] Server Owner John White gave John White $85000.
+[2012-06-13 19:33:16] [CHANGENAME] Server Owner John White changed Arthuro Quintero's name to Arturo Quintero.
+[2012-06-13 19:43:56] [MAKEVEH] Server Owner John White created Huntley with ID 116.
+[2012-06-13 19:45:41] [GIVEMONEY] Server Owner John White gave Arturo Quintero $50000.
+[2012-06-13 19:46:01] [GIVEGUN] Server Owner John White gave John White a AK-47 with 50 Ammo.
+[2012-06-13 19:46:22] [GIVEGUN] Server Owner John White gave John White a Deagle with 50 Ammo.
+[2012-06-13 19:46:53] [GIVEGUN] Server Owner John White gave John White a Deagle with 20 Ammo.
+[2012-06-13 19:47:21] [SETHP] Server Owner John White set Jose Cisnero's health to 100.
+[2012-06-13 19:47:37] [GIVEGUN] Server Owner John White gave John White a Shotgun with 500 Ammo.
+[2012-06-13 19:48:00] [GIVEGUN] Server Owner John White gave John White a M4 with 50 Ammo.
+[2012-06-13 19:48:23] [GIVEGUN] Server Owner John White gave John White a Rifle with 10 Ammo.
+[2012-06-13 19:49:48] [GIVEGUN] Server Owner John White gave John White a Uzi with 50 Ammo.
+[2012-06-13 19:50:20] [GIVEGUN] Server Owner John White gave John White a Tec-9 with 50 Ammo.
+[2012-06-13 19:50:22] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-13 19:51:12] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Colt 45 with 5 Ammo.
+[2012-06-13 19:52:03] [GIVEGUN] Server Owner John White gave John White a Colt 45 with 10 Ammo.
+[2012-06-13 19:53:02] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Deagle with 1 Ammo.
+[2012-06-13 20:00:38] [GIVEMONEY] Sub-Owner Neil Halden gave Liza Burrows $30000.
+[2012-06-13 20:11:32] [SETMONEY] Server Owner John White set Liza Burrows's money to $645.80.
+[2012-06-13 20:20:44] [CHANGENAME] Sub-Owner Raphael White changed FMD-admin's name to Raphael White.
+[2012-06-13 20:21:06] [CHANGENAME] Sub-Owner Raphael Leonards changed Raphael White's name to Raphael Leonards.
+[2012-06-13 20:23:37] [GIVEMONEY] Sub-Owner Raphael Leonards gave Raphael Leonards $10000.
+[2012-06-13 20:26:55] [VEH] Sub-Owner Raphael Leonards created BMX with ID -1.
+[2012-06-13 20:27:03] [DELVEH] Sub-Owner Raphael Leonards deleted vehicle with ID -1.
+[2012-06-13 20:27:38] [TPCAR] Sub-Owner Raphael Leonards teleported vehicle ID 88 to them.
+[2012-06-13 20:37:20] [CHANGENAME] Sub-Owner Carlos Pendela changed Raphael Leonards's name to Carlos Pendela.
+[2012-06-13 20:53:24] [CHANGENAME] Sub-Owner Enrique Del Fuego changed Carlos Pendela's name to Enrique Del Fuego.
+[2012-06-13 20:54:45] [CHECKINV] Sub-Owner Enrique Del Fuego checked Arturo Quintero's inventory.
+[2012-06-13 20:54:50] [CHECKINV] Sub-Owner Enrique Del Fuego checked Arturo Quintero's inventory.
+[2012-06-13 21:00:18] [VEH] Sub-Owner Enrique Del Fuego created Pony with ID -2.
+[2012-06-13 21:04:18] [VEH] Sub-Owner Enrique Del Fuego created FCR-900 with ID -3.
+[2012-06-13 21:10:22] [DELVEH] Server Owner John White deleted vehicle with ID 68.
+[2012-06-13 21:11:57] [GIVEMONEY] Server Owner John White gave Gerald Scotti $150.
+[2012-06-13 21:12:07] [GIVEGUN] Sub-Owner Enrique Del Fuego gave Enrique Del Fuego a Colt 45 with 25 Ammo.
+[2012-06-13 21:12:16] [DELVEH] Server Owner John White deleted vehicle with ID 66.
+[2012-06-13 21:12:21] [DELVEH] Server Owner John White deleted vehicle with ID 70.
+[2012-06-13 21:12:31] [DELVEH] Server Owner John White deleted vehicle with ID 69.
+[2012-06-13 21:13:49] [MAKEVEH] Server Owner John White created Towtruck with ID 117.
+[2012-06-13 21:14:04] [DELVEH] Server Owner John White deleted vehicle with ID 117.
+[2012-06-13 21:14:24] [REFUELVEH] Server Owner John White refilled Gerald Scotti's vehicle.
+[2012-06-13 21:15:36] [MAKEVEH] Server Owner John White created Towtruck with ID 118.
+[2012-06-13 21:17:10] [MAKEVEH] Server Owner John White created Towtruck with ID 119.
+[2012-06-13 21:17:56] [MAKEVEH] Server Owner John White created Utility Van with ID 120.
+[2012-06-13 21:18:23] [MAKEVEH] Server Owner John White created Towtruck with ID 121.
+[2012-06-13 21:18:45] [MAKEVEH] Server Owner John White created Towtruck with ID 122.
+[2012-06-13 21:55:48] [GIVEGUN] Sub-Owner Enrique Del Fuego gave Arturo Quintero a Colt 45 with 10 Ammo.
+[2012-06-13 22:06:34] [GIVEGUN] Sub-Owner Enrique Del Fuego gave Gonzalo Inzunza a Colt 45 with 5 Ammo.
+[2012-06-13 22:06:53] [GIVEMONEY] Sub-Owner Enrique Del Fuego gave Arturo Quintero $10000.
+[2012-06-13 22:07:51] [DELVEH] Sub-Owner Enrique Del Fuego deleted vehicle with ID -2.
+[2012-06-13 22:07:52] [DELVEH] Sub-Owner Enrique Del Fuego deleted vehicle with ID -3.
+[2012-06-13 22:13:41] [VEH] Sub-Owner Amanda Shayne created Landstalker with ID -4.
+[2012-06-13 22:14:18] [VEH] Sub-Owner Amanda Shayne created Premier with ID -5.
+[2012-06-13 22:14:41] [VEH] Sub-Owner Amanda Shayne created Buffalo with ID -6.
+[2012-06-13 22:32:39] [GIVEITEM] Sub-Owner Amanda Shayne gave Amanda Shayne a LSPD Badge with value Sam Prescot.
+[2012-06-13 23:07:19] [DISARM] Sub-Owner Amanda Shayne disarmed Amanda Shayne.
+[2012-06-14 00:20:33] [FRISK] Player Jeff Noble checked Julio Sanchez's inventory.
+[2012-06-14 00:40:56] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value Police Officer II D.Sheffield #117.
+[2012-06-14 00:42:40] [SLAP] High Administrator Bryan Sikro slapped Steven Mosley.
+[2012-06-14 01:03:59] [GIVEITEM] High Administrator Steven Mosley gave Steven Mosley a FBI Badge with value Supervisory Special Agent..
+[2012-06-14 01:11:33] [SETHP] High Administrator Bryan Sikro set Bryan Sikro's health to 100.
+[2012-06-14 01:11:36] [SETARMOR] High Administrator Bryan Sikro set Bryan Sikro's armor to 100.
+[2012-06-14 02:00:29] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a LSPD Badge with value VISITORS BADGE: Steven Mosley.
+[2012-06-14 02:03:10] [GIVEGUN] Server Owner John White gave John White a Deagle with 10 Ammo.
+[2012-06-14 02:03:30] [GIVEGUN] Server Owner John White gave John White a Colt 45 with 10 Ammo.
+[2012-06-14 02:05:14] [VEH] Server Owner John White created FBI Rancher with ID -7.
+[2012-06-14 02:06:15] [DELVEH] Server Owner John White deleted vehicle with ID -7.
+[2012-06-14 02:22:36] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Motorcycle Helmet with value 1.
+[2012-06-14 02:25:47] [GIVEGUN] Server Owner John White gave John White a Deagle with 10 Ammo.
+[2012-06-14 02:25:58] [VEH] Server Owner John White created FBI Rancher with ID -8.
+[2012-06-14 02:26:23] [VEH] High Administrator Bryan Sikro created Hydra with ID -9.
+[2012-06-14 02:28:12] [DELVEH] Server Owner John White deleted vehicle with ID -8.
+[2012-06-14 02:29:39] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -9.
+[2012-06-14 02:34:34] [SETHP] High Administrator Bryan Sikro set Bryan Sikro's health to 100.
+[2012-06-14 02:35:11] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a M4 with 1000 Ammo.
+[2012-06-14 02:35:49] [SETHP] High Administrator Bryan Sikro set Bryan Sikro's health to 100.
+[2012-06-14 02:35:52] [SETARMOR] High Administrator Bryan Sikro set Bryan Sikro's armor to 100.
+[2012-06-14 02:36:54] [FIXVEH] High Administrator Bryan Sikro fixed Bryan Sikro's vehicle.
+[2012-06-14 02:38:12] [SLAP] High Administrator Bryan Sikro slapped Bryan Sikro.
+[2012-06-14 02:39:08] [RESPAWNVEH] High Administrator Bryan Sikro respawned vehicle ID 102.
+[2012-06-14 02:39:17] [TPCAR] High Administrator Bryan Sikro teleported vehicle ID 102 to them.
+[2012-06-14 02:40:01] [FIXVEH] High Administrator Bryan Sikro fixed Floyd Brown's vehicle.
+[2012-06-14 02:40:17] [VEH] High Administrator Bryan Sikro created Rhino with ID -10.
+[2012-06-14 02:40:37] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -10.
+[2012-06-14 02:40:52] [VEH] High Administrator Bryan Sikro created Rhino with ID -11.
+[2012-06-14 02:41:00] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -11.
+[2012-06-14 02:41:42] [VEH] High Administrator Bryan Sikro created Rhino with ID -12.
+[2012-06-14 02:42:22] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -12.
+[2012-06-14 02:42:28] [RESPAWNVEH] High Administrator Bryan Sikro respawned vehicle ID 102.
+[2012-06-14 02:42:35] [TPCAR] High Administrator Bryan Sikro teleported vehicle ID 102 to them.
+[2012-06-14 02:44:36] [FIXVEH] High Administrator Bryan Sikro fixed Floyd Brown's vehicle.
+[2012-06-14 13:38:42] [GIVEITEM] Server Owner John White gave John White a LSPD Badge with value 1.
+[2012-06-14 13:39:16] [GIVEGUN] High Administrator Bryan Sikro gave Cesar Armando a Bat with 1 Ammo.
+[2012-06-14 13:45:32] [GIVEGUN] High Administrator Bryan Sikro gave Antoine Francisci a Bat with 1 Ammo.
+[2012-06-14 13:46:07] [GIVEGUN] High Administrator Bryan Sikro gave Dominique Rousseau a Bat with 1 Ammo.
+[2012-06-14 16:18:52] [GIVEMONEY] Server Owner John White gave Brian Toretto $150.
+[2012-06-14 16:24:45] [GIVEGUN] Server Owner John White gave John White a Deagle with 10 Ammo.
+[2012-06-14 16:37:33] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 84.
+[2012-06-14 16:39:30] [SETMONEY] Sub-Owner Neil Halden set Mark Johnson's money to $0.
+[2012-06-14 16:40:24] [SETMONEY] Sub-Owner Neil Halden set Mark Johnson's money to $0.
+[2012-06-14 16:48:11] [VEH] Sub-Owner Neil Halden created Freeway with ID -1.
+[2012-06-14 16:48:20] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -1.
+[2012-06-14 16:48:39] [VEH] Sub-Owner Neil Halden created Wayfarer with ID -2.
+[2012-06-14 16:48:57] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -2.
+[2012-06-14 17:00:45] [VEH] Sub-Owner Neil Halden created Stratum with ID -3.
+[2012-06-14 17:04:05] [VEH] Sub-Owner Neil Halden created Stratum with ID -1.
+[2012-06-14 17:06:33] [VEH] Sub-Owner Neil Halden created Stratum with ID -1.
+[2012-06-14 17:10:36] [SETARMOR] Sub-Owner Neil Halden set Sam Prescot's armor to 100.
+[2012-06-14 17:10:48] [JAIL] Sub-Owner Neil Halden jailed Bruce Moore for 15 minute(s). ( OOC insults )
+[2012-06-14 17:16:52] [GIVEMONEY] Sub-Owner Neil Halden gave Sam Prescot $150.
+[2012-06-14 17:35:15] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Silenced with 5 Ammo.
+[2012-06-14 17:35:47] [SETHP] Sub-Owner Neil Halden set Gerald Scotti's health to 100.
+[2012-06-14 17:36:56] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-14 17:37:43] [FRECONNECT] Sub-Owner Neil Halden force reconnect Pablo Salcido.
+[2012-06-14 17:38:14] [FRECONNECT] Sub-Owner Neil Halden force reconnect Pablo Salcido.
+[2012-06-14 17:38:19] [PKICK] Sub-Owner Neil Halden kicked Pablo Salcido. (  )
+[2012-06-14 17:43:08] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-14 18:08:42] [VEH] High Administrator Rebecca Benson created DFT-30 with ID -1.
+[2012-06-14 18:08:58] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -1.
+[2012-06-14 18:20:58] [FRISK] Player Jeff Noble checked Juan Cortez's inventory.
+[2012-06-14 23:29:09] [MAKEVEH] Sub-Owner Neil Halden created Alpha with ID 124.
+[2012-06-14 23:30:33] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 124.
+[2012-06-14 23:30:42] [GIVEMONEY] Sub-Owner Neil Halden gave Taylor Whitney $15000.
+[2012-06-14 23:33:16] [FIXVEH] Sub-Owner Neil Halden fixed Taylor Whitney's vehicle.
+[2012-06-14 23:43:06] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 124 to them.
+[2012-06-14 23:43:22] [VEH] Sub-Owner Neil Halden created FBI Rancher with ID -1.
+[2012-06-14 23:44:04] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -1.
+[2012-06-14 23:45:14] [VEH] Sub-Owner Neil Halden created Sanchez with ID -2.
+[2012-06-14 23:45:31] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -2.
+[2012-06-14 23:48:19] [FIXVEH] Sub-Owner Neil Halden fixed Taylor Whitney's vehicle.
+[2012-06-14 23:48:42] [FIXVEH] Sub-Owner Neil Halden fixed Neil Halden's vehicle.
+[2012-06-14 23:49:07] [SETHP] Sub-Owner Neil Halden set Taylor Whitney's health to 100.
+[2012-06-14 23:57:23] [VEH] Sub-Owner Neil Halden created Euros with ID -3.
+[2012-06-15 00:00:59] [FIXVEH] Server Owner John White fixed John White's vehicle.
+[2012-06-15 00:01:36] [FIXVEH] Server Owner John White fixed John White's vehicle.
+[2012-06-15 00:02:08] [FIXVEH] Server Owner John White fixed Taylor Whitney's vehicle.
+[2012-06-15 00:03:35] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-15 00:26:52] [MAKEVEH] Server Owner John White created Bullet with ID 125.
+[2012-06-15 00:28:06] [MAKEVEH] Server Owner John White created Sabre with ID 126.
+[2012-06-15 00:31:21] [MAKEVEH] Server Owner John White created Freeway with ID 127.
+[2012-06-15 00:59:08] [GIVEMONEY] Server Owner John White gave Kenneth Lynch $150.
+[2012-06-15 01:20:27] [FIXVEH] Server Owner John White fixed John White's vehicle.
+[2012-06-15 01:27:45] [GIVEGUN] Server Owner John White gave John White a Deagle with 10 Ammo.
+[2012-06-15 01:47:08] [REFUELVEH] Server Owner John White refilled Floyd Brown's vehicle.
+[2012-06-15 01:47:16] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-15 01:52:43] [TPTOCAR] Server Owner John White teleported to vehicle ID 125.
+[2012-06-15 02:44:46] [MAKEADMIN] Player Steven Mosley set Steven Mosley's administrative rank to Player.
+[2012-06-15 10:20:39] [VEH] High Administrator Rebecca Benson created Premier with ID -4.
+[2012-06-15 10:20:43] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -4.
+[2012-06-15 10:20:47] [VEH] High Administrator Rebecca Benson created Premier with ID -5.
+[2012-06-15 10:20:49] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -5.
+[2012-06-15 10:20:55] [VEH] High Administrator Rebecca Benson created Premier with ID -6.
+[2012-06-15 10:21:22] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -6.
+[2012-06-15 10:44:50] [RESPAWNVEH] High Administrator Rebecca Benson respawned vehicle ID 43.
+[2012-06-15 10:44:52] [RESPAWNVEH] High Administrator Rebecca Benson respawned vehicle ID 4.
+[2012-06-15 10:44:54] [RESPAWNVEH] High Administrator Rebecca Benson respawned vehicle ID 5.
+[2012-06-15 10:44:56] [RESPAWNVEH] High Administrator Rebecca Benson respawned vehicle ID 46.
+[2012-06-15 10:46:15] [REFUELVEH] High Administrator Rebecca Benson refilled Brian Toretto's vehicle.
+[2012-06-15 11:00:35] [GIVEMONEY] High Administrator Rebecca Benson gave Tony Montana $150.
+[2012-06-15 11:02:49] [GIVEMONEY] High Administrator Rebecca Benson gave Tony Montana $150.
+[2012-06-15 11:04:35] [GIVEMONEY] High Administrator Rebecca Benson gave Tony Montana $150.
+[2012-06-15 11:07:07] [SETHP] High Administrator Rebecca Benson set Cesar Armando's health to 100.
+[2012-06-15 11:15:39] [TPCAR] High Administrator Rebecca Benson teleported vehicle ID 7 to them.
+[2012-06-15 14:17:18] [REFUELVEH] High Administrator Rebecca Benson refilled Rebecca Benson's vehicle.
+[2012-06-15 14:23:22] [MAKEADMIN] Sub-Owner Neil Halden set Steven Mosley's administrative rank to Administrator.
+[2012-06-15 14:23:28] [MAKEADMIN] Sub-Owner Neil Halden set Steven Mosley's administrative rank to High Administrator.
+[2012-06-15 14:25:30] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 14:36:37] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Deagle with 45 Ammo.
+[2012-06-15 15:23:58] [JAIL] Sub-Owner Neil Halden jailed Barrett Shooter for 0 minute(s). ( non-rp name )
+[2012-06-15 15:25:11] [CHANGENAME] Sub-Owner Neil Halden changed Barrett Shooter's name to John Casey.
+[2012-06-15 15:25:18] [UNJAIL] Sub-Owner Neil Halden unjailed John Casey.
+[2012-06-15 16:34:41] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 128 to them.
+[2012-06-15 16:36:50] [FIXVEH] Sub-Owner Neil Halden fixed Neil Halden's vehicle.
+[2012-06-15 16:47:30] [VEH] Sub-Owner Neil Halden created Euros with ID -1.
+[2012-06-15 16:49:18] [FIXVEH] Sub-Owner Neil Halden fixed Neil Halden's vehicle.
+[2012-06-15 16:53:16] [GIVEGUN] Sub-Owner Neil Halden gave Gonzalo Inzunza a Colt 45 with 5 Ammo.
+[2012-06-15 17:06:21] [SETHP] Sub-Owner Neil Halden set Dwayne Broomfield's health to 100.
+[2012-06-15 17:09:41] [VEH] Sub-Owner Neil Halden created Landstalker with ID -2.
+[2012-06-15 17:09:59] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -2.
+[2012-06-15 17:10:03] [VEH] Sub-Owner Neil Halden created Huntley with ID -3.
+[2012-06-15 17:10:15] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -3.
+[2012-06-15 17:10:29] [VEH] High Administrator Steven Mosley created Perennial with ID -4.
+[2012-06-15 17:10:42] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -4.
+[2012-06-15 17:20:02] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Deagle with 25 Ammo.
+[2012-06-15 17:25:55] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Deagle with 99 Ammo.
+[2012-06-15 17:28:04] [GIVEGUN] Sub-Owner Neil Halden gave Emmet McMillan a Colt 45 with 15 Ammo.
+[2012-06-15 17:43:49] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 17:43:54] [SETHP] High Administrator Steven Mosley set Floyd Brown's health to 100.
+[2012-06-15 18:42:22] [FIXVEH] Server Owner John White fixed Dominic Iniesta's vehicle.
+[2012-06-15 19:15:01] [TPTOCAR] High Administrator Rebecca Benson teleported to vehicle ID 99.
+[2012-06-15 19:19:50] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-15 19:41:31] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a MP5 with 99 Ammo.
+[2012-06-15 19:42:10] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a M4 with 99 Ammo.
+[2012-06-15 19:43:43] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Tec-9 with 99 Ammo.
+[2012-06-15 19:45:08] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 9999999 Ammo.
+[2012-06-15 19:46:19] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 19:47:01] [SETHP] High Administrator Steven Mosley set Daniel Holmes's health to 100.
+[2012-06-15 19:48:40] [GIVEGUN] High Administrator Steven Mosley gave Daniel Holmes a Deagle with 1 Ammo.
+[2012-06-15 19:50:34] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Colt 45 with 99 Ammo.
+[2012-06-15 19:51:01] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a M4 with 99 Ammo.
+[2012-06-15 19:51:15] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Sawed-off with 99 Ammo.
+[2012-06-15 19:51:31] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Combat Shotgun with 99 Ammo.
+[2012-06-15 19:52:00] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a AK-47 with 99 Ammo.
+[2012-06-15 19:52:22] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Silenced with 99 Ammo.
+[2012-06-15 19:52:58] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Chainsaw with 99 Ammo.
+[2012-06-15 19:53:14] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Uzi with 99 Ammo.
+[2012-06-15 19:53:26] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a MP5 with 99 Ammo.
+[2012-06-15 19:54:10] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Rifle with 10 Ammo.
+[2012-06-15 19:54:52] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Sniper with 10 Ammo.
+[2012-06-15 19:55:06] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Rocket Launcher with 90 Ammo.
+[2012-06-15 19:55:18] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Flamethrower with 99 Ammo.
+[2012-06-15 19:55:38] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 19:56:01] [SETHP] Server Owner John White set John White's health to 100.
+[2012-06-15 19:56:05] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Infrared with 1 Ammo.
+[2012-06-15 19:57:13] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Nightvision with 10 Ammo.
+[2012-06-15 19:57:43] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Molotov with 99 Ammo.
+[2012-06-15 19:57:59] [SETHP] High Administrator Steven Mosley set Daniel Holmes's health to 100.
+[2012-06-15 19:58:01] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 19:58:23] [SETHP] High Administrator Steven Mosley set Daniel Holmes's health to 100.
+[2012-06-15 19:58:25] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 19:58:44] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 99 Ammo.
+[2012-06-15 19:59:47] [GIVEGUN] Server Owner John White gave John White a Infrared with 1 Ammo.
+[2012-06-15 20:00:21] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Combat Shotgun with 99 Ammo.
+[2012-06-15 20:01:02] [SETHP] Server Owner John White set Daniel Holmes's health to 100.
+[2012-06-15 20:01:06] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 20:01:19] [SETHP] Server Owner John White set John White's health to 100.
+[2012-06-15 20:01:48] [SETHP] Server Owner John White set John White's health to 100.
+[2012-06-15 20:02:25] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Teargas with 99 Ammo.
+[2012-06-15 20:03:29] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Nightstick with 1 Ammo.
+[2012-06-15 20:04:04] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Spraycan with 1 Ammo.
+[2012-06-15 20:05:10] [GIVEGUN] High Administrator Steven Mosley gave Daniel Holmes a Flower with 1 Ammo.
+[2012-06-15 20:05:33] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 20:06:35] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Infrared with 1 Ammo.
+[2012-06-15 20:06:53] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-15 20:09:46] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-15 20:09:54] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-15 20:10:32] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 999999999 Ammo.
+[2012-06-15 20:11:44] [SLAP] High Administrator Steven Mosley slapped Daniel Holmes.
+[2012-06-15 20:12:37] [SETHP] High Administrator Steven Mosley set Daniel Holmes's health to 0.
+[2012-06-15 20:36:14] [VEH] High Administrator Bryan Sikro created Rhino with ID -1.
+[2012-06-15 20:37:25] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -1.
+[2012-06-15 20:38:03] [CHECKINV] High Administrator Bryan Sikro checked Arturo Quintero's inventory.
+[2012-06-15 20:38:14] [TPCAR] High Administrator Bryan Sikro teleported vehicle ID 116 to them.
+[2012-06-15 20:39:42] [CHECKINV] High Administrator Bryan Sikro checked Gonzalo Inzunza's inventory.
+[2012-06-15 20:40:35] [GIVEGUN] High Administrator Bryan Sikro gave Arturo Quintero a Colt 45 with 10 Ammo.
+[2012-06-15 20:40:41] [GIVEGUN] High Administrator Bryan Sikro gave Gonzalo Inzunza a Dildo with 1 Ammo.
+[2012-06-15 20:41:03] [GIVEGUN] High Administrator Bryan Sikro gave Gonzalo Inzunza a Rifle with 1 Ammo.
+[2012-06-15 20:41:55] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Grenade with 1 Ammo.
+[2012-06-15 20:42:52] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Combat Shotgun with 2 Ammo.
+[2012-06-15 20:43:04] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Teargas with 1 Ammo.
+[2012-06-15 20:43:30] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Cane with 1 Ammo.
+[2012-06-15 20:43:43] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Katana with 1 Ammo.
+[2012-06-15 20:43:57] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a AK-47 with 5 Ammo.
+[2012-06-15 20:44:28] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Sniper with 1 Ammo.
+[2012-06-15 20:44:42] [SETHP] High Administrator Bryan Sikro set Dominic Iniesta's health to 100.
+[2012-06-15 20:44:49] [GIVEGUN] High Administrator Bryan Sikro gave Gonzalo Inzunza a AK-47 with 3 Ammo.
+[2012-06-15 20:44:59] [GIVEGUN] High Administrator Bryan Sikro gave Gonzalo Inzunza a AK-47 with 50 Ammo.
+[2012-06-15 20:45:31] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Minigun with 100 Ammo.
+[2012-06-15 20:45:47] [CHECKINV] High Administrator Bryan Sikro checked Gonzalo Inzunza's inventory.
+[2012-06-15 20:46:04] [GIVEGUN] High Administrator Bryan Sikro gave Dominic Iniesta a Uzi with 30 Ammo.
+[2012-06-15 20:46:06] [SETHP] High Administrator Bryan Sikro set Pablo Salcido's health to 100.
+[2012-06-15 20:46:39] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Nightvision with 1 Ammo.
+[2012-06-15 20:47:49] [GIVEGUN] High Administrator Bryan Sikro gave Pablo Salcido a Flower with 1 Ammo.
+[2012-06-15 20:48:22] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Rocket Launcher with 1 Ammo.
+[2012-06-15 20:49:10] [GIVEGUN] High Administrator Bryan Sikro gave Bryan Sikro a Molotov with 1 Ammo.
+[2012-06-15 20:50:34] [MAKEVEH] High Administrator Bryan Sikro created Squalo with ID 130.
+[2012-06-15 20:54:09] [CHECKINV] High Administrator Bryan Sikro checked Dominic Iniesta's inventory.
+[2012-06-15 20:54:15] [CHECKINV] High Administrator Bryan Sikro checked Gonzalo Inzunza's inventory.
+[2012-06-15 20:54:20] [CHECKINV] High Administrator Bryan Sikro checked Arturo Quintero's inventory.
+[2012-06-15 20:54:28] [CHECKINV] High Administrator Bryan Sikro checked Pablo Salcido's inventory.
+[2012-06-15 22:53:49] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Rifle with 99 Ammo.
+[2012-06-15 23:20:09] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a AK-47 with 9999 Ammo.
+[2012-06-15 23:20:17] [SETARMOR] High Administrator Steven Mosley set Steven Mosley's armor to 100.
+[2012-06-15 23:21:13] [FRECONNECT] Server Owner John White force reconnect Pablo Salcido.
+[2012-06-15 23:21:21] [PKICK] Server Owner John White kicked Pablo Salcido. ( Re-connect. )
+[2012-06-15 23:21:43] [VEH] Server Owner John White created FBI Rancher with ID -1.
+[2012-06-15 23:21:52] [GIVEGUN] Server Owner John White gave John White a Deagle with 500 Ammo.
+[2012-06-15 23:22:15] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 9999999 Ammo.
+[2012-06-15 23:23:22] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Minigun with 9999 Ammo.
+[2012-06-15 23:26:05] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 100 Ammo.
+[2012-06-15 23:29:51] [DISARM] High Administrator Steven Mosley disarmed Steven Mosley.
+[2012-06-15 23:29:58] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 1 Ammo.
+[2012-06-15 23:36:32] [VEH] Server Owner John White created Taxi with ID -1.
+[2012-06-15 23:36:52] [DELVEH] Server Owner John White deleted vehicle with ID -1.
+[2012-06-15 23:41:49] [VEH] Server Owner John White created Taxi with ID -1.
+[2012-06-15 23:42:14] [DELVEH] Server Owner John White deleted vehicle with ID -1.
+[2012-06-15 23:51:02] [GIVEITEM] Server Owner John White gave John White a FBI Badge with value 1.
+[2012-06-15 23:56:21] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 2 Ammo.
+[2012-06-15 23:56:38] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 99 Ammo.
+[2012-06-15 23:59:11] [DISARM] High Administrator Steven Mosley disarmed Steven Mosley.
+[2012-06-16 00:03:14] [GIVEITEM] Server Owner John White gave John White a LSVS ID with value 1.
+[2012-06-16 00:03:50] [GIVEITEM] Server Owner John White gave John White a SANE ID with value 1.
+[2012-06-16 00:04:34] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a AK-47 with 999999 Ammo.
+[2012-06-16 00:04:41] [GIVEITEM] Server Owner John White gave John White a LSVS ID with value 1.
+[2012-06-16 00:10:46] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Grenade with 99 Ammo.
+[2012-06-16 00:11:48] [GIVEGUN] Server Owner John White gave John White a Shotgun with 10 Ammo.
+[2012-06-16 00:12:28] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-16 00:12:36] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-16 00:12:38] [SETARMOR] High Administrator Steven Mosley set Steven Mosley's armor to 100.
+[2012-06-16 00:12:56] [SETHP] Server Owner John White set John White's health to 100.
+[2012-06-16 00:13:08] [GIVEGUN] Server Owner John White gave John White a Colt 45 with 50 Ammo.
+[2012-06-16 00:14:53] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-16 00:14:57] [SETARMOR] High Administrator Steven Mosley set Steven Mosley's armor to 100.
+[2012-06-16 00:15:33] [VEH] High Administrator Steven Mosley created Towtruck with ID -1.
+[2012-06-16 00:15:59] [VEH] High Administrator Steven Mosley created Towtruck with ID -2.
+[2012-06-16 00:19:08] [GIVEGUN] Server Owner John White gave John White a Deagle with 150 Ammo.
+[2012-06-16 00:20:18] [VEH] High Administrator Steven Mosley created Towtruck with ID -1.
+[2012-06-16 00:21:29] [HUGESLAP] Server Owner John White huge slapped Steven Mosley.
+[2012-06-16 00:21:58] [GIVEGUN] Server Owner John White gave John White a Grenade with 50 Ammo.
+[2012-06-16 00:23:23] [SETHP] High Administrator Steven Mosley set Steven Mosley's health to 100.
+[2012-06-16 00:24:58] [DISARM] High Administrator Steven Mosley disarmed Steven Mosley.
+[2012-06-16 00:26:26] [GIVEGUN] High Administrator Steven Mosley gave Steven Mosley a Knife with 1 Ammo.
+[2012-06-16 01:27:02] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Shelf with value 0.
+[2012-06-16 02:25:44] [FIXVEH] Sub-Owner Amanda Shayne fixed Taylor Whitney's vehicle.
+[2012-06-16 06:54:34] [FRISK] Player Romi Anderson checked Dustin Brown's inventory.
+[2012-06-16 14:37:15] [DELVEH] Server Owner John White deleted vehicle with ID 115.
+[2012-06-16 15:04:32] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-16 15:47:51] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Shotgun with 5 Ammo.
+[2012-06-16 16:17:12] [CHECKINV] High Administrator Bryan Sikro checked Scott Parker's inventory.
+[2012-06-16 16:52:23] [CHECKINV] High Administrator Bryan Sikro checked Kenneth Lynch's inventory.
+[2012-06-16 16:52:31] [GIVEMONEY] High Administrator Bryan Sikro gave Bryan Sikro $1.
+[2012-06-16 16:52:37] [GIVEMONEY] High Administrator Bryan Sikro gave Kenneth Lynch $15000.
+[2012-06-16 16:53:24] [MAKEVEH] High Administrator Bryan Sikro created Sultan with ID 133.
+[2012-06-16 16:53:45] [CHECKINV] High Administrator Bryan Sikro checked Kenneth Lynch's inventory.
+[2012-06-16 16:54:00] [GIVEITEM] High Administrator Bryan Sikro gave Bryan Sikro a Vehicle Key with value 133.
+[2012-06-16 17:05:19] [FIXVEH] High Administrator Bryan Sikro fixed Emmet McMillan's vehicle.
+[2012-06-16 17:39:32] [REFUELVEH] Server Owner John White refilled Ruben Salazar's vehicle.
+[2012-06-16 17:42:01] [FIXVEH] Server Owner John White fixed John White's vehicle.
+[2012-06-16 20:41:55] [FRECONNECT] Sub-Owner Neil Halden force reconnect Marcus Bishop.
+[2012-06-16 21:13:51] [PKICK] Sub-Owner Burrowfield kicked Neil Halden. (  )
+[2012-06-16 21:14:08] [GIVEMONEY] Sub-Owner Burrowfield gave Floyd Brown $250.
+[2012-06-16 21:37:53] [PKICK] Sub-Owner Neil Halden kicked Marcus Bishop. ( How are you still online!? )
+[2012-06-16 22:19:19] [PKICK] Sub-Owner Neil Halden kicked Kenneth Lynch. (  )
+[2012-06-16 22:27:02] [PKICK] Sub-Owner Neil Halden kicked Kenneth Lynch. ( Bug )
+[2012-06-16 22:27:47] [PKICK] Sub-Owner Neil Halden kicked Charles Carson. (  )
+[2012-06-16 22:39:15] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Minigun with 100 Ammo.
+[2012-06-16 22:40:49] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Silenced with 50 Ammo.
+[2012-06-16 22:41:07] [SETHP] Sub-Owner Neil Halden set Floyd Brown's health to 100.
+[2012-06-17 11:23:14] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 133.
+[2012-06-17 11:23:26] [MAKEVEH] Sub-Owner Neil Halden created Sultan with ID 134.
+[2012-06-17 11:24:09] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 134.
+[2012-06-17 11:30:57] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Minigun with 100 Ammo.
+[2012-06-17 11:31:05] [SETHP] Sub-Owner Neil Halden set Michael Slaine's health to 100.
+[2012-06-17 11:36:46] [VEH] Sub-Owner Neil Halden created FBI Rancher with ID -1.
+[2012-06-17 11:39:36] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -1.
+[2012-06-17 11:51:12] [GIVEGUN] Sub-Owner Neil Halden gave Benjamin Caravella a Minigun with 1 Ammo.
+[2012-06-17 11:51:17] [DISARM] Sub-Owner Neil Halden disarmed Benjamin Caravella.
+[2012-06-17 15:29:15] [SETHP] High Administrator Rebecca Benson set Rebecca Benson's health to 100.
+[2012-06-17 15:34:45] [REFUELVEH] High Administrator Rebecca Benson refilled Scott Parker's vehicle.
+[2012-06-17 16:11:48] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 109.
+[2012-06-17 17:06:51] [CHANGENAME] Sub-Owner Neil Halden changed Cesar Armando's name to Cesar Garcia.
+[2012-06-17 17:57:12] [RESPAWNVEH] Sub-Owner Neil Halden respawned vehicle ID 5.
+[2012-06-17 17:57:27] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 5 to them.
+[2012-06-17 17:57:35] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 5 to them.
+[2012-06-17 17:57:41] [RESPAWNVEH] Sub-Owner Neil Halden respawned vehicle ID 108.
+[2012-06-17 18:03:45] [JAIL] Sub-Owner Neil Halden jailed Floyd Brown for 5 minute(s). ( Stunting )
+[2012-06-17 18:03:54] [RESPAWNVEH] Sub-Owner Neil Halden respawned vehicle ID 5.
+[2012-06-17 18:04:01] [FIXVEH] Sub-Owner Neil Halden fixed Floyd Brown's vehicle.
+[2012-06-17 18:04:55] [UNJAIL] Sub-Owner Neil Halden unjailed Floyd Brown.
