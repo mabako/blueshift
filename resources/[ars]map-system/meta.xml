@@ -5,8 +5,8 @@
 	
 	<!-- World -->
 	<map src="World/doherty.map" />
-	<map src="Faction/World/LSmapping.map" />
-	<map src="Faction/World/stage.map" />
+	<map src="World/Lsmapping.map" />
+	<map src="World/stage.map" />
 	
 	<!-- Faction -->
 	<map src="Faction/SFPD/LSPD.map" />
