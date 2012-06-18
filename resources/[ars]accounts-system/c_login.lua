@@ -172,6 +172,7 @@ function createUserInterface( )
 	editUsername = guiCreateEdit(eu_x, eu_y, eu_width, eu_height, "", false, nil)
 	editPassword = guiCreateEdit(ep_x, ep_y, ep_width, ep_height, "", false, nil)
 	guiEditSetMasked(editPassword, true)
+	guiSetProperty(editPassword, "MaskCodepoint", "8226")
 	
 	lblUsername = guiCreateLabel(lu_x, lu_y, lu_width, lu_height, "Username:", false, nil)
 	lblPassword = guiCreateLabel(lp_x, lp_y, lp_width, lp_height, "Password:", false, nil)
