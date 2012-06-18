@@ -533,26 +533,23 @@ function useInventoryItem( itemName, itemValue )
 	elseif (itemID == 31) then -- Shelf
 		
 		outputChatBOx("Drop this in your house to store items.", source, 212, 156, 49)
-	elseif (itemID == 32 or itemID == 33 or itemID == 34 or itemID == 35) then -- LSPD/LSFD/SANE/LSVS Badge	
+	elseif item.badge then -- random badge	
+		local elementData = item.badge
 		
-		local text = ""
-		if ( itemID == 32 ) then
-			text = "LSPDbadge"
-		elseif ( itemID == 33 ) then
-			text = "LSFDbadge"
-		elseif ( itemID == 34 ) then
-			text = "SANEbadge"
-		elseif ( itemID == 35 ) then
-			text = "LSVSbadge"
-		end
-		
-		local badge = tonumber( getData( source, text ) )
-		
-		if ( badge == 0 ) then
-			setData( source, text, 1, true )
+		local equipped = tonumber( getData( source, elementData ) ) == 1
+		if not equipped then
+			-- unequip all other badges first
+			for badgeName, data in pairs( getBadges() ) do
+				if tonumber( getData( source, badgeName) ) == 1 then
+					setData( source, badgeName, 0, true )
+					sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." removes a ".. g_items[data.itemID][1] ..".")
+				end
+			end
+			
+			setData( source, elementData, 1, true )
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." puts on a ".. itemName ..".")
 		else
-			setData( source, text, 0, true )
+			setData( source, elementData, 0, true )
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." removes a ".. itemName ..".")
 		end
 		
@@ -610,24 +607,6 @@ function useInventoryItem( itemName, itemValue )
 		local text = getPlayerName( source ):gsub("_", " ") .. " shuffles the card deck and takes out a ".. randName .." ".. randType
 		
 		sendActionToNearbyPlayers( source, text .."." )
-	elseif (itemID == 54) then -- FBI Badge
-		
-		local text = ""
-		if ( itemID == 54 ) then
-			text = "FBIbadge"
-		end
-		
-		local badge = tonumber( getData( source, text ) )
-		
-		if ( badge == 0 ) then
-			setData( source, text, 1, true )
-			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." puts on a ".. itemName ..".")
-		else
-			setData( source, text, 0, true )
-			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." removes a ".. itemName ..".")
-		end
-		
-		exports['[ars]global']:updateNametagColor(source)
 	end
 end
 addEvent("useInventoryItem", true)

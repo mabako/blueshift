@@ -205,11 +205,10 @@ function spawnCharacter( name )
 		setData(source, "invisible", 0, true)
 		setData(source, "muted", 0, true)
 		setData(source, "globalooc", 1, true)
-	
-		setData(source, "LSPDbadge", 0, true)
-		setData(source, "LSFDbadge", 0, true)
-		setData(source, "SANEbadge", 0, true)
-		setData(source, "LSVSbadge", 0, true)
+		
+		for badgeName in exports['[ars]inventory-system']:getBadges() do
+			setData(source, badgeName, 0, true)
+		end
 		
 		setData(source, "duty", tonumber(duty), true)
 		

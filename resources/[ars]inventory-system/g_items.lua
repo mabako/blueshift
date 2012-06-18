@@ -4,6 +4,10 @@
 	doing that will result in the change of the IDs of all
 	other items, if you wish to insert a new item in between
 	please define the key of the item first.
+
+** Not so important notes
+	To create a new food, add >>food = true, health = 20<< to the item line, see e.g. Hotdog. Health is the amount of health given.
+	To create a new badge, add >>badge = "name of element data", color = {r, g, b}<< r,g,b are values from 0 to 255.
 ]]
 
 -- Items table
@@ -41,10 +45,10 @@ g_items =
 	{"Boom Box", "Generals", 2102, 0, 0, 90, 0},
 	{"Safe", "Generals", 2332, 0, 0, 0, -0.35 },
 	{"Shelf", "Generals", 3761, 0, 0, 90, 1.95 },
-	{"LSPD Badge", "Generals", 1581, 270, 270, 0, 0 },
-	{"LSFD Badge", "Generals", 1581, 270, 270, 0, 0 },
-	{"SANE ID", "Generals", 1581, 270, 270, 0, 0 },
-	{"LSVS ID", "Generals", 1581, 270, 270, 0, 0 },
+	{"LSPD Badge", "Generals", 1581, 270, 270, 0, 0, badge = "LSPDbadge", color = {0, 100, 255} },
+	{"LSFD Badge", "Generals", 1581, 270, 270, 0, 0, badge = "LSFDbadge", color = {175, 50, 50} },
+	{"SANE ID", "Generals", 1581, 270, 270, 0, 0, badge = "SANEbadge", color = {109, 61, 150} },
+	{"LSVS ID", "Generals", 1581, 270, 270, 0, 0, badge = "LSVSbadge", color = {232, 98, 9} },
 	{"Marijuana", "Generals", 1577, 0, 0, 0, 0 },
 	{"Lysergic Acid", "Generals", 1575, 0, 0, 0, 0},
 	{"Cocaine", "Generals", 1576, 0, 0, 0, 0},
@@ -63,8 +67,7 @@ g_items =
 	{"Lighter", "Generals", 1271, 0, 0, 0, -0.35},
 	{"Cigarette", "Generals", 1271, 0, 0, 0, -0.35},
 	{"Card Deck", "Generals", 1271, 0, 0, 0, -0.35},
-	{"FBI Badge", "Generals", 1581, 270, 270, 0, 0 }
-	
+	{"FBI Badge", "Generals", 1581, 270, 270, 0, 0, badge = "FBIbadge", color = {30, 90, 124}},
 }
 
 function getItemDetails( item )
@@ -93,4 +96,16 @@ function getItemDetails( item )
 			
 		return itemModel, itemName, rx, ry, rz, elevation
 	end
+end
+
+-- load all badge data, it'll be a table like badges["FBIbadge"] = {color = {r, g, b}, itemID = 3}
+local badges = {}
+for k, v in ipairs(g_items) do
+	if v.badge then
+		badges[v.badge] = {color = v.color, itemID = k}
+	end
+end
+
+function getBadges()
+	return badges
 end

@@ -27,23 +27,20 @@ function updateNametagColor( thePlayer )
 	elseif ( isPlayerTrialModerator(thePlayer) ) and ( getData(thePlayer, "adminduty") == 1 ) and ( getData(thePlayer, "hiddenadmin") == 0 ) then -- Admin
 		
 		setPlayerNametagColor(thePlayer, 255, 255, 0)
-	elseif ( getData(thePlayer,"LSPDbadge") == 1 ) then -- Police Department
-		
-		setPlayerNametagColor(thePlayer, 0, 100, 255)
-	elseif ( getData(thePlayer,"LSFDbadge") == 1 ) then -- Fire Department
-		
-		setPlayerNametagColor(thePlayer, 175, 50, 50)
-	elseif ( getData(thePlayer,"SANEbadge") == 1 ) then -- SANE
-		
-		setPlayerNametagColor(thePlayer, 109, 61, 150)
-	elseif ( getData(thePlayer,"LSVSbadge") == 1 ) then -- LSVS
-		
-		setPlayerNametagColor(thePlayer, 232, 98, 9)
-	elseif ( isPlayerLevelOneDonator( thePlayer ) ) then -- Donator
-		
-		setPlayerNametagColor(thePlayer, 166, 141, 4)	
 	else
-		setPlayerNametagColor(thePlayer, 255, 255, 255) -- Player
+		local badges = exports['[ars]inventory-system']:getBadges()
+		for badgeName, data in pairs(badges) do
+			if getData( thePlayer, badgeName ) == 1 then
+				setPlayerNametagColor(thePlayer, data.color[1], data.color[1], data.color[2])
+				return
+			end
+		end
+		
+		if ( isPlayerLevelOneDonator( thePlayer ) ) then -- Donator
+			setPlayerNametagColor(thePlayer, 166, 141, 4)	
+		else
+			setPlayerNametagColor(thePlayer, 255, 255, 255) -- Player
+		end
 	end
 end
 

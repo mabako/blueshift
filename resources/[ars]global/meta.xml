@@ -31,9 +31,6 @@
 	<script src="nametag.lua" type="server"/>
 	<export function="updateNametagColor" type="server"/>
 	
-	<script src="c_nametag.lua" type="client"/>
-	<export function="c_updateNametagColor" type="client"/>
-	
 	<script src="donator.lua" type="server"/>
 	<export function="isPlayerLevelOneDonator" type="server"/>
 	<export function="isPlayerLevelTwoDonator" type="server"/>

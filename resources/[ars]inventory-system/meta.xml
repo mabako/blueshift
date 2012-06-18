@@ -24,6 +24,8 @@
 	<export function="isPlayerInventoryOpen" type="client"/>
 	<export function="closePlayerInventory" type="client"/>
 	
+	<export function="getBadges" type="server"/>
+	
 	<file src="pointing.png"/>
 	<file src="images/selection.png"/>
 	
