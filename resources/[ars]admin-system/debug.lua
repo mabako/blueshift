@@ -24,7 +24,7 @@ end
 local exceptions = { }
 exceptions["Phil"] = true
 exceptions["Dev"] = true
-exceptions.fxs = true
+exceptions["fx.s"] = true
 
 addEventHandler("onClientRender", root,
 	function( )
