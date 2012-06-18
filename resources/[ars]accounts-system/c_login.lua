@@ -40,11 +40,14 @@ addEventHandler("onClientResourceStart", resourceRoot,
 local remember = false
 local autologin = false
 function getPlayerDetails( changingAccount )
+	if fileExists("login.xml") then
+		fileDelete("login.xml")
+	end
 	
-	local xml = xmlLoadFile("login.xml")
+	local xml = xmlLoadFile("@login.xml")
 	if ( not xml ) then	-- Reserve a place in the memory
 		
-		xml = xmlCreateFile("login.xml", "login")
+		xml = xmlCreateFile("@login.xml", "login")
 		
 		-- Children
 		xmlCreateChild(xml, "username")
@@ -513,7 +516,7 @@ function savePlayerDetails( username, password )
 		
 		if ( remember ) then
 			
-			local xml = xmlLoadFile("login.xml")
+			local xml = xmlLoadFile("@login.xml")
 			if ( xml ) then
 				
 				local user = xmlFindChild( xml, "username", 0 )
@@ -534,7 +537,7 @@ addEventHandler("savePlayerDetails", localPlayer, savePlayerDetails)
 function rememberDetails( button, state )
 	if ( button == "left" and state == "up" ) then
 		
-		local xml = xmlLoadFile("login.xml")
+		local xml = xmlLoadFile("@login.xml")
 		local node = xmlFindChild( xml, "remember", 0 )
 		
 		if ( remember == true ) then
@@ -568,7 +571,7 @@ end
 function autoLogin( button, state )
 	if ( button == "left" and state == "up" ) then
 		
-		local xml = xmlLoadFile("login.xml")
+		local xml = xmlLoadFile("@login.xml")
 		local node = xmlFindChild( xml, "autologin", 0 )
 		
 		if ( autologin == true ) then
