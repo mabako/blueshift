@@ -557,54 +557,29 @@ end
 addCommandHandler("f", factionOOC, false, false)
 
 -- /d(epartment)
+local departmentTeams = {
+	-- [long name] = short name
+	["Los Santos Police Department"] = "LSPD",
+	["Los Santos Emergency Services"] = "LSFD",
+	["Los Santos Vehicle Services"] = "LSVS",
+}
 function depChat(thePlayer, commandName, ...)
 	if getData(thePlayer, "loggedin") == 1 then
-		if (...) then
-			if (getData(thePlayer, "faction") == 1 or getData(thePlayer, "faction") == 2 or getData(thePlayer, "faction") == 4) then
+		local theTeam = getPlayerTeam(thePlayer)
+		if (...) and theTeam then
+			-- if it's a faction with access to /d, it should be in departmentTeams. If that's not the case, ignore it.
+			local teamName = departmentTeams[tostring(getTeamName(theTeam))]
+			if teamName then
 				if (getData(thePlayer, "muted") == 0) then
+					local message = table.concat({...}, " ")
 					
-					local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-					if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-						return
-					end
-					
-					local theTeam = getPlayerTeam(thePlayer)
-					local LSPD = getPlayersInTeam(getTeamFromName("Los Santos Police Department"))
-					local LSFD = getPlayersInTeam(getTeamFromName("Los Santos Emergency Services"))
-					local LSVS = getPlayersInTeam(getTeamFromName("Los Santos Vehicle Services"))
-					local playerName = getPlayerName(thePlayer)
-					
-					if getTeamName(theTeam) == "Los Santos Police Department" then
-						teamName = "LSPD"
-					elseif getTeamName(theTeam) == "Los Santos Emergency Services" then
-						teamName = "LSFD"
-					elseif getTeamName(theTeam) == "Los Santos Vehicle Services" then	
-						teamName = "LSVS"
-					end
-				
-					for key, value in ipairs(LSPD) do
-						local loggedin = tonumber(getData(value, "loggedin"))
-						if (loggedin == 1) then
-							
-							outputChatBox("[DEPARTMENT " .. teamName .. "] " .. getPlayerName(thePlayer):gsub("_", " ") .. " says: " .. message, value, 0, 102, 255)
-						end	
-					end
-				
-					for key, value in ipairs(LSFD) do
-						local loggedin = tonumber(getData(value, "loggedin"))
-						if (loggedin == 1) then
-						
-							outputChatBox("[DEPARTMENT " .. teamName .. "] " .. getPlayerName(thePlayer):gsub("_", " ") .. " says: " .. message, value, 0, 102, 255)
-						end	
-					end
-					
-					for key, value in ipairs(LSVS) do
-						local loggedin = tonumber(getData(value, "loggedin"))
-						if (loggedin == 1) then
-						
-							outputChatBox("[DEPARTMENT " .. teamName .. "] " .. getPlayerName(thePlayer):gsub("_", " ") .. " says: " .. message, value, 0, 102, 255)
-						end	
+					for team in pairs(departmentTeams) do
+						for key, value in ipairs(getPlayersInTeam(getTeamFromName(team)) or {}) do
+							local loggedin = tonumber(getData(value, "loggedin"))
+							if (loggedin == 1) then
+								outputLongChatBox("[DEPARTMENT " .. teamName .. "] " .. getPlayerName(thePlayer):gsub("_", " ") .. " says: ", message, "", value, 0, 102, 255)
+							end	
+						end
 					end
 				else
 					outputChatBox("You have been muted by staff.", thePlayer, 255, 0, 0)
