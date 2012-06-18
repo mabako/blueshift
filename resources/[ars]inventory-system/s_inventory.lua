@@ -99,7 +99,7 @@ function giveItem(thePlayer, itemID, itemValue)
 			else	
 				local totalItems = 0
 				
-				if (#items[thePlayer] > 0) then
+				if items[thePlayer] and (#items[thePlayer] > 0) then
 				
 					for k, v in pairs ( items[thePlayer] ) do
 						if ( tonumber( v ) > 2 ) then -- Not keys
