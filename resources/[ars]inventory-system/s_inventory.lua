@@ -473,9 +473,18 @@ function useInventoryItem( itemName, itemValue )
 	local itemName = tostring(itemName)
 	local itemValue = tostring(itemValue)
 	local itemModel, itemID = getItemDetails( itemName )
+	if not itemModel or not itemID then return end
+	local item = g_items[itemID]
+	if not item then return end
 	
-	local itemRemoved = false
-	if (itemID == 1) then -- Vehicle Key
+	if item.food or item.drink then -- is it something to eat or drink?
+		local health = getElementHealth(source)
+		setElementHealth(source, math.min(100, health + (item.health or 0)))
+		
+		takeItem(source, itemID, itemValue)
+		
+		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." " .. (item.food and "eats" or "drinks") .. " " .. (item.message or ("a " .. itemName)) ..".")
+	elseif (itemID == 1) then -- Vehicle Key
 	
 		outputChatBox("You need this to lock/unlock your vehicles.", source, 212, 156, 49)
 	elseif (itemID == 2) then -- House Key
@@ -509,157 +518,6 @@ function useInventoryItem( itemName, itemValue )
 		
 		setElementModel(source, tonumber(itemValue))
 		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." changes his ".. itemName ..".")
-	elseif (itemID == 7) then -- Hotdog
-	
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")
-	elseif (itemID == 8) then -- Sandwich	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")
-	elseif (itemID == 9) then -- Cookies	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")
-	elseif (itemID == 10) then -- Water Bottle	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+40)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." drinks some water.")
-	elseif (itemID == 11) then -- Ice Cream
-	
-		local health = getElementHealth(source)
-		setElementHealth(source, health+10)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")
-	elseif (itemID == 12) then -- Choco Donut	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")
-	elseif (itemID == 13) then -- Sweet Donut	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 14) then -- Buster Pizza	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 15) then -- Double D-Luxe Pizza	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+30)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 16) then -- Full Rack Pizza		
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+40)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 17) then -- Cluckin' Little Meal	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 18) then -- Cluckin' Big Meal	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+30)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")		
-	elseif (itemID == 19) then -- Cluckin' Huge Meal	
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+40)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")		
-	elseif (itemID == 20) then -- Moo Kids Burger
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")				
-	elseif (itemID == 21) then -- Beef Tower Burger
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+30)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")	
-	elseif (itemID == 22) then -- Meat Stack Burger
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+40)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." eats a ".. itemName ..".")		
-	elseif (itemID == 23) then -- Beer
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." drinks a ".. itemName ..".")
-	elseif (itemID == 24) then -- Wine
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." drinks a ".. itemName ..".")
-	elseif (itemID == 25) then -- Champagne
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." drinks a ".. itemName ..".")
-	elseif (itemID == 26) then -- Coca Cola
-		
-		local health = getElementHealth(source)
-		setElementHealth(source, health+20)
-		
-		takeItem(source, itemID, itemValue)
-		
-		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." drinks a ".. itemName ..".")
 	elseif (itemID == 27) then -- Generic Item
 		
 		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." shows everyone a ".. itemName .." with value ".. itemValue)
