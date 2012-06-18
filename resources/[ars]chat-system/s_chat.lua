@@ -562,6 +562,7 @@ local departmentTeams = {
 	["Los Santos Police Department"] = "LSPD",
 	["Los Santos Emergency Services"] = "LSFD",
 	["Los Santos Vehicle Services"] = "LSVS",
+	["Federal Bureau of Investigation"] = "FBI",
 }
 function depChat(thePlayer, commandName, ...)
 	if getData(thePlayer, "loggedin") == 1 then
