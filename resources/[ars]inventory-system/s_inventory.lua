@@ -271,8 +271,7 @@ function showItemToPlayers( itemName, itemValue )
 		local px, py, pz = getElementPosition(thePlayer)
 		local x, y, z = getElementPosition(source)
 		if (getDistanceBetweenPoints3D(x, y, z, px, py, pz) <= 20) then
-			
-			outputChatBox(" ** ".. getPlayerName(source):gsub("_", " ") .." shows everyone a ".. itemName .." with value ".. itemValue .."", thePlayer, 127, 88, 205)
+			outputChatBox(" ** ".. getPlayerName(source):gsub("_", " ") .." shows everyone a ".. itemName  .. (not tonumber(itemValue) and (" with value ".. itemValue) or "") .. ".", thePlayer, 127, 88, 205)
 		end
 	end	
 end
