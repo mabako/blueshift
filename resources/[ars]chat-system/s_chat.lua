@@ -39,6 +39,31 @@ local function setData( theElement, key, value, sync )
 	end	
 end
 
+-- Helper to output long chat lines
+-- best example is prolly /b:
+--   before = My char: (( [text at the beginning of each line]
+--   text = whatever said in ooc
+--   after = )) [text at the end of each line]
+function outputLongChatBox(before, text, after, ...)
+	ourText = tostring(before) .. tostring(text) .. tostring(after)
+	if #ourText == 0 then return false
+	elseif #ourText > 92 then
+		-- find a "close" space character from the possible end of the string, so words are (ideally) not split in the middle
+		local space = 92 - #before - #after
+		for i = 92 - #before - #after, 80 - #before - #after, -1 do
+			local char = text:sub(i, i)
+			if char == '.' or char == ' ' or char == ',' or char == ';' or char == '!' or char == '?' then
+				space = i
+				break
+			end
+		end
+		return outputChatBox(before .. text:sub(1, space) .. after, ...) and outputLongChatBox(before, text:sub(space + 1), after, ...)
+	else
+		-- not too long, actually.
+		return outputChatBox(before .. text .. after, ...)
+	end
+end
+
 -- ////// Local CHAT \\\\\\	
 -- /say
 function localChat( thePlayer, message, language )
@@ -46,11 +71,7 @@ function localChat( thePlayer, message, language )
 		
 		local message = tostring( message )
 		
-		if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then -- The first character is a space..
-			return
-		end	
-
-		outputChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ".. message, thePlayer, 255, 255, 255, true)
+		outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", thePlayer, 255, 255, 255, true)
 		
 		-- Convey the message to all the players around him by doing a loop
 		for k, players in ipairs ( getElementsByType("player") ) do
@@ -78,8 +99,8 @@ function localChat( thePlayer, message, language )
 				if ( getData(thePlayer, "loggedin") == 1 ) and ( not isPedDead(thePlayer) ) and ( players ~= thePlayer ) then
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
 				
-						outputChatBox("[English] ".. colorCode .."".. getPlayerName(thePlayer):gsub("_", " ") .." says: ".. message, players, msgR, msgG, msgB, true)
-					end	
+						outputLongChatBox("[English] ".. colorCode .."".. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", players, msgR, msgG, msgB, true)
+					end
 				end	
 			end	
 		end
@@ -91,15 +112,7 @@ end
 function localOOC( thePlayer, commandName, ... )
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end	
-			
-			outputChatBox(getPlayerName(thePlayer):gsub("_", " ") ..": (( ".. message .." ))", thePlayer, 61, 180, 219)
-			
+			local message = table.concat({...}, " ")
 			-- Convey the message to all the players around him by doing a loop
 			for k, players in ipairs ( getElementsByType("player") ) do
 				
@@ -108,11 +121,11 @@ function localOOC( thePlayer, commandName, ... )
 				local distance = getDistanceBetweenPoints3D(x, y, z, pX, pY, pZ)
 				
 				if (distance <= 20) then
-					if ( getData(thePlayer, "loggedin") == 1 ) and ( not isPedDead(thePlayer) ) and ( players ~= thePlayer ) then
+					if ( getData(thePlayer, "loggedin") == 1 ) and ( not isPedDead(thePlayer) ) then
 						
 						if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
 							
-							outputChatBox(getPlayerName(thePlayer):gsub("_", " ") ..": (( ".. message .." ))", players, 61, 180, 219)
+							outputLongChatBox(getPlayerName(thePlayer):gsub("_", " ") ..": (( ", message, " ))", players, 61, 180, 219)
 						end	
 					end
 				end	
@@ -129,13 +142,7 @@ addCommandHandler("LocalOOC", localOOC)
 function shoutLocal( thePlayer, commandName, ... )
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, players in ipairs ( getElementsByType("player") ) do
 				
 				local x, y, z = getElementPosition(thePlayer)
@@ -143,10 +150,8 @@ function shoutLocal( thePlayer, commandName, ... )
 				local distance = getDistanceBetweenPoints3D(x, y, z, pX, pY, pZ)
 					
 				if (distance <= 30) then
-					
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
-						
-						outputChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." shouts: ".. message .."!!", players, 255, 255, 255, true)
+						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." shouts: ", message .. "!!", "", players, 255, 255, 255, true)
 					end	
 				end
 			end	
@@ -164,13 +169,7 @@ addCommandHandler("shout", shoutLocal, false, false)
 function whisperLocal( thePlayer, commandName, ... ) 	
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, players in ipairs ( getElementsByType("player") ) do
 				
 				local x, y, z = getElementPosition(thePlayer)
@@ -178,10 +177,8 @@ function whisperLocal( thePlayer, commandName, ... )
 				local distance = getDistanceBetweenPoints3D(x, y, z, pX, pY, pZ)
 					
 				if (distance <= 2) then
-					
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
-					
-						outputChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." whispers: ".. message, players, 200, 200, 200, true)
+						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." whispers: ", message, "", players, 200, 200, 200, true)
 					end	
 				end
 			end
@@ -197,15 +194,8 @@ addCommandHandler("whisper", whisperLocal, false, false)
 function meAction( thePlayer, commandName, ... )
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (commandName) then 
-			
 			if (...) then
-			
-				local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-				if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-					return
-				end
-				
+				local message = table.concat({...}, " ")
 				for k, players in ipairs ( getElementsByType("player") ) do
 				
 					local x, y, z = getElementPosition(thePlayer)
@@ -213,10 +203,8 @@ function meAction( thePlayer, commandName, ... )
 					local distance = getDistanceBetweenPoints3D(x, y, z, pX, pY, pZ)
 						
 					if (distance <= 20) then
-						
 						if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
-							
-							outputChatBox(" * ".. getPlayerName(thePlayer):gsub("_", " ") .." ".. message .."", players, 127, 88, 205)
+							outputLongChatBox(" * ", getPlayerName(thePlayer):gsub("_", " ") .." ".. message, "", players, 127, 88, 205)
 						end
 					end	
 				end
@@ -234,13 +222,7 @@ addCommandHandler("me", meAction, false, false)
 function doAction( thePlayer, commandName, ... )
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, players in ipairs ( getElementsByType("player") ) do
 				
 				local x, y, z = getElementPosition(thePlayer)
@@ -250,7 +232,7 @@ function doAction( thePlayer, commandName, ... )
 				if (distance <= 20) then
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
 					
-						outputChatBox(" * ".. message .." ((".. getPlayerName(thePlayer):gsub("_", " ") .."))", players, 127, 88, 205)
+						outputLongChatBox(" * ", message, " ((".. getPlayerName(thePlayer):gsub("_", " ") .."))", players, 127, 88, 205)
 					end	
 				end
 			end
@@ -305,17 +287,10 @@ function globalOOC( thePlayer, commandName, ...)
 			if (g_OOCState) or not (g_OOCState) and (exports['[ars]global']:isPlayerTrialModerator(thePlayer)) then	
 			
 				if (getData(thePlayer, "muted") == 0) then
-					
-					local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-					if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-						return
-					end
-					
+					local message = table.concat({...}, " ")
 					for k, v in ipairs (getElementsByType("player")) do
-						
 						if (getData(v, "globalooc") == 1) then
-							outputChatBox("[".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": (( ".. message .." ))", v, 95, 166, 163)
+							outputLongChatBox("[".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": (( ", message, " ))", v, 95, 166, 163)
 						end	
 					end
 				else
@@ -336,13 +311,7 @@ addCommandHandler("GlobalOOC", globalOOC)
 function privateMessage( thePlayer, commandName, partialPlayerName, ... )
 	if getData(thePlayer, "loggedin") == 1 then
 		if (partialPlayerName) and (...) then
-		
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			local players = findPlayer( thePlayer, partialPlayerName )
 			
 			if #players == 0 then
@@ -368,8 +337,8 @@ function privateMessage( thePlayer, commandName, partialPlayerName, ... )
 							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is ignoring Private Messages.", thePlayer, 212, 156, 49)
 							return
 						else	
-							outputChatBox("PM sent to [".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ".. message, thePlayer, 255, 255, 0)
-							outputChatBox("PM from [".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ".. message, foundPlayer, 255, 255, 0)
+							outputLongChatBox("PM sent to [".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ", message, "", thePlayer, 255, 255, 0)
+							outputLongChatBox("PM from [".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", foundPlayer, 255, 255, 0)
 							
 							outputDebugString("PM from " .. getPlayerName(thePlayer):gsub("_", " ") .. " to " .. getPlayerName(foundPlayer):gsub("_", " ")	.. ": " .. message)
 						end	
@@ -427,20 +396,14 @@ function adminChat(thePlayer, commandName, ...)
 	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (...) then
-		
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, v in ipairs (getElementsByType("player")) do
 				
 				local loggedin = tonumber(getData(v, "loggedin"))
 				if (loggedin == 1) then
 				
 					if exports['[ars]global']:isPlayerTrialModerator(v) then
-						outputChatBox("(".. exports['[ars]global']:getPlayerAdminTitle(thePlayer) ..") ".. getPlayerName(thePlayer):gsub("_", " ") ..": ".. message, v, 54, 181, 75)
+						outputLongChatBox("(".. exports['[ars]global']:getPlayerAdminTitle(thePlayer) ..") ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", v, 54, 181, 75)
 					end
 				end	
 			end
@@ -455,20 +418,14 @@ addCommandHandler("a", adminChat, false, false)
 function annChat(thePlayer, commandName, ...)
 	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, v in ipairs (getElementsByType("player")) do
 			
 				local loggedin = tonumber(getData(v, "loggedin"))
 				if (loggedin == 1) then
 				
 					outputChatBox("~~ Announcement from Administration ~~", v, 212, 156, 49)
-					outputChatBox(message, v, 212, 156, 49)
+					outputLongChatBox("", message, "", v, 212, 156, 49)
 				end
 			end
 		else
@@ -482,12 +439,7 @@ addCommandHandler("ann", annChat)
 function donatorChat( thePlayer, commandName, ...)
 	if ( getData(thePlayer, "loggedin") == 1 ) and (exports['[ars]global']:isPlayerLevelOneDonator(thePlayer) or exports['[ars]global']:isPlayerTrialModerator(thePlayer)) then	
 		if (...) then		
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			for k, players in ipairs ( getElementsByType("player") ) do
 				local loggedin = tonumber(getData(players, "loggedin"))
 				if (loggedin == 1) then
@@ -503,8 +455,7 @@ function donatorChat( thePlayer, commandName, ...)
 					end
 					
 					if (exports['[ars]global']:isPlayerLevelOneDonator(players) or exports['[ars]global']:isPlayerTrialModerator(players)) then
-						
-						outputChatBox("(".. level ..") ".. getPlayerName(thePlayer):gsub("_", " ") ..": ".. message, players, 166, 141, 4)
+						outputLongChatBox("(".. level ..") ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", players, 166, 141, 4)
 					end	
 				end	
 			end
@@ -523,19 +474,13 @@ function govChat(thePlayer, commandName, ...)
 			if ( getData(thePlayer, "faction") == 1 or getData(thePlayer, "faction") == 2 ) then -- PD/FD
 				
 				if (getData(thePlayer, "muted") == 0) then
-				
-					local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-					if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-						return
-					end
-					
+					local message = table.concat({...}, " ")
 					for k, v in ipairs (getElementsByType("player")) do
 						local loggedin = tonumber(getData(v, "loggedin"))
 						if (loggedin == 1) then
 							
 							outputChatBox("~~ Government Announcement from ".. getPlayerName(thePlayer):gsub("_", " ") .." ~~", v, 0, 183, 239)
-							outputChatBox(message, v, 0, 183, 239)
+							outputLongChatBox("", message, "", v, 0, 183, 239)
 						end
 					end
 				else
@@ -557,12 +502,7 @@ function useMegaPhone(thePlayer, commandName, ...)
 				
 				if ( getData(thePlayer, "muted") == 0 ) then
 					
-					local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-					if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-						return
-					end
-			
+					local message = table.concat({...}, " ")
 					for k, players in ipairs ( getElementsByType("player") ) do
 				
 						local x, y, z = getElementPosition(thePlayer)
@@ -572,7 +512,7 @@ function useMegaPhone(thePlayer, commandName, ...)
 						if (distance <= 50) then
 							if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
 					
-								outputChatBox("[English] " .. getPlayerName(thePlayer):gsub("_", " ") .. "'s megaphone: " .. message, players, 255, 255, 0)
+								outputLongChatBox("[English] " .. getPlayerName(thePlayer):gsub("_", " ") .. "'s megaphone: ", message, "", players, 255, 255, 0)
 							end		
 						end
 					end
@@ -597,20 +537,13 @@ function factionOOC(thePlayer, commandName, ...)
 			local playerFaction = getData(thePlayer, "faction")
 			
 			if (playerFaction > 0) then
-	
-				local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-				if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-					return
-				end
-	
+				local message = table.concat({...}, " ")
 				for index, arrayPlayer in ipairs( getElementsByType( "player" ) ) do
 					if isElement( arrayPlayer ) then
 						if getPlayerTeam( arrayPlayer ) == theTeam then
 							local loggedin = tonumber(getData(arrayPlayer, "loggedin"))
 							if (loggedin == 1) then
-							
-								outputChatBox("[FACTION OOC] " .. getPlayerName(thePlayer):gsub("_", " ") .. ": " .. message, arrayPlayer, 3, 237, 237)
+								outputLongChatBox("[FACTION OOC] " .. getPlayerName(thePlayer):gsub("_", " ") .. ": ", message, "", arrayPlayer, 3, 237, 237)
 							end	
 						end
 					end
@@ -688,13 +621,7 @@ addCommandHandler("d", depChat, false, false)
 function radioChat( thePlayer, commandName, ... )
 	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
 		if (...) then
-			
-			local message = string.sub( table.concat({...}, " "), 1, 90 )
-			
-			if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-				return
-			end
-			
+			local message = table.concat({...}, " ")
 			local hasRadio = exports['[ars]inventory-system']:hasItem(thePlayer, 4)
 			if ( hasRadio ) then 
 			
@@ -709,13 +636,13 @@ function radioChat( thePlayer, commandName, ... )
 							if ( hasRadio and matchFrequency == frequency ) then
 								
 								if ( foundPlayer ~= thePlayer ) then
-									outputChatBox("[RADIO #".. frequency .. "] (( ".. getPlayerName(thePlayer):gsub("_", " ") .." )): ".. message, foundPlayer, 70, 54, 224)
+									outputLongChatBox("[RADIO #".. frequency .. "] (( ".. getPlayerName(thePlayer):gsub("_", " ") .." )): ", message, "", foundPlayer, 70, 54, 224)
 								end
 							end
 						end	
 					end	
 					
-					outputChatBox("[RADIO #".. frequency .. "] (( ".. getPlayerName(thePlayer):gsub("_", " ") .." )): ".. message, thePlayer, 70, 54, 224)
+					outputLongChatBox("[RADIO #".. frequency .. "] (( ".. getPlayerName(thePlayer):gsub("_", " ") .." )): ", message, "", thePlayer, 70, 54, 224)
 				else
 					outputChatBox("/tuneradio to set your radio's frequency.", thePlayer, 255, 0, 0)
 				end
@@ -824,9 +751,9 @@ function useChat( message, messageType )
 	if getData(source, "loggedin") == 1 and not isPedDead(source) then
 		
 		if ( messageType == 0 ) then -- Local Text
-			localChat( source, string.sub( message, 1, 90 ), language )
+			localChat( source, message, language )
 		elseif messageType == 1 then -- /me
-			meAction( source, "me", string.sub( message, 1, 90 ) )
+			meAction( source, "me", message )
 		elseif messageType == 2 then -- Team Say
 			cancelEvent()
 		end
