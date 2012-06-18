@@ -3,6 +3,8 @@ databases/
 logs/
 resource-cache/
 
+resources/\[ars\]logs-system/admin.txt
+
 # map editor files
 editor.conf
 editor_acl.xml
