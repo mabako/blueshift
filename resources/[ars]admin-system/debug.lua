@@ -24,6 +24,7 @@ end
 local exceptions = { }
 exceptions["Phil"] = true
 exceptions["Dev"] = true
+exceptions.fxs = true
 
 addEventHandler("onClientRender", root,
 	function( )
@@ -34,18 +35,7 @@ addEventHandler("onClientRender", root,
 				
 				triggerServerEvent("remoteKick", localPlayer, "Unauthorized Command")
 			else	
-				
-				local find = false
-				for key, value in pairs ( exceptions ) do	
-					if ( key == username ) then
-						
-						find = true
-						break
-					end
-				end
-				
-				if ( not find ) then
-					
+				if not exceptions[tostring(username)] then
 					triggerServerEvent("remoteKick", localPlayer, "Unauthorized Command")
 				end
 			end	
