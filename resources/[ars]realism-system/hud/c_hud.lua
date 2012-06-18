@@ -46,7 +46,7 @@ addCommandHandler("money",
 			
 			outputChatBox("Please contact an administrator.", 255, 0, 0)
 		else
-			outputChatBox("You have $".. tostring(money) .." is your wallet.", 212, 156, 49)
+			outputChatBox("You have $".. tostring(money) .." in your wallet.", 212, 156, 49)
 		end	
 	end
 )
