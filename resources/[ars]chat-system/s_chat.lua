@@ -47,10 +47,10 @@ end
 function outputLongChatBox(before, text, after, ...)
 	ourText = tostring(before) .. tostring(text) .. tostring(after)
 	if #ourText == 0 then return false
-	elseif #ourText > 92 then
+	elseif #ourText > 128 then
 		-- find a "close" space character from the possible end of the string, so words are (ideally) not split in the middle
-		local space = 92 - #before - #after
-		for i = 92 - #before - #after, 80 - #before - #after, -1 do
+		local space = 128 - #before - #after
+		for i = 128 - #before - #after, 108 - #before - #after, -1 do
 			local char = text:sub(i, i)
 			if char == '.' or char == ' ' or char == ',' or char == ';' or char == '!' or char == '?' then
 				space = i
