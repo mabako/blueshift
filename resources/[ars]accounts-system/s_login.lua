@@ -1,5 +1,4 @@
 local sql = exports.sql
-local salt = "indiawoncricketworldcup2011"
 
 --------- [ Element Data returns ] ---------
 local function getData( theElement, key )
@@ -24,20 +23,30 @@ local function setData( theElement, key, value, sync )
 end
 
 --------- [ Login Screen ] ---------
+local function generateSalt()
+	local salt = ""
+	for i = 1, 64 do
+		salt = salt .. string.char(math.random(33, 122))
+	end
+	return salt
+end
+
 function attemptRegister( username, password )
 	if username and password then
 		
 		local username = tostring(username)
-		local password = tostring(password)
-		local safepassword = string.upper(tostring(md5(salt .. password)))
 		
 		local result = sql:query_fetch_assoc("SELECT `id` FROM `accounts` WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
 		if ( result ) then
 			
 			triggerClientEvent(source, "showSignInMessage", source, "An account with the given username already exists.", 282)
 			return 
-		else	
-			local update = sql:query("INSERT INTO `accounts` SET `username`='".. sql:escape_string(tostring(username)) .."', `password`='".. sql:escape_string(tostring(safepassword)) .."', `ip`='".. getPlayerIP(source) .."', `registerdate`=NOW()")
+		else
+			local password = tostring(password)
+			local salt = generateSalt()
+			local safepassword = string.upper(md5(salt .. password))
+			
+			local update = sql:query("INSERT INTO `accounts` SET `username`='".. sql:escape_string(tostring(username)) .."', `salt` = '" .. sql:escape_string(salt) .. "', `password`='".. sql:escape_string(tostring(safepassword)) .."', `ip`='".. getPlayerIP(source) .."', `registerdate`=NOW()")
 			if ( update ) then
 				
 				triggerClientEvent(source, "showSignInMessage", source, "You successfully registered!", 150)
@@ -55,19 +64,18 @@ addEvent("attemptRegister", true)
 addEventHandler("attemptRegister", getRootElement(), attemptRegister)
 
 function attemptLogin( username, password, remember )
-	outputDebugString(password)
 	local username = tostring(username)
 	local password = tostring(password)
 	local passwordQuery
 	
 	if ( string.len( password ) < 64 ) then -- Not MD5'd
-		local safepassword = string.upper(tostring(md5(salt .. password))) 
-		passwordQuery = "`password`='".. sql:escape_string(tostring(safepassword)) .."'"
+		passwordQuery = "`password`=MD5(CONCAT(salt, '".. sql:escape_string(tostring(password)) .."'))"
 	else
 		-- to successfully login with a token, two things need to be given:
 		-- 1. you have the same serial as when the token was created
 		-- 2. the correct username is given
 		passwordQuery = "logintoken = '" .. md5(getPlayerSerial(source) .. tostring(password)) .. "'"
+		password = nil
 	end
 	
 	local result = sql:query_fetch_assoc("SELECT * FROM accounts WHERE `username`='".. sql:escape_string(tostring(username)) .."' AND " .. passwordQuery)
@@ -78,16 +86,21 @@ function attemptLogin( username, password, remember )
 			-- md5(playerSerial .. that string) is stored on the server
 			local newToken = "NULL"
 			if ( remember == 1 ) then
-				newToken = ""
-				for i = 1, 64 do
-					newToken = newToken .. string.char(math.random(33, 122))
-				end
+				newToken = generateSalt()
 				triggerClientEvent( source, "savePlayerDetails", source, username, newToken )
 				
 				newToken = "'" .. md5(getPlayerSerial(source) .. newToken) .. "'"
 			end
 			
-			local update = sql:query("UPDATE `accounts` SET `lastlogin`=NOW(), logintoken = " .. newToken .. " WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
+			-- when using the old salt, we want passwords to be updated to a dynamic salt.
+			local passwordUpdate = ""
+			if password and #result.salt < 64 then
+				local salt = generateSalt()
+				password = md5(salt .. password)
+				passwordUpdate = ", salt = '" .. sql:escape_string(salt) .. "', password = '" .. sql:escape_string(password) .. "'"
+			end
+			
+			local update = sql:query("UPDATE `accounts` SET `lastlogin`=NOW(), logintoken = " .. newToken .. passwordUpdate .. " WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
 			if (update) then
 				
 				triggerEvent("loginPlayer", source, result['username'], result['id'], result['admin'], result['adminduty'], result['hiddenadmin'], result['reports'], result['donator'], result['togpm'], result['tutorial'], result['friends'], result['skinmods'], result['weaponmods'], result['vehiclemods'], true)
