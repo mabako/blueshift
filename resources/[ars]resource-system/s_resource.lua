@@ -34,10 +34,7 @@ function resourceStart( thePlayer, commandName, resourceName )
 	if resourceName then
 	
 		local resourceVirtualName = resourceName
-		
-		local resourceName = "[ars]".. tostring(resourceName)
-		local resource = getResourceFromName(resourceName)
-		
+		local resource = getResourceFromName("[ars]" .. resourceName) or getResourceFromName("[ars]" .. resourceName .. "-system") or getResourceFromName(resourceName)
 		if resource then
 		
 			local state = getResourceState(resource)
@@ -96,10 +93,7 @@ function resourceStop( thePlayer, commandName, resourceName )
 	if resourceName then
 	
 		local resourceVirtualName = resourceName
-		
-		local resourceName = "[ars]".. tostring(resourceName)
-		local resource = getResourceFromName(resourceName)
-		
+		local resource = getResourceFromName("[ars]" .. resourceName) or getResourceFromName("[ars]" .. resourceName .. "-system") or getResourceFromName(resourceName)
 		if resource then
 		
 			local state = getResourceState(resource)
@@ -154,10 +148,7 @@ function resourceRestart( thePlayer, commandName, resourceName )
 	if resourceName then
 	
 		local resourceVirtualName = resourceName
-		
-		local resourceName = "[ars]".. tostring(resourceName)
-		local resource = getResourceFromName(resourceName)
-		
+		local resource = getResourceFromName("[ars]" .. resourceName) or getResourceFromName("[ars]" .. resourceName .. "-system") or getResourceFromName(resourceName)
 		if resource then
 		
 			local state = getResourceState(resource)
