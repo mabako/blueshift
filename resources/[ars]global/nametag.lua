@@ -31,7 +31,7 @@ function updateNametagColor( thePlayer )
 		local badges = exports['[ars]inventory-system']:getBadges()
 		for badgeName, data in pairs(badges) do
 			if getData( thePlayer, badgeName ) == 1 then
-				setPlayerNametagColor(thePlayer, data.color[1], data.color[1], data.color[2])
+				setPlayerNametagColor(thePlayer, data.color[1], data.color[2], data.color[3])
 				return
 			end
 		end
