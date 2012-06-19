@@ -25,7 +25,7 @@ end
 
 --------- [ Saving ] ---------
 function savePlayer( quitType )
-	if (getData(source, "loggedin") == 1) then
+	if (getData(source, "loggedin") == 1) and getData(source, "dbid") then
 	
 		local x, y, z = getElementPosition(source)
 		local rot = getPedRotation(source)
