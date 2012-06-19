@@ -206,9 +206,10 @@ function spawnCharacter( name )
 		setData(source, "muted", 0, true)
 		setData(source, "globalooc", 1, true)
 		
-		for badgeName in exports['[ars]inventory-system']:getBadges() do
-			setData(source, badgeName, 0, true)
-		end
+		setTimer(function()
+			for badgeName in pairs(exports['[ars]inventory-system']:getBadges()) do
+				setData(source, badgeName, 0, true)
+			end end, 100, 1)
 		
 		setData(source, "duty", tonumber(duty), true)
 		

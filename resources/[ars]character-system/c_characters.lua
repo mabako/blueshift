@@ -6,6 +6,7 @@ local currentTab = 1
 
 --------- [ Account Management ] ---------
 function showCharactersUI( characters, theFriends, messages, skinmods, weaponmods, vehiclemods )
+	clearCharacterScreen()
 	
 	local winWidth, winHeight = 480, 450
 	local winX, winY = (screenX - screenX) + (20), (screenY/2) - (winHeight/2)
@@ -254,9 +255,8 @@ function doubleSelectCharacter( button, state )
 		end	
 		
 		if (index ~= nil) then 
+			clearCharacterScreen()
 			
-			destroyElement(accountWindow)
-			destroyElement(informationWindow)
 			showCursor(false)
 			
 			local characterName = tostring(c_characters[index][2])
@@ -292,8 +292,7 @@ function showCreateCharacterUI( button, state )
 		
 		clicked = false
 
-		destroyElement(accountWindow)
-		destroyElement(informationWindow)
+		clearCharacterScreen()
 		
 		local creationWidth, creationHeight = 300, 420
 		local creationX, creationY = (screenX/2) - (creationWidth/2), (screenY/2) - (creationHeight/2)
