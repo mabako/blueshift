@@ -49,20 +49,3 @@ function showClientInventory( thePlayer, items, values, weapons )
 end
 addEvent("showClientInventory", true)
 addEventHandler("showClientInventory", localPlayer, showClientInventory)
-
--- /settime
-function changeTime( commandName, hour, minutes )
-	if ( getData( localPlayer, "loggedin") == 1 ) and ( exports['[ars]global']:c_isPlayerTrialModerator( localPlayer ) ) then
-		
-		if ( hour and minutes ) then
-			
-			local hour = tonumber( hour )
-			local minutes = tonumber( minutes )
-			
-			setTime( hour, minutes )
-		else
-			outputChatBox("SYNTAX: /".. commandName .." [ Hour ] [ Minutes ]", 212, 156, 49)
-		end
-	end
-end
-addCommandHandler("settime", changeTime, false, false)	

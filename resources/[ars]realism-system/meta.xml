@@ -22,5 +22,4 @@
 	<script src="infopoints/c_infopoints.lua" type="client"/>
 	
 	<script src="s_time.lua" type="server"/>
-	<script src="c_time.lua" type="client"/>
 </meta>	
