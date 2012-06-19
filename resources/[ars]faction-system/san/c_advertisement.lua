@@ -11,16 +11,6 @@ local function getData( theElement, key )
 	end
 end	
 
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Advertisement ] ---------
 local adEmployee = createPed(192, 1490.5898, 1305.5576, 1093.2963)
 

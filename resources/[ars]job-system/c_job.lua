@@ -11,17 +11,6 @@ local function getData( theElement, key )
 	end
 end	
 
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Job Employee ] ---------
 local employee = nil
 function createEmployee( res )
