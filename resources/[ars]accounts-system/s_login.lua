@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Login Screen ] ---------
 local function generateSalt()
 	local salt = ""
@@ -149,8 +127,7 @@ addEventHandler("attemptLogin", getRootElement(), attemptLogin)
 function onRestart( res )
 	
 	for i, thePlayer in ipairs ( getElementsByType("player") ) do
-		if getData( thePlayer, "loggedin") == 1 then
-			
+		if getElementData( thePlayer, "loggedin") then
 			triggerEvent("savePlayer", thePlayer)
 			triggerEvent("onJoin", thePlayer)
 			
@@ -161,9 +138,8 @@ function onRestart( res )
 end
 addEventHandler("onResourceStart", resourceRoot, onRestart)	
 
-function onJoin( )	
-	setData( source, "loggedin", 0, true)
-	
+function onJoin( )
+	removeElementData(source, "loggedin")
 	exports['[ars]global']:updateNametagColor( source )
 	setPlayerNametagShowing( source, false )
 end
@@ -175,4 +151,4 @@ function setGameMode( )
       setGameType("Roleplay")
       setMapName("Los Santos")
 end
-addEventHandler("onResourceStart", getRootElement( ), setGameMode)
+addEventHandler("onResourceStart", resourceRoot, setGameMode)

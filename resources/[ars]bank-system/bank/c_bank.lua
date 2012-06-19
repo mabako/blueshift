@@ -4,15 +4,6 @@ local selectedRow = nil
 local allowInteract = true
 
 --------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
 
 local function setData( theElement, key, value, sync )
 	local key = tostring(key)
@@ -62,7 +53,7 @@ addEventHandler("onClientResourceStart", resourceRoot, createEmployee)
 --------- [ Bank Access ] ---------
 local allowOpen = true
 function onEmployeeClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getData(getLocalPlayer(), "loggedin") == 1) and (not isElement(bankWindow)) then
+	if (getElementData(getLocalPlayer(), "loggedin") == 1) and (not isElement(bankWindow)) then
 		
 		if (button == "right" and state == "up") then
 			
@@ -99,7 +90,7 @@ function checkReceive( )
 end
 
 function showBankUI( )
-	if ( getData( localPlayer, "bank:showing") == 0 ) then
+	if not isElement( bankWindow ) then
 		
 		bankWidth, bankHeight = 480, 240
 		bankX, bankY = (screenX/2) - (bankWidth/2), (screenY/2) - (bankHeight/2)
@@ -141,8 +132,6 @@ function showBankUI( )
 				destroyElement(bankWindow)
 				bankWindow = nil
 				
-				setData(localPlayer, "bank:showing", 0, true)
-				
 				if ( guiGetInputEnabled( ) ) then
 					guiSetInputEnabled(false)
 				end	
@@ -153,8 +142,6 @@ function showBankUI( )
 		guiSetFont(answerLbl, "default-bold-small")
 			
 		guiWindowSetSizable(bankWindow, false)
-		
-		setData(localPlayer, "bank:showing", 1, true)
 		
 		guiSetInputEnabled(true)
 	end	
@@ -499,8 +486,6 @@ function bankFunctions( button, state )
 											destroyElement(bankWindow)
 											bankWindow = nil
 												
-											setData(localPlayer, "bank:showing", 0, true)
-											
 											if ( guiGetInputEnabled( ) ) then
 												guiSetInputEnabled(false)
 											end	
@@ -534,8 +519,6 @@ function bankFunctions( button, state )
 										
 											destroyElement(bankWindow)
 											bankWindow = nil
-											
-											setData(localPlayer, "bank:showing", 0, true)
 											
 											if ( guiGetInputEnabled( ) ) then
 												guiSetInputEnabled(false)

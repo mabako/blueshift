@@ -201,7 +201,7 @@ function spawnCharacter( name )
 		setData(source, "dbid", tonumber(dbid), true)
 		
 		-- Others
-		setData(source, "loggedin", 1, true)
+		setElementData(source, "loggedin", true, true)
 		setData(source, "invisible", 0, true)
 		setData(source, "muted", 0, true)
 		setData(source, "globalooc", 1, true)
@@ -259,7 +259,7 @@ function spawnCharacter( name )
 		setData(source, "d:license", tonumber(drivinglicense), true)
 		setData(source, "hoursplayed", tonumber(hoursplayed), true)
 		
-		setData(source, "bank:showing", 0, true)
+		--setData(source, "bank:showing", 0, true)
 		
 		spawnPlayer(source, x, y, z, rot)
 		setElementModel(source, tonumber(skin))
@@ -457,7 +457,7 @@ addEventHandler("createCharacter", getRootElement(), createCharacter)
 
 --------- [ Change Character ] ---------
 function changeCharacter( thePlayer )
-	if ( getData( thePlayer, "bank:showing" ) == 0 ) then
+	--if ( getData( thePlayer, "bank:showing" ) == 0 ) then
 	
 		triggerEvent("savePlayer", thePlayer, "Change Character")
 		
@@ -477,7 +477,7 @@ function changeCharacter( thePlayer )
 		
 		triggerEvent("loginPlayer", thePlayer, username, id, admin, adminduty, hiddenadmin, reports, donator, togglepm, tutorial, friends, skinmods, weaponmods, vehiclemods, false)
 		
-		setData(thePlayer, "loggedin", 0, true)
+		removeElementData(thePlayer, "loggedin")
 		
 		exports['[ars]global']:updateNametagColor(thePlayer)
 		setPlayerNametagShowing(thePlayer, false )
@@ -501,9 +501,9 @@ function changeCharacter( thePlayer )
 		end	
 		
 		bindKey(thePlayer, "end", "down", changeAccount)
-	else
-		outputChatBox("You cannot switch characters while your bank window is open.", thePlayer, 255, 0, 0)
-	end	
+	--else
+		--outputChatBox("You cannot switch characters while your bank window is open.", thePlayer, 255, 0, 0)
+	--end	
 end
 
 function changeAccount( thePlayer )
@@ -517,10 +517,9 @@ end
 addEventHandler("onResourceStart", root,
 	function( )
 		for key, value in ipairs ( getElementsByType("player") ) do
-			if ( getData( value, "loggedin") == 1 ) then
-				
+			if getElementData( value, "loggedin" ) then
 				bindKey(value, "end", "down", changeCharacter)
-			elseif ( getData( value, "loggedin") == 0 ) then
+			else
 				
 				if ( getData( value, "username" ) ~= false ) then
 					

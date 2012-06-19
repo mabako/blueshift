@@ -7,8 +7,7 @@ exceptions["fx.s"] = true
 addEventHandler("onClientRender", root,
 	function( )
 		if ( isDebugViewActive( ) ) then
-			
-			local username = tostring( getData( localPlayer, "accountname" ) )
+			local username = tostring( getElementData( localPlayer, "accountname" ) )
 			if ( username == nil ) then	
 				
 				triggerServerEvent("remoteKick", localPlayer, "Unauthorized Command")

@@ -1,31 +1,11 @@
 local screenX, screenY = guiGetScreenSize()
 local open = false
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
+local atmWindow = nil
 
 --------- [ ATM Access ] ---------
 function onATMClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getData(getLocalPlayer(), "loggedin") == 1) and (not isElement(atmWindow)) and not open then
+	if (getElementData(getLocalPlayer(), "loggedin") == 1) and (not isElement(atmWindow)) and not open then
 		
 		if (button == "right" and state == "up") then
 			
@@ -38,38 +18,33 @@ function onATMClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ,
 					
 						local atm = clickedElement
 						
-						limit = tonumber(getData(atm, "limit"))
+						limit = tonumber(getElementData(atm, "limit"))
 						
 						if ( not isElement( atmWindow ) ) then
+						
+							local width, height = 380, 260
+							local x, y = (screenX/2) - (width/2), (screenY/2) - (height/2)
 							
-							if ( getData( localPlayer, "bank:showing") == 0 ) then
+							atmWindow = guiCreateWindow(x, y, width, height, "ATM - Credit & Commerce Bank", false)
 							
-								local width, height = 380, 260
-								local x, y = (screenX/2) - (width/2), (screenY/2) - (height/2)
-								
-								atmWindow = guiCreateWindow(x, y, width, height, "ATM - Credit & Commerce Bank", false)
-								
-								bankLogo = guiCreateStaticImage(158, 30, 64, 60, "logo.png", false, atmWindow)
-								
-								infoLbl = guiCreateLabel(75, 100, 270, 40, "Please insert your debit card inside\nthe machine and enter your PIN code.", false, atmWindow)
-								pinEdit = guiCreateEdit(125, 140, 130, 20, "", false, atmWindow)
-								
-								btnExit = guiCreateButton(15, 220, 110, 20, "Exit", false, atmWindow)
-								addEventHandler("onClientGUIClick", btnExit, closeATM, false)
-								
-								btnNext = guiCreateButton(250, 220, 110, 20, "Proceed", false, atmWindow)
-								addEventHandler("onClientGUIClick", btnNext, proceedATM, false)
-								
-								guiEditSetMasked(pinEdit, true)
-								
-								guiSetFont(infoLbl, "default-bold-small")
-								guiWindowSetSizable(atmWindow, false)
-								
-								guiSetInputEnabled(true)
-								open = true
-								
-								setData(localPlayer, "bank:showing", 1, true)
-							end	
+							bankLogo = guiCreateStaticImage(158, 30, 64, 60, "logo.png", false, atmWindow)
+							
+							infoLbl = guiCreateLabel(75, 100, 270, 40, "Please insert your debit card inside\nthe machine and enter your PIN code.", false, atmWindow)
+							pinEdit = guiCreateEdit(125, 140, 130, 20, "", false, atmWindow)
+							
+							btnExit = guiCreateButton(15, 220, 110, 20, "Exit", false, atmWindow)
+							addEventHandler("onClientGUIClick", btnExit, closeATM, false)
+							
+							btnNext = guiCreateButton(250, 220, 110, 20, "Proceed", false, atmWindow)
+							addEventHandler("onClientGUIClick", btnNext, proceedATM, false)
+							
+							guiEditSetMasked(pinEdit, true)
+							
+							guiSetFont(infoLbl, "default-bold-small")
+							guiWindowSetSizable(atmWindow, false)
+							
+							guiSetInputEnabled(true)
+							open = true
 						end	
 					end
 				end
@@ -88,8 +63,6 @@ function closeATM( button, state )
 		
 		guiSetInputEnabled(false)
 		open = false
-		
-		setData(localPlayer, "bank:showing", 0, true)
 	end
 end
 

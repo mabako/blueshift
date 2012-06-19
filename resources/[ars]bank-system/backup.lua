@@ -1,32 +1,11 @@
 local allowSave = false
 local sql = exports.sql
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 local fileName = nil
 function getBankBalances( thePlayer, commandName )
 	if ( thePlayer ) then
 		
-		if ( getData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+		if ( getElementData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
 			return
 		end
 	end	
@@ -85,7 +64,7 @@ end
 local threads = { }	
 function restoreBankBalances( thePlayer, commandName )
 	if ( thePlayer ) then
-		if ( getData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+		if ( getElementData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
 			
 			return
 		end
@@ -220,7 +199,7 @@ end
 
 addCommandHandler("togbanksave",
 	function( thePlayer, commandName )
-		if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+		if ( getElementData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
 		
 			if ( allowSave ) then
 				

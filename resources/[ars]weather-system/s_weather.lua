@@ -1,15 +1,3 @@
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-------------------------------------
-
 local weathers = 
 {
 	{ 0, "Sunny 1" },
@@ -44,7 +32,7 @@ end
 
 -- ADMIN COMMANDS
 function adminSetWeather( thePlayer, commandName, givenWeatherID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (givenWeatherID) then
 			

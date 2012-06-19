@@ -1,31 +1,9 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Check Player ] ---------
 local send = false
 function checkPlayer( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if ( partialPlayerName ) then
 			
 			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -43,7 +21,7 @@ function checkPlayer( thePlayer, commandName, partialPlayerName )
 				end		
 			else
 				for k, foundPlayer in ipairs ( players ) do
-					if ( getData( foundPlayer, "loggedin" ) == 1 ) then
+					if getElementData( foundPlayer, "loggedin" ) then
 						
 						local accountname = tostring( getData( foundPlayer, "accountname" ) )
 						local accountid = tostring( getData( foundPlayer, "accountid" ) )
