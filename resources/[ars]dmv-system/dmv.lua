@@ -119,7 +119,7 @@ addEventHandler("onClientClick", root,
 		if ( button == "right" and state == "up" ) then
 			if (clickedElement) and (clickedElement == employee) then
 		
-				if ( getData( localPlayer, "loggedin") == 1 ) and ( not isElement( motorVehicleWindow ) ) then
+				if getElementData( localPlayer, "loggedin") and ( not isElement( motorVehicleWindow ) ) then
 					
 					createMotorVehicleUI( )
 				end	

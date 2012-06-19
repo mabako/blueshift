@@ -97,9 +97,7 @@ function onlineAdmins( thePlayer, commandName )
 	for k, player in ipairs ( getElementsByType("player") ) do
 		
 		local adminlevel = tonumber( exports['[ars]anticheat-system']:callData( player, "admin") )
-		local loggedin = tonumber( exports['[ars]anticheat-system']:callData( player, "loggedin" ) )
-		
-		if ( adminlevel ~= nil and adminlevel > 0 ) and ( loggedin ~= 0 ) then
+		if ( adminlevel ~= nil and adminlevel > 0 ) and getElementData( player, "loggedin" ) then
 			
 			if adminlevel == 1 then
 				table.insert(admins["Trial-Moderator"], player)

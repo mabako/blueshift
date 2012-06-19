@@ -16,7 +16,7 @@ function renderNameTags( )
 	local a, b, c = getCameraMatrix( )
 	
 	for k, v in ipairs( getElementsByType("player") ) do
-		if getData(v, "loggedin") == 1 then
+		if getElementData(v, "loggedin") then
 			
 			if getData(v, "nametag") == 1 then
 				

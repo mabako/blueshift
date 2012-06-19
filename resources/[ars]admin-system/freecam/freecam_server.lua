@@ -10,16 +10,6 @@ local function setData( theElement, key, value, sync )
 	end	
 end
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 -- FREECAM
 local thePlayers = { }
 
@@ -57,7 +47,7 @@ addEvent("dropPlayer", true)
 addEventHandler("dropPlayer", root, dropPlayer)
 
 function toggleFreecam( thePlayer )
-	if ( getData( thePlayer, "loggedin" ) == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator( thePlayer ) ) then
+	if exports['[ars]global']:isPlayerTrialModerator( thePlayer ) then
 	
 		if ( not isPlayerFreecaming( thePlayer ) ) then
 			

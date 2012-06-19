@@ -17,7 +17,7 @@ addEventHandler("onClientDoubleClick", root,
 		if ( button == "left" ) then
 			
 			if ( clickedElement ) and ( getElementType( clickedElement ) == "vehicle" ) then
-				if ( getData( localPlayer, "loggedin") == 1 and not isElement( interactWindow ) ) then
+				if ( getElementData( localPlayer, "loggedin") and not isElement( interactWindow ) ) then
 			
 					createVehicleInteractUI( clickedElement )
 				end	

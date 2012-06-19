@@ -1,31 +1,7 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
------------------------------------------------------------------------------------------------------------
-
 local fire = { }
 
 function createFire(thePlayer, commandName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		local id = #fire + 1
 		local x, y, z = getElementPosition(thePlayer)
 			
@@ -50,7 +26,7 @@ addCommandHandler("createfire", createFire, false, false)
 addCommandHandler("makefire", createFire, false, false)
 
 function nearbyFire(thePlayer)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		local count = 0
 		outputChatBox("Fires Nearby: ", thePlayer, 212, 156, 49)
 		local px, py, pz = getElementPosition(thePlayer)
@@ -74,7 +50,7 @@ addCommandHandler("nearbyfire", nearbyFire)
 addCommandHandler("nearbyfires", nearbyFire)
 
 function deleteFire(thePlayer, commandName, id)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		if not (id) then
 			outputChatBox("SYNTAX: /" .. commandName .. " [Fire ID]", thePlayer, 212, 156, 49)
 		else
@@ -97,7 +73,7 @@ addCommandHandler("delfire", deleteFire)
 addCommandHandler("deletefire", deleteFire)
 
 function deleteAll(thePlayer, commandName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		local count = 0
 		for k, v in pairs(fire) do
 			destroyElement(v[6])

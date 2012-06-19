@@ -46,7 +46,7 @@ addEventHandler("onClientClick", root,
 					end
 				end
 				
-				if ( getData( localPlayer, "loggedin") == 1 and not isElement( storageWindow ) ) then
+				if ( getElementData( localPlayer, "loggedin") and not isElement( storageWindow ) ) then
 					theObject = clickedElement
 					
 					if ( isVehicle ) then

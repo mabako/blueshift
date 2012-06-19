@@ -43,158 +43,152 @@ setElementDimension( lsfdColSphere, 0 )
 
 -- /duty
 function factionDuty( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData(thePlayer, "faction") )
+	if ( faction == 1 ) or ( faction == 2 ) then -- LSPD/LSFD
+	
+		if ( ( getElementDimension( thePlayer ) == 66 or getElementDimension( thePlayer ) == 0 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) or isElementWithinColShape( thePlayer, lsfdColSphere ) ) ) then		
 		
-		local faction = tonumber( getData(thePlayer, "faction") )
-		if ( faction == 1 ) or ( faction == 2 ) then -- LSPD/LSFD
-		
-			if ( ( getElementDimension( thePlayer ) == 66 or getElementDimension( thePlayer ) == 0 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) or isElementWithinColShape( thePlayer, lsfdColSphere ) ) ) then		
-			
-				if ( getData(thePlayer, "duty") == 0 ) then
-					triggerClientEvent(thePlayer, "showUniformUI", thePlayer, faction)
-				else
-					local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-					if ( result ) then
+			if ( getData(thePlayer, "duty") == 0 ) then
+				triggerClientEvent(thePlayer, "showUniformUI", thePlayer, faction)
+			else
+				local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+				if ( result ) then
+					
+					local dutySkin = tonumber( result['dutyskin'] )
+					local dutyWeps = tostring( result['dutyweps'] )
+					local dutyAmmo = tostring( result['dutyammo'] )
+					
+					-- Skin
+					setElementModel(thePlayer, dutySkin)
+					
+					-- Armor
+					setPedArmor (thePlayer, 0) 
+					
+					-- Weapons
+					takeAllWeapons(thePlayer)
+					
+					if (faction == 2) then
+						exports['[ars]inventory-system']:takeItem(thePlayer, 48)
+					end
+					
+					if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
+						local tweapons = split(dutyWeps, string.byte(",")) 
+						local tammo = split(dutyAmmo, string.byte(",")) 
 						
-						local dutySkin = tonumber( result['dutyskin'] )
-						local dutyWeps = tostring( result['dutyweps'] )
-						local dutyAmmo = tostring( result['dutyammo'] )
-						
-						-- Skin
-						setElementModel(thePlayer, dutySkin)
-						
-						-- Armor
-						setPedArmor (thePlayer, 0) 
-						
-						-- Weapons
-						takeAllWeapons(thePlayer)
-						
-						if (faction == 2) then
-							exports['[ars]inventory-system']:takeItem(thePlayer, 48)
-						end
-						
-						if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
-							local tweapons = split(dutyWeps, string.byte(",")) 
-							local tammo = split(dutyAmmo, string.byte(",")) 
-							
-							for i = 1, #tweapons do
-								giveWeapon(thePlayer, tweapons[i], tammo[i])
-							end	
-						end
-						
-						setData(thePlayer, "duty", 0, true)
-						updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-						
-						outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
-					end	
-				end
+						for i = 1, #tweapons do
+							giveWeapon(thePlayer, tweapons[i], tammo[i])
+						end	
+					end
+					
+					setData(thePlayer, "duty", 0, true)
+					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+					
+					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
+				end	
 			end
-		elseif ( faction == 4 ) then -- LSVS
-			
-			if ( getElementDimension( thePlayer ) == 62 and isElementWithinColShape( thePlayer, lsvsColSphere ) ) then		
-				
-				if ( getData(thePlayer, "duty") == 0 ) then
-				
-					local dutySkin = getElementModel(thePlayer)
+		end
+	elseif ( faction == 4 ) then -- LSVS
 		
-					local dutyWeps = ""
-					local dutyAmmo = ""
-					for i = 1, 12 do
-						dutyWeps = dutyWeps ..",".. getPedWeapon(thePlayer, i)
-						dutyAmmo = dutyAmmo ..",".. getPedTotalAmmo(thePlayer, i)
-					end	
+		if ( getElementDimension( thePlayer ) == 62 and isElementWithinColShape( thePlayer, lsvsColSphere ) ) then		
+			
+			if ( getData(thePlayer, "duty") == 0 ) then
+			
+				local dutySkin = getElementModel(thePlayer)
+	
+				local dutyWeps = ""
+				local dutyAmmo = ""
+				for i = 1, 12 do
+					dutyWeps = dutyWeps ..",".. getPedWeapon(thePlayer, i)
+					dutyAmmo = dutyAmmo ..",".. getPedTotalAmmo(thePlayer, i)
+				end	
+				
+				local update = sql:query("UPDATE `characters` SET `dutyskin`=".. sql:escape_string(dutySkin) ..", `dutyweps`='".. sql:escape_string(dutyWeps) .."', `dutyammo`='".. sql:escape_string(dutyAmmo) .."' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+				if ( update ) then
 					
-					local update = sql:query("UPDATE `characters` SET `dutyskin`=".. sql:escape_string(dutySkin) ..", `dutyweps`='".. sql:escape_string(dutyWeps) .."', `dutyammo`='".. sql:escape_string(dutyAmmo) .."' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-					if ( update ) then
+					takeAllWeapons( thePlayer )
+					setElementModel(thePlayer, 50)
+					
+					setData(thePlayer, "duty", 1, true)
+					updateDatabase("UPDATE `characters` SET `duty`='1' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+					
+					outputChatBox("You are now on duty.", thePlayer, 212, 156, 49)
+				end
+				
+				sql:free_result(update)
+			else
+				local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+				if ( result ) then
+					
+					local dutySkin = tonumber( result['dutyskin'] )
+					local dutyWeps = tostring( result['dutyweps'] )
+					local dutyAmmo = tostring( result['dutyammo'] )
+					
+					-- Skin
+					setElementModel(thePlayer, dutySkin)
+					
+					-- Weapons
+					takeAllWeapons(thePlayer)
+					
+					if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
+						local tweapons = split(dutyWeps, string.byte(",")) 
+						local tammo = split(dutyAmmo, string.byte(",")) 
 						
-						takeAllWeapons( thePlayer )
-						setElementModel(thePlayer, 50)
-						
-						setData(thePlayer, "duty", 1, true)
-						updateDatabase("UPDATE `characters` SET `duty`='1' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-						
-						outputChatBox("You are now on duty.", thePlayer, 212, 156, 49)
+						for i = 1, #tweapons do
+							giveWeapon(thePlayer, tweapons[i], tammo[i])
+						end	
 					end
 					
-					sql:free_result(update)
-				else
-					local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-					if ( result ) then
-						
-						local dutySkin = tonumber( result['dutyskin'] )
-						local dutyWeps = tostring( result['dutyweps'] )
-						local dutyAmmo = tostring( result['dutyammo'] )
-						
-						-- Skin
-						setElementModel(thePlayer, dutySkin)
-						
-						-- Weapons
-						takeAllWeapons(thePlayer)
-						
-						if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
-							local tweapons = split(dutyWeps, string.byte(",")) 
-							local tammo = split(dutyAmmo, string.byte(",")) 
-							
-							for i = 1, #tweapons do
-								giveWeapon(thePlayer, tweapons[i], tammo[i])
-							end	
-						end
-						
-						setData(thePlayer, "duty", 0, true)
-						updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-						
-						outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
-					end
+					setData(thePlayer, "duty", 0, true)
+					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+					
+					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
 				end
 			end
 		end
-	end	
+	end
 end
 addCommandHandler("duty", factionDuty, false, false)
 
 -- /detective
 function detectiveDuty( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData(thePlayer, "faction") )
+	if ( faction == 1 ) then
+	
+		if ( getElementDimension( thePlayer ) == 311 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) ) then
 		
-		local faction = tonumber( getData(thePlayer, "faction") )
-		if ( faction == 1 ) then
-		
-			if ( getElementDimension( thePlayer ) == 311 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) ) then
-			
-				if ( getData(thePlayer, "duty") == 0 ) then
-					triggerClientEvent(thePlayer, "showDetectiveUI", thePlayer, faction)
-				else
-					local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-					if ( result ) then
+			if ( getData(thePlayer, "duty") == 0 ) then
+				triggerClientEvent(thePlayer, "showDetectiveUI", thePlayer, faction)
+			else
+				local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+				if ( result ) then
+					
+					local dutySkin = tonumber( result['dutyskin'] )
+					local dutyWeps = tostring( result['dutyweps'] )
+					local dutyAmmo = tostring( result['dutyammo'] )
+					
+					-- Skin
+					setElementModel(thePlayer, dutySkin)
+					
+					-- Armor
+					setPedArmor (thePlayer, 0) 
+					
+					-- Weapons
+					takeAllWeapons(thePlayer)
+					
+					if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
+						local tweapons = split(dutyWeps, string.byte(",")) 
+						local tammo = split(dutyAmmo, string.byte(",")) 
 						
-						local dutySkin = tonumber( result['dutyskin'] )
-						local dutyWeps = tostring( result['dutyweps'] )
-						local dutyAmmo = tostring( result['dutyammo'] )
-						
-						-- Skin
-						setElementModel(thePlayer, dutySkin)
-						
-						-- Armor
-						setPedArmor (thePlayer, 0) 
-						
-						-- Weapons
-						takeAllWeapons(thePlayer)
-						
-						if (tostring(dutyWeps) ~= "") and (tostring(dutyAmmo) ~= "") then 
-							local tweapons = split(dutyWeps, string.byte(",")) 
-							local tammo = split(dutyAmmo, string.byte(",")) 
-							
-							for i = 1, #tweapons do
-								giveWeapon(thePlayer, tweapons[i], tammo[i])
-							end	
-						end
-						
-						setData(thePlayer, "duty", 0, true)
-						updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
-						
-						outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
-					end	
-				end
+						for i = 1, #tweapons do
+							giveWeapon(thePlayer, tweapons[i], tammo[i])
+						end	
+					end
+					
+					setData(thePlayer, "duty", 0, true)
+					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
+					
+					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
+				end	
 			end
 		end
 	end
@@ -310,212 +304,203 @@ addEventHandler("setDetectiveDuty", root, setDetectiveDuty)
 
 -- /doorram
 function doorRam( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData( thePlayer, "faction" ) )
+	if ( faction == 2 ) then
 		
-		local faction = tonumber( getData( thePlayer, "faction" ) )
-		if ( faction == 2 ) then
+		for key, door in ipairs ( getElementsByType("marker") )  do
 			
-			for key, door in ipairs ( getElementsByType("marker") )  do
+			if ( getElementDimension( door ) == getElementDimension( thePlayer ) ) then
 				
-				if ( getElementDimension( door ) == getElementDimension( thePlayer ) ) then
-					
-					if ( isElementWithinMarker( thePlayer, door ) ) then	
-					
-						local child = getElementChild(door, 0)	
-						if ( child ) then								
-							
-							local type = tonumber( getData( door, "type" ) )
-							local owner = tonumber( getData( door, "owner" ) )
+				if ( isElementWithinMarker( thePlayer, door ) ) then	
+				
+					local child = getElementChild(door, 0)	
+					if ( child ) then								
 						
-							if ( type == 1 and owner == -1 ) then -- Unowned house
+						local type = tonumber( getData( door, "type" ) )
+						local owner = tonumber( getData( door, "owner" ) )
+					
+						if ( type == 1 and owner == -1 ) then -- Unowned house
+						
+							outputChatBox("You cannot ram this door.", thePlayer, 255, 0, 0)
+						else	
 							
-								outputChatBox("You cannot ram this door.", thePlayer, 255, 0, 0)
-							else	
+							local locked = tonumber( getData( door, "locked" ) )
+							if ( locked == 1 ) then
 								
-								local locked = tonumber( getData( door, "locked" ) )
-								if ( locked == 1 ) then
+								local chance = math.random(0, 2)
+								if ( chance == 1 ) then
 									
-									local chance = math.random(0, 2)
-									if ( chance == 1 ) then
+									local dbid = tonumber( getData(door, "dbid") )
+								
+									local update = sql:query("UPDATE `interiors` SET `locked`='0' WHERE `id`=".. sql:escape_string(dbid) .."")
+									if (update) then
 										
-										local dbid = tonumber( getData(door, "dbid") )
+										setData(door, "locked", 0)
+										triggerEvent("doAction", thePlayer, thePlayer, "do", "The door bursts open!")
+										
+										break
+									end
 									
-										local update = sql:query("UPDATE `interiors` SET `locked`='0' WHERE `id`=".. sql:escape_string(dbid) .."")
-										if (update) then
-											
-											setData(door, "locked", 0)
-											triggerEvent("doAction", thePlayer, thePlayer, "do", "The door bursts open!")
-											
-											break
-										end
-										
-										sql:free_result(update)
-									else
-										triggerEvent("doAction", thePlayer, thePlayer, "do", "The ram hits the door!")
-									end	
+									sql:free_result(update)
 								else
-									outputChatBox("The door is already open.", thePlayer, 0, 255, 0)
+									triggerEvent("doAction", thePlayer, thePlayer, "do", "The ram hits the door!")
 								end	
-							end
-						else
-							outputChatBox("You cannot apply a door ram from inside.", thePlayer, 255, 0, 0)
-							break	
+							else
+								outputChatBox("The door is already open.", thePlayer, 0, 255, 0)
+							end	
 						end
+					else
+						outputChatBox("You cannot apply a door ram from inside.", thePlayer, 255, 0, 0)
+						break	
 					end
 				end
 			end
 		end
-	end	
+	end
 end
 addCommandHandler("doorram", doorRam, false, false)
 
 ------------ /// LSPD \\\ ------------
 function togglePlayerDetain( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData( thePlayer, "faction" ) )
+	if ( faction == 1 ) then
 		
-		local faction = tonumber( getData( thePlayer, "faction" ) )
-		if ( faction == 1 ) then
+		if (partialPlayerName) then
+		
+			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			
-			if (partialPlayerName) then
-			
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+				local count = 0
+				for k, foundPlayer in ipairs (players) do
 					
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
+					count = count + 1
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
+			else
+				for k, foundPlayer in ipairs (players) do
+					
+					local x, y, z = getElementPosition(thePlayer)
+					local px, py, pz = getElementPosition(foundPlayer)
+					
+					if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then
 						
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
+						local query = nil
 						
-						local x, y, z = getElementPosition(thePlayer)
-						local px, py, pz = getElementPosition(foundPlayer)
+						if ( commandName == "cuff" ) then
 						
-						if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then
+							setData(foundPlayer, "cuffed", 1, true)
+						
+							toggleControl(foundPlayer, "sprint", false)
+							toggleControl(foundPlayer, "jump", false)
+							toggleControl(foundPlayer, "aim_weapon", false)
+							toggleControl(foundPlayer, "fire", false)
+							toggleControl(foundPlayer, "next_weapon", false)
+							toggleControl(foundPlayer, "previous_weapon", false)
 							
-							local query = nil
+							outputChatBox("You cuffed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49) 
+							outputChatBox("You have been cuffed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
 							
-							if ( commandName == "cuff" ) then
+							query = "UPDATE `characters` SET `cuffed`='1' WHERE charactername='".. getPlayerName(foundPlayer):gsub("_", " ") .."'"
 							
-								setData(foundPlayer, "cuffed", 1, true)
+						elseif ( commandName == "uncuff" ) then
 							
-								toggleControl(foundPlayer, "sprint", false)
-								toggleControl(foundPlayer, "jump", false)
-								toggleControl(foundPlayer, "aim_weapon", false)
-								toggleControl(foundPlayer, "fire", false)
-								toggleControl(foundPlayer, "next_weapon", false)
-								toggleControl(foundPlayer, "previous_weapon", false)
-								
-								outputChatBox("You cuffed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49) 
-								outputChatBox("You have been cuffed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
-								
-								query = "UPDATE `characters` SET `cuffed`='1' WHERE charactername='".. getPlayerName(foundPlayer):gsub("_", " ") .."'"
-								
-							elseif ( commandName == "uncuff" ) then
-								
-								setData(foundPlayer, "cuffed", 0, true)
+							setData(foundPlayer, "cuffed", 0, true)
+						
+							toggleControl(foundPlayer, "sprint", true)
+							toggleControl(foundPlayer, "jump", true)
+							toggleControl(foundPlayer, "aim_weapon", true)
+							toggleControl(foundPlayer, "fire", true)
+							toggleControl(foundPlayer, "next_weapon", true)
+							toggleControl(foundPlayer, "previous_weapon", true)
 							
-								toggleControl(foundPlayer, "sprint", true)
-								toggleControl(foundPlayer, "jump", true)
-								toggleControl(foundPlayer, "aim_weapon", true)
-								toggleControl(foundPlayer, "fire", true)
-								toggleControl(foundPlayer, "next_weapon", true)
-								toggleControl(foundPlayer, "previous_weapon", true)
-								
-								outputChatBox("You un-cuffed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49) 
-								outputChatBox("You have been un-cuffed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
-								
-								query = "UPDATE `characters` SET `cuffed`='0' WHERE charactername='".. getPlayerName(foundPlayer):gsub("_", " ") .."'"
-							end	
+							outputChatBox("You un-cuffed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49) 
+							outputChatBox("You have been un-cuffed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
 							
-							local update = sql:query(query)
-							if ( not update ) then
-								outputDebugString("Unable to update player cuffs.")
-							end	
-							
-							sql:free_result(update)
-						else
-							outputChatBox("You need to be closer to the player.", thePlayer, 255, 0, 0)
-						end
+							query = "UPDATE `characters` SET `cuffed`='0' WHERE charactername='".. getPlayerName(foundPlayer):gsub("_", " ") .."'"
+						end	
+						
+						local update = sql:query(query)
+						if ( not update ) then
+							outputDebugString("Unable to update player cuffs.")
+						end	
+						
+						sql:free_result(update)
+					else
+						outputChatBox("You need to be closer to the player.", thePlayer, 255, 0, 0)
 					end
 				end
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ]", thePlayer, 212, 156, 49)
 			end
-		end					
-	end		
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ]", thePlayer, 212, 156, 49)
+		end
+	end
 end
 addCommandHandler("cuff", togglePlayerDetain, false, false)
 addCommandHandler("uncuff", togglePlayerDetain, false, false)
 
 -- /ticket
 function ticketPlayer( thePlayer, commandName, partialPlayerName, ticketPrice, ... )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData( thePlayer, "faction" ) )
+	if ( faction == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
 		
-		local faction = tonumber( getData( thePlayer, "faction" ) )
-		if ( faction == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
+		if (ticketPrice) and (partialPlayerName) and (...) then
+		
+			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			
-			if (ticketPrice) and (partialPlayerName) and (...) then
-			
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+				local count = 0
+				for k, foundPlayer in ipairs (players) do
 					
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
+					count = count + 1
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
+			else
+				for k, foundPlayer in ipairs (players) do
+					
+					if ( foundPlayer ~= thePlayer ) then
 						
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
+						local x, y, z = getElementPosition(thePlayer)
+						local px, py, pz = getElementPosition(foundPlayer)
 						
-						if ( foundPlayer ~= thePlayer ) then
+						if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then
 							
-							local x, y, z = getElementPosition(thePlayer)
-							local px, py, pz = getElementPosition(foundPlayer)
+							local ticketPrice = tonumber( ticketPrice )
+							local reason = table.concat({...}, " ")
 							
-							if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then
+							local money = getPlayerMoney(foundPlayer)/100
+							if ( money >= ticketPrice ) then
 								
-								local ticketPrice = tonumber( ticketPrice )
-								local reason = table.concat({...}, " ")
+								takePlayerMoney(foundPlayer, ticketPrice*100)
+								giveMoneyToPolice( ticketPrice )
 								
-								local money = getPlayerMoney(foundPlayer)/100
-								if ( money >= ticketPrice ) then
-									
-									takePlayerMoney(foundPlayer, ticketPrice*100)
-									giveMoneyToPolice( ticketPrice )
-									
-									outputChatBox("You were ticketed for $".. tostring( ticketPrice ) .." by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
-									outputChatBox("Reason: ".. reason, foundPlayer, 212, 156, 49)
-									
-									outputChatBox("You ticketed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for $".. tostring( ticketPrice ) ..".", thePlayer, 212, 156, 49)
-									outputChatBox("Reason: ".. reason, thePlayer, 212, 156, 49)
-								else
-									outputChatBox("The player doesn't have enough money, try giving a lower ticket or escort him to the bank.", thePlayer, 255, 0, 0)
-								end
+								outputChatBox("You were ticketed for $".. tostring( ticketPrice ) .." by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
+								outputChatBox("Reason: ".. reason, foundPlayer, 212, 156, 49)
+								
+								outputChatBox("You ticketed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for $".. tostring( ticketPrice ) ..".", thePlayer, 212, 156, 49)
+								outputChatBox("Reason: ".. reason, thePlayer, 212, 156, 49)
 							else
-								outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub(" ", "_") ..".", thePlayer, 255, 0, 0)
+								outputChatBox("The player doesn't have enough money, try giving a lower ticket or escort him to the bank.", thePlayer, 255, 0, 0)
 							end
 						else
-							outputChatBox("You cannot ticket yourself.", thePlayer, 255, 0, 0)
+							outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub(" ", "_") ..".", thePlayer, 255, 0, 0)
 						end
+					else
+						outputChatBox("You cannot ticket yourself.", thePlayer, 255, 0, 0)
 					end
 				end
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID] [Ticket Price] [Reason]", thePlayer, 212, 156, 49)
 			end
-		end	
-	end							
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID] [Ticket Price] [Reason]", thePlayer, 212, 156, 49)
+		end
+	end
 end
 addCommandHandler("ticket", ticketPlayer, false, false)
 
@@ -537,112 +522,109 @@ local arrests = { }
 
 -- /arrest
 function policeArrest( thePlayer, commandName, partialPlayerName, minutes, finePrice, ... )
-	if getData(thePlayer, "loggedin") == 1 then
+	local faction = tonumber( getData( thePlayer, "faction" ) )
+	if ( faction == 1 ) then
 		
-		local faction = tonumber( getData( thePlayer, "faction" ) )
-		if ( faction == 1 ) then
+		if (partialPlayerName) and (minutes) and (finePrice) and (...) then
 			
-			if (partialPlayerName) and (minutes) and (finePrice) and (...) then
+			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 				
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+				local count = 0
+				for k, foundPlayer in ipairs (players) do
 					
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
+					count = count + 1
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
+			else
+				for k, foundPlayer in ipairs (players) do
+					
+					if ( foundPlayer ~= thePlayer ) then
 						
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
+						local x, y, z = getElementPosition(thePlayer)
+						local px, py, pz = getElementPosition(foundPlayer)
 						
-						if ( foundPlayer ~= thePlayer ) then
+						if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then 
 							
-							local x, y, z = getElementPosition(thePlayer)
-							local px, py, pz = getElementPosition(foundPlayer)
-							
-							if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 5 ) then 
+							local nearestColSphere = nil
+							for key, value in ipairs ( cells ) do
 								
-								local nearestColSphere = nil
-								for key, value in ipairs ( cells ) do
+								local cx, cy, cz = getElementPosition(value)
+								if ( getDistanceBetweenPoints3D( x, y, z, cx, cy, cz ) <= 1 ) then
 									
-									local cx, cy, cz = getElementPosition(value)
-									if ( getDistanceBetweenPoints3D( x, y, z, cx, cy, cz ) <= 1 ) then
+									nearestColSphere = value
+									break
+								end
+							end
+							
+							if ( nearestColSphere ~= nil ) then
+								
+								if ( getElementDimension( thePlayer ) == getElementDimension( nearestColSphere ) and getElementDimension( foundPlayer ) == getElementDimension( nearestColSphere ) ) then
+									if ( isElementWithinColShape( thePlayer, nearestColSphere ) and isElementWithinColShape( thePlayer, nearestColSphere ) ) then
 										
-										nearestColSphere = value
-										break
+										local cx, cy, cz = getElementPosition(nearestColSphere)
+										
+										local reason = table.concat({...}, " ")
+										local finePrice = tonumber(finePrice)
+										
+										arrests[foundPlayer] = { }
+										arrests[foundPlayer]["arrestTimer"] = setTimer(updateArrestTimer, 60000, 1, foundPlayer)
+										arrests[foundPlayer]["arrestTime"] = tonumber(minutes)
+										arrests[foundPlayer]["arrestBy"] = tostring(getPlayerName(thePlayer))
+										arrests[foundPlayer]["arrestReason"] = tostring(reason)
+										
+										setElementPosition( foundPlayer, cx, cy - 2, cz )
+										
+										outputChatBox("You arrested ".. getPlayerName(foundPlayer):gsub("_", " ") ..". [ ".. minutes .. " minute(s) ]", thePlayer, 70, 54, 224)
+										outputChatBox("Crime(s): ".. reason, thePlayer, 70, 54, 224)
+										
+										outputChatBox("You were arrested by ".. getPlayerName(thePlayer):gsub("_", " ") ..". [ ".. minutes .. " minute(s) ]", foundPlayer, 70, 54, 224)
+										outputChatBox("Crime(s): ".. reason, foundPlayer, 70, 54, 224)
+										
+										if ( finePrice > 0 ) then
+											
+											local money = tonumber( getPlayerMoney( foundPlayer )/100 )
+											if ( money >= finePrice ) then
+												
+												takePlayerMoney( foundPlayer, finePrice*100 )
+												giveMoneyToPolice( finePrice )
+												
+												outputChatBox("Fine: $".. tostring( finePrice ), thePlayer, 70, 54, 224)
+												outputChatBox("Fine: $".. tostring( finePrice ), foundPlayer, 70, 54, 224)
+											else
+												outputChatBox("The player did not have enough money to pay the fine.", thePlayer, 255, 0, 0)
+											end	
+										end
+										
+										takeAllWeapons( foundPlayer )
+										
+										local count = takeAllNarcotics( foundPlayer )
+										if ( count > 0 ) then
+											outputChatBox("Took away ".. count .." narcotic(s) from ".. getPlayerName( foundPlayer ):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+										end
+										
+										updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(minutes) ..", `arrest_reason`='".. sql:escape_string(tostring(reason)) .."', `arrest_by`='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")
+									else
+										outputChatBox("You and the suspect must be infront of the cell.", thePlayer, 255, 0, 0)
 									end
 								end
-								
-								if ( nearestColSphere ~= nil ) then
-									
-									if ( getElementDimension( thePlayer ) == getElementDimension( nearestColSphere ) and getElementDimension( foundPlayer ) == getElementDimension( nearestColSphere ) ) then
-										if ( isElementWithinColShape( thePlayer, nearestColSphere ) and isElementWithinColShape( thePlayer, nearestColSphere ) ) then
-											
-											local cx, cy, cz = getElementPosition(nearestColSphere)
-											
-											local reason = table.concat({...}, " ")
-											local finePrice = tonumber(finePrice)
-											
-											arrests[foundPlayer] = { }
-											arrests[foundPlayer]["arrestTimer"] = setTimer(updateArrestTimer, 60000, 1, foundPlayer)
-											arrests[foundPlayer]["arrestTime"] = tonumber(minutes)
-											arrests[foundPlayer]["arrestBy"] = tostring(getPlayerName(thePlayer))
-											arrests[foundPlayer]["arrestReason"] = tostring(reason)
-											
-											setElementPosition( foundPlayer, cx, cy - 2, cz )
-											
-											outputChatBox("You arrested ".. getPlayerName(foundPlayer):gsub("_", " ") ..". [ ".. minutes .. " minute(s) ]", thePlayer, 70, 54, 224)
-											outputChatBox("Crime(s): ".. reason, thePlayer, 70, 54, 224)
-											
-											outputChatBox("You were arrested by ".. getPlayerName(thePlayer):gsub("_", " ") ..". [ ".. minutes .. " minute(s) ]", foundPlayer, 70, 54, 224)
-											outputChatBox("Crime(s): ".. reason, foundPlayer, 70, 54, 224)
-											
-											if ( finePrice > 0 ) then
-												
-												local money = tonumber( getPlayerMoney( foundPlayer )/100 )
-												if ( money >= finePrice ) then
-													
-													takePlayerMoney( foundPlayer, finePrice*100 )
-													giveMoneyToPolice( finePrice )
-													
-													outputChatBox("Fine: $".. tostring( finePrice ), thePlayer, 70, 54, 224)
-													outputChatBox("Fine: $".. tostring( finePrice ), foundPlayer, 70, 54, 224)
-												else
-													outputChatBox("The player did not have enough money to pay the fine.", thePlayer, 255, 0, 0)
-												end	
-											end
-											
-											takeAllWeapons( foundPlayer )
-											
-											local count = takeAllNarcotics( foundPlayer )
-											if ( count > 0 ) then
-												outputChatBox("Took away ".. count .." narcotic(s) from ".. getPlayerName( foundPlayer ):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-											end
-											
-											updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(minutes) ..", `arrest_reason`='".. sql:escape_string(tostring(reason)) .."', `arrest_by`='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")
-										else
-											outputChatBox("You and the suspect must be infront of the cell.", thePlayer, 255, 0, 0)
-										end
-									end
-								else
-									outputChatBox("You need to be infornt of the cell.", thePlayer, 255, 0, 0)
-								end	
 							else
-								outputChatBox("You are too far away from the suspect.", thePlayer, 255, 0, 0)
-							end
+								outputChatBox("You need to be infornt of the cell.", thePlayer, 255, 0, 0)
+							end	
 						else
-							outputChatBox("You cannot jail yourself.", thePlayer, 255, 0, 0)
-						end	
-					end
+							outputChatBox("You are too far away from the suspect.", thePlayer, 255, 0, 0)
+						end
+					else
+						outputChatBox("You cannot jail yourself.", thePlayer, 255, 0, 0)
+					end	
 				end
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID] [Minutes] [Fine] [Reason]", thePlayer, 212, 156, 49)
 			end
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID] [Minutes] [Fine] [Reason]", thePlayer, 212, 156, 49)
 		end
 	end
 end
@@ -670,51 +652,49 @@ end
 
 -- /release
 function releasePlayer( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
-		if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+	if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+		
+		if (partialPlayerName) then
+		
+			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			
-			if (partialPlayerName) then
-			
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+				local count = 0
+				for k, foundPlayer in ipairs (players) do
 					
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
+					count = count + 1
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
+			else
+				for k, foundPlayer in ipairs (players) do
+					
+					if ( arrests[foundPlayer] ) then
 						
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
-						
-						if ( arrests[foundPlayer] ) then
-							
-							local timer = arrests[foundPlayer]["arrestTimer"]
-							if ( isTimer( timer ) ) then
-								killTimer( timer )
-							end
-							
-							arrests[foundPlayer] = nil
-			
-							setElementPosition(foundPlayer, 1544.6943, -1675.2177, 13.5589)
-							setElementRotation(foundPlayer, 0, 0, 270)
-							setElementDimension(foundPlayer, 0)
-							setElementInterior(foundPlayer, 0)
-							
-							outputChatBox("You released ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
-							outputChatBox("You have been released by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
-			
-							updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")	
+						local timer = arrests[foundPlayer]["arrestTimer"]
+						if ( isTimer( timer ) ) then
+							killTimer( timer )
 						end
+						
+						arrests[foundPlayer] = nil
+		
+						setElementPosition(foundPlayer, 1544.6943, -1675.2177, 13.5589)
+						setElementRotation(foundPlayer, 0, 0, 270)
+						setElementDimension(foundPlayer, 0)
+						setElementInterior(foundPlayer, 0)
+						
+						outputChatBox("You released ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
+						outputChatBox("You have been released by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
+		
+						updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")	
 					end
 				end
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID]", thePlayer, 212, 156, 49)
 			end
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID]", thePlayer, 212, 156, 49)
 		end
 	end	
 end
@@ -722,45 +702,41 @@ addCommandHandler("release", releasePlayer, false, false)
 
 -- /arrested
 function arrestedPlayers( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
-		if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+	if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+		
+		outputChatBox("============== Arrested ==============", thePlayer, 212, 156, 49)
+		
+		local count = 0
+		for arrestedPlayer, array in pairs ( arrests ) do
 			
-			outputChatBox("============== Arrested ==============", thePlayer, 212, 156, 49)
-			
-			local count = 0
-			for arrestedPlayer, array in pairs ( arrests ) do
+			if isElement( arrestedPlayer ) then
+				outputChatBox("Name: ".. getPlayerName(arrestedPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				outputChatBox("Arrested By: ".. array["arrestBy"]:gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				outputChatBox("Arrested For: ".. array["arrestReason"], thePlayer, 212, 156, 49)
+				outputChatBox("Time Left: ".. array["arrestTime"] .. " minute(s).", thePlayer, 212, 156, 49)
+				outputChatBox("~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=", thePlayer, 212, 156, 49)
 				
-				if isElement( arrestedPlayer ) then
-					outputChatBox("Name: ".. getPlayerName(arrestedPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-					outputChatBox("Arrested By: ".. array["arrestBy"]:gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-					outputChatBox("Arrested For: ".. array["arrestReason"], thePlayer, 212, 156, 49)
-					outputChatBox("Time Left: ".. array["arrestTime"] .. " minute(s).", thePlayer, 212, 156, 49)
-					outputChatBox("~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=", thePlayer, 212, 156, 49)
-					
-					count = count + 1
-				else
-					array[arrestedPlayer] = nil
-				end	
-			end
-			
-			if ( count == 0 ) then
-				outputChatBox("No one is arrested.", thePlayer, 212, 156, 49)
-			end
+				count = count + 1
+			else
+				array[arrestedPlayer] = nil
+			end	
 		end
-	end	
+		
+		if ( count == 0 ) then
+			outputChatBox("No one is arrested.", thePlayer, 212, 156, 49)
+		end
+	end
 end
 addCommandHandler("arrested", arrestedPlayers, false, false)
 
 -- /arresttime
 function arrestTime( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
-		if ( arrests[thePlayer] ~= nil ) then
-			
-			outputChatBox("You have ".. arrests[thePlayer]["arrestTime"] .. " minute(s) left on your sentence.", thePlayer, 212, 156, 49)
-		else
-			outputChatBox("You are not jailed.", thePlayer, 255, 0, 0)
-		end
-	end	
+	if ( arrests[thePlayer] ~= nil ) then
+		
+		outputChatBox("You have ".. arrests[thePlayer]["arrestTime"] .. " minute(s) left on your sentence.", thePlayer, 212, 156, 49)
+	else
+		outputChatBox("You are not jailed.", thePlayer, 255, 0, 0)
+	end
 end
 addCommandHandler("arrestTime", arrestTime, false, false)
 
@@ -839,49 +815,46 @@ addEventHandler("onPlayerQuit", root,
 	
 -- /showlicenses
 function showPlayerLicenses( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
+	if (partialPlayerName) then
 		
-		if (partialPlayerName) then
+		local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+		
+		if #players == 0 then
+			outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+		elseif #players > 1 then
+			outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			local count = 0
+			for k, foundPlayer in ipairs (players) do
+				
+				count = count + 1
+				outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+			end		
+		else
+			for k, foundPlayer in ipairs (players) do
+				
+				local x, y, z = getElementPosition(thePlayer)
+				local px, py, pz = getElementPosition(foundPlayer)
 			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+				if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 10 ) then 
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+					local license = tonumber( getData( thePlayer, "d:license" ) )
 					
-					local x, y, z = getElementPosition(thePlayer)
-					local px, py, pz = getElementPosition(foundPlayer)
-				
-					if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 10 ) then 
-						
-						local license = tonumber( getData( thePlayer, "d:license" ) )
-						
-						local text = "#FF0000Unavailable"
-						if ( license == 1 ) then
-							text = "#00FF00Available"
-						end
-						
-						outputChatBox("~-~-~-~-~-~ ".. getPlayerName( thePlayer ):gsub("_", " ") .." ~-~-~-~-~-~", foundPlayer, 212, 156, 49)
-						outputChatBox("Driving License: ".. text, foundPlayer, 212, 156, 49, true)
-						
-						triggerEvent("meAction", thePlayer, thePlayer, "me", "shows his licenses to ".. getPlayerName( foundPlayer ):gsub("_", " ") ..".")
+					local text = "#FF0000Unavailable"
+					if ( license == 1 ) then
+						text = "#00FF00Available"
 					end
+					
+					outputChatBox("~-~-~-~-~-~ ".. getPlayerName( thePlayer ):gsub("_", " ") .." ~-~-~-~-~-~", foundPlayer, 212, 156, 49)
+					outputChatBox("Driving License: ".. text, foundPlayer, 212, 156, 49, true)
+					
+					triggerEvent("meAction", thePlayer, thePlayer, "me", "shows his licenses to ".. getPlayerName( foundPlayer ):gsub("_", " ") ..".")
 				end
 			end
-		else
-			outputChatBox("SYNTAX: /".. commandName .." [ Player Name/ID ]", thePlayer, 212, 156, 49)
-		end	
-	end				
+		end
+	else
+		outputChatBox("SYNTAX: /".. commandName .." [ Player Name/ID ]", thePlayer, 212, 156, 49)
+	end
 end
 addCommandHandler("showlicenses", showPlayerLicenses, false, false)
 
@@ -932,19 +905,17 @@ end
 
 -- /taser
 function changetoTaser( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
-		if ( getData( thePlayer, "faction" ) == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
-			local weapon = getPedWeapon (thePlayer)
-			if weapon == 24 then
-			
-				giveWeapon (thePlayer, 23, 50, false)
-			
-			elseif weapon == 23 then
-			
-				giveWeapon (thePlayer, 24, 50, false)
-			end
+	if ( getData( thePlayer, "faction" ) == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
+		local weapon = getPedWeapon (thePlayer)
+		if weapon == 24 then
+		
+			giveWeapon (thePlayer, 23, 50, false)
+		
+		elseif weapon == 23 then
+		
+			giveWeapon (thePlayer, 24, 50, false)
 		end
-	end	
+	end
 end
 addCommandHandler("taser", changetoTaser, false, false)
 
@@ -965,24 +936,21 @@ addEventHandler("onPlayerQuit", root,
 -- /n
 local totalLines = 0
 function newsChat( thePlayer, commandName, ... )
-	if ( getData( thePlayer, "loggedin" ) == 1 and not isPedDead( thePlayer ) ) then
+	if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Andreas Network and Entertainment") or interviews[thePlayer] ) then
 		
-		if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Andreas Network and Entertainment") or interviews[thePlayer] ) then
+		if (...) then
+			local message = table.concat({...}, " ")
 			
-			if (...) then
-				local message = table.concat({...}, " ")
-				
-				for key, value in ipairs ( getElementsByType("player") ) do
-					if ( getData( value, "loggedin" ) == 1 ) then
-						
-						outputChatBox("[NEWS] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ".. message, value, 229, 35, 135)
-					end
+			for key, value in ipairs ( getElementsByType("player") ) do
+				if getElementData( value, "loggedin" ) then
+					
+					outputChatBox("[NEWS] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ".. message, value, 229, 35, 135)
 				end
-				
-				totalLines = totalLines + 1
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [ Message ]", thePlayer, 212, 156, 49)	
 			end
+			
+			totalLines = totalLines + 1
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [ Message ]", thePlayer, 212, 156, 49)	
 		end
 	end
 end
@@ -1020,7 +988,7 @@ setTimer(
 
 -- /invinterview
 function inviteInterview( thePlayer, commandName, partialPlayerName )
-	if ( getData( thePlayer, "loggedin" ) == 1 and not isPedDead( thePlayer ) ) then
+	if isPedDead( thePlayer ) then
 		
 		if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Andreas Network and Entertainment") ) then
 			
@@ -1059,7 +1027,7 @@ addCommandHandler("inviteinterview", inviteInterview, false, false)
 
 -- /endinterview
 function endInterview( thePlayer, commandName, partialPlayerName )
-	if ( getData( thePlayer, "loggedin" ) == 1 and not isPedDead( thePlayer ) ) then
+	if not isPedDead( thePlayer ) then
 		
 		if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Andreas Network and Entertainment") ) then
 			
@@ -1102,7 +1070,7 @@ addCommandHandler("endinterview", endInterview, false, false)
 
 ------------ /// LSVS \\\ ------------
 function toggleVehicleImpound( thePlayer, commandName )
-	if ( getData( thePlayer, "loggedin" ) == 1 and not isPedDead( thePlayer ) ) then
+	if not isPedDead( thePlayer ) then
 		
 		if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Fierro Vehicle Services") or exports['[ars]global']:isPlayerHighModerator( thePlayer ) ) then
 			

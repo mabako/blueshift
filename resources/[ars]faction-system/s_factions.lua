@@ -36,7 +36,7 @@ end
 
 -- /setfaction
 function setPlayerFaction( thePlayer, commandName, partialPlayerName, factionID, rankID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		if (partialPlayerName) and (factionID) and (rankID) then
 			
@@ -94,7 +94,7 @@ addCommandHandler("setfaction", setPlayerFaction, false, false)
 
 -- /makefaction
 function makeFaction( thePlayer, commandName, factionType )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionType) then
 			
@@ -118,7 +118,7 @@ addCommandHandler("makefaction", makeFaction, false, false)
 
 -- /delfaction
 function deleteFaction( thePlayer, commandName, factionID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) then
 			
@@ -156,7 +156,7 @@ addCommandHandler("delfaction", deleteFaction, false, false)
 	
 -- /setfactionleaderank
 function setFactionLeaderRank( thePlayer, commandName, factionID, leaderRank )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (leaderRank) then
 			
@@ -194,7 +194,7 @@ addCommandHandler("setfactionleaderrank", setFactionLeaderRank, false, false)
 	
 -- /setfactionid
 function setFactionID( thePlayer, commandName, factionID, newFactionID )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (newFactionID) then
 			
@@ -243,7 +243,7 @@ addCommandHandler("setfactionid", setFactionID, false, false)
 
 -- /setfactionname
 function setFactionName( thePlayer, commandName, factionID, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (...) then
 			
@@ -288,7 +288,7 @@ addCommandHandler("setfactionname", setFactionName, false, false)
 
 -- /showfactions
 function showFactions( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		local factions = { }
 		factions["id"] = { }
@@ -313,7 +313,7 @@ addCommandHandler("showfactions", showFactions, false, false)
 	
 -- /setvehfaction	
 function setVehicleFaction( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		local faction = tonumber(getData(thePlayer, "faction"))
 		if (faction > 0) then

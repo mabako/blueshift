@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Advertisement ] ---------
 local adEmployee = createPed(192, 1490.5898, 1305.5576, 1093.2963)
 
@@ -21,7 +10,7 @@ setElementDimension(adEmployee, 115)
 addEventHandler("onClientClick", root, 
 	function( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
 		
-		if ( getData(getLocalPlayer(), "loggedin") == 1 and not isElement(advertWindow) ) then
+		if ( getElementData(localPlayer, "loggedin") and not isElement(advertWindow) ) then
 			
 			if (button == "right" and state == "up") then
 				

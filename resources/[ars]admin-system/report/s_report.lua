@@ -54,8 +54,7 @@ function sendPlayerReport( option, realOption, name, explaination )
 		
 		for key, thePlayer in ipairs(getElementsByType("player")) do
 			
-			local loggedin = tonumber(getData(thePlayer, "loggedin"))
-			if (loggedin == 1) then
+			if getElementData(thePlayer, "loggedin") then
 			
 				local admin = tonumber(getData(thePlayer, "admin"))
 				local adminduty = tonumber(getData(thePlayer, "adminduty"))
@@ -90,7 +89,7 @@ addEventHandler("sendPlayerReport", root, sendPlayerReport)
 
 -- /ar
 function acceptReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -105,8 +104,7 @@ function acceptReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 							
 							local admin = tonumber(getData(val, "admin"))
 							local adminduty = tonumber(getData(val, "adminduty"))
@@ -139,7 +137,7 @@ addCommandHandler("ar", acceptReport, false, false)
 	
 -- /cr
 function closeReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -153,8 +151,7 @@ function closeReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 							
 							local admin = tonumber(getData(val, "admin"))
 							local adminduty = tonumber(getData(val, "adminduty"))
@@ -186,7 +183,7 @@ addCommandHandler("cr", closeReport, false, false)
 
 -- /fr
 function falseReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -200,8 +197,7 @@ function falseReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 						
 							local admin = tonumber(getData(val, "admin"))
 							local adminduty = tonumber(getData(val, "adminduty"))
@@ -232,7 +228,7 @@ addCommandHandler("fr", falseReport, false, false)
 
 -- /tr
 function transferReport( thePlayer, commandName, reportID, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (reportID) then
 			
@@ -293,7 +289,7 @@ addCommandHandler("tr", transferReport, false, false)
 	
 -- /rd
 function reportDetails( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -348,7 +344,7 @@ addCommandHandler("rd", reportDetails, false, false)
 	
 -- /reports
 function listReports( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		outputChatBox("========= Current Reports =========", thePlayer, 0, 100, 212)
 		

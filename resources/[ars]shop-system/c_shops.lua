@@ -90,7 +90,7 @@ local globalSkins = {
 addEventHandler("onClientPedDamage", getRootElement(), cancelEvent) -- We don't want people going around and killing our shops keepers..
 
 function onShopKeeperClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getData(getLocalPlayer(), "loggedin") == 1) then
+	if getElementData(localPlayer, "loggedin") then
 		if (button == "right" and state == "up") then
 			
 			if (clickedElement) then

@@ -74,7 +74,7 @@ addEventHandler("callInventoryData", getRootElement(), callInventoryData)
 addEvent("onClientStart", true)
 addEventHandler("onClientStart", getRootElement(),
 function(  )
-	if (getData(source, "loggedin") == 1) then
+	if getElementData(source, "loggedin") then
 		triggerEvent("callInventoryData", source)
 	end	
 end)

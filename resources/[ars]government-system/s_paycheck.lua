@@ -48,7 +48,7 @@ function payCheck( thePlayer )
 	else
 		
 		for key, thePlayer in ipairs( getElementsByType("player") ) do
-			if ( getData( thePlayer, "loggedin" ) == 1 ) then
+			if getElementData( thePlayer, "loggedin" ) then
 				
 				local dbid = tonumber( getData( thePlayer, "dbid" ) )
 				if ( dbid ) then

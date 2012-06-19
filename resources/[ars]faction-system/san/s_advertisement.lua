@@ -1,16 +1,6 @@
 local sql = exports.sql
 
 --------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 local function setData( theElement, key, value, sync )
 	local key = tostring(key)
 	if isElement(theElement) and (key) and (value) then
@@ -25,7 +15,7 @@ function sendAdvertisement( advert )
 	local advert = tostring( advert )
 	
 	for key, value in ipairs ( getElementsByType("player") ) do
-		if ( getData( value, "loggedin" ) == 1 ) then
+		if getElementData( value, "loggedin" ) then
 			
 			outputChatBox("[ADVERT] ".. advert .." (( ".. getPlayerName(source):gsub("_", " ") .." ))", value, 177, 120, 29) 
 		end

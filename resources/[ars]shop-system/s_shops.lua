@@ -28,7 +28,7 @@ end
 
 -- /createshop
 function createShop( thePlayer, commandName, shopType )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		if (shopType) then
 			
@@ -121,7 +121,7 @@ addCommandHandler("createshop", createShop, false, false)
 
 -- /delshop
 function deleteShop( thePlayer, commandName, shopID)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		if (shopID) then
 			local shopID = tonumber(shopID)
@@ -158,7 +158,7 @@ addCommandHandler("delshop", deleteShop, false, false)
 
 -- /nearbyshops
 function nearbyShops( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		local x, y, z = getElementPosition(thePlayer)
 		

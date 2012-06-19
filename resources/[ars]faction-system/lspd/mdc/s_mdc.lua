@@ -33,39 +33,36 @@ end
 -- /mdc
 addCommandHandler("mdc", 
 function( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
+	local playerFaction = tonumber( getData(thePlayer, "faction") )
+	if ( playerFaction == 1 ) then
 		
-		local playerFaction = tonumber( getData(thePlayer, "faction") )
-		if ( playerFaction == 1 ) then
-			
-			local vehicle = false
-			local dimension = getElementDimension (thePlayer)
-			
-			if ( isPedInVehicle( thePlayer ) ) then
-				vehicle = getPedOccupiedVehicle( thePlayer )
-			end
-			
-			if ( vehicle ) then
-				if ( not policeVehicle[getElementModel(vehicle)] ) then
-					
-					outputChatBox("This vehicle does not have LSPD MDC system installed.", thePlayer, 255, 0, 0)
-					return
-				end
-			else	
-				if ( dimension ~= 311) then
-					
-					outputChatBox("You need to be near MDC to use it.", thePlayer, 255, 0, 0)
-					return
-				end
-			end
-				
-			local faction = getTeamFromName("Los Santos Police Department")
-				
-			local rank = tonumber( getData(thePlayer, "f:rank") )
-			local leaderRank = tonumber( getData(faction, "leader") )
-			
-			triggerClientEvent(thePlayer, "showMobileDataTerminal", thePlayer, rank, leaderRank)
+		local vehicle = false
+		local dimension = getElementDimension (thePlayer)
+		
+		if ( isPedInVehicle( thePlayer ) ) then
+			vehicle = getPedOccupiedVehicle( thePlayer )
 		end
+		
+		if ( vehicle ) then
+			if ( not policeVehicle[getElementModel(vehicle)] ) then
+				
+				outputChatBox("This vehicle does not have LSPD MDC system installed.", thePlayer, 255, 0, 0)
+				return
+			end
+		else	
+			if ( dimension ~= 311) then
+				
+				outputChatBox("You need to be near MDC to use it.", thePlayer, 255, 0, 0)
+				return
+			end
+		end
+			
+		local faction = getTeamFromName("Los Santos Police Department")
+			
+		local rank = tonumber( getData(thePlayer, "f:rank") )
+		local leaderRank = tonumber( getData(faction, "leader") )
+		
+		triggerClientEvent(thePlayer, "showMobileDataTerminal", thePlayer, rank, leaderRank)
 	end
 end, false, false)	
 

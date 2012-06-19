@@ -5,7 +5,7 @@ local fileName = nil
 function getBankBalances( thePlayer, commandName )
 	if ( thePlayer ) then
 		
-		if ( getElementData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+		if not exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 			return
 		end
 	end	
@@ -64,8 +64,7 @@ end
 local threads = { }	
 function restoreBankBalances( thePlayer, commandName )
 	if ( thePlayer ) then
-		if ( getElementData(thePlayer, "loggedin") ~= 1 ) or ( not exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
-			
+		if not exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 			return
 		end
 	end
@@ -199,7 +198,7 @@ end
 
 addCommandHandler("togbanksave",
 	function( thePlayer, commandName )
-		if ( getElementData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+		if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 			if ( allowSave ) then
 				

@@ -21,7 +21,7 @@ addEventHandler("onClientClick", root,
 		if ( button == "right" and state == "up" ) then
 			
 			if ( clickedElement ) and ( clickedElement == employee ) then
-				if ( getData( localPlayer, "loggedin") == 1 and not isElement( towVehicleWindow ) ) then
+				if ( getElementData( localPlayer, "loggedin") and not isElement( towVehicleWindow ) ) then
 			
 					createTowVehicleWindow(  )
 				end	

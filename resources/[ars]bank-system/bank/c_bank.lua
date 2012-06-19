@@ -53,7 +53,7 @@ addEventHandler("onClientResourceStart", resourceRoot, createEmployee)
 --------- [ Bank Access ] ---------
 local allowOpen = true
 function onEmployeeClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getElementData(getLocalPlayer(), "loggedin") == 1) and (not isElement(bankWindow)) then
+	if getElementData(getLocalPlayer(), "loggedin") and (not isElement(bankWindow)) then
 		
 		if (button == "right" and state == "up") then
 			

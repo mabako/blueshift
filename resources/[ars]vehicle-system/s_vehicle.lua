@@ -67,7 +67,7 @@ local alphabets = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "
 
 -- /makeveh
 function makeVehicle( thePlayer, commandName, partialPlayerName, faction, tinted, job, color1, color2, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) and (partialPlayerName) then
 			
@@ -188,7 +188,7 @@ addCommandHandler("makeveh", makeVehicle, false, false)
 
 -- /makecivveh
 function makeCivVehicle( thePlayer, commandName, job, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -286,7 +286,7 @@ addCommandHandler("makecivveh", makeCivVehicle, false, false)
 -- /veh
 local tempVehicleCount = 0
 function makeTemporaryVehicle( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (...) then
 			
@@ -368,7 +368,7 @@ addCommandHandler("veh", makeTemporaryVehicle, false, false)
 
 -- /fixveh		
 function fixVeh( thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if (partialPlayerName) then
 				
 			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -411,7 +411,7 @@ addCommandHandler("fixveh", fixVeh, false, false)
 
 -- /fixvehs
 function fixVehicles( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
 			fixVehicle( theVehicle )
@@ -424,7 +424,7 @@ addCommandHandler("fixvehs", fixVehicles, false, false)
 
 -- /refuelvehs
 function refuelVehicles( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
 			setData(theVehicle, "fuel", 151, true)
@@ -437,7 +437,7 @@ addCommandHandler("refuelvehs", refuelVehicles, false, false)
 
 -- /refuelveh
 function refeulVehicle( thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if (partialPlayerName) then
 				
 			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -477,7 +477,7 @@ addCommandHandler("refuelveh", refeulVehicle, false, false)
 	
 -- /setcarhp
 function setVehHealth( thePlayer, commandName, partialPlayerName, health)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		if (partialPlayerName) and (health) then
 				
 			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -527,7 +527,7 @@ addCommandHandler("setcarhp", setVehHealth, false, false)
 
 -- /nearbyvehs
 function nearbyVehicles( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		outputChatBox("~-~-~-~-~-~ Nearby Vehicles ~-~-~-~-~-~", thePlayer, 212, 156, 49)
 
@@ -554,69 +554,67 @@ addCommandHandler("nearbyvehs", nearbyVehicles, false, false)
 
 -- /unflip
 function unflipVehicle( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) then
-		if ( getData(thePlayer, "faction") == 3 ) or ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
-		
-			if (partialPlayerName) then
-				
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+	if ( getData(thePlayer, "faction") == 3 ) or ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	
+		if (partialPlayerName) then
+			
+			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-						
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
-							
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do 
-						
-						local vehicle = getPedOccupiedVehicle(foundPlayer)
-						if isElement(vehicle) then
-							
-							local rotx, roty, rotz = getVehicleRotation(vehicle)
-							
-							local success = setVehicleRotation(vehicle, 0, roty, rotz)
-							if success then
-								outputChatBox("You unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
-								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
-							else
-								outputChatBox("Failed to unflip ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
-							end	
-						else
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
-						end	
-					end
-				end
-			else
-				
-				local vehicle = getPedOccupiedVehicle(thePlayer)
-				if isElement(vehicle) then
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
 					
-					local rotx, roty, rotz = getVehicleRotation(vehicle)
-							
-					local success = setVehicleRotation(vehicle, 0, roty, rotz)
-					if success then
-						outputChatBox("You unflipped your vehicle.", thePlayer, 212, 156, 49)
+				local count = 0
+				for k, foundPlayer in ipairs (players) do
+						
+					count = count + 1
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
+			else
+				for k, foundPlayer in ipairs (players) do 
+					
+					local vehicle = getPedOccupiedVehicle(foundPlayer)
+					if isElement(vehicle) then
+						
+						local rotx, roty, rotz = getVehicleRotation(vehicle)
+						
+						local success = setVehicleRotation(vehicle, 0, roty, rotz)
+						if success then
+							outputChatBox("You unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
+							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
+						else
+							outputChatBox("Failed to unflip ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
+						end	
 					else
-						outputChatBox("Failed to unflip your vehicle.", thePlayer, 255, 0, 0)
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 					end	
-				else
-					outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
-				end	
+				end
 			end
-		end	
+		else
+			
+			local vehicle = getPedOccupiedVehicle(thePlayer)
+			if isElement(vehicle) then
+				
+				local rotx, roty, rotz = getVehicleRotation(vehicle)
+						
+				local success = setVehicleRotation(vehicle, 0, roty, rotz)
+				if success then
+					outputChatBox("You unflipped your vehicle.", thePlayer, 212, 156, 49)
+				else
+					outputChatBox("Failed to unflip your vehicle.", thePlayer, 255, 0, 0)
+				end	
+			else
+				outputChatBox("You are not in a vehicle.", thePlayer, 255, 0, 0)
+			end	
+		end
 	end
 end
 addCommandHandler("unflip", unflipVehicle, false, false)	
 			
 -- /tpcar
 function teleportVehicle( thePlayer, commandName, id )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (id) then
 			local id = tonumber(id)
@@ -660,7 +658,7 @@ addCommandHandler("tpcar", teleportVehicle, false, false)
 
 -- /tptocar
 function teleportToVehicle( thePlayer, commandName, id )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (id) then
 			local id = tonumber(id)
@@ -704,7 +702,7 @@ addCommandHandler("tptocar", teleportToVehicle, false, false)
 	
 -- /addupgrade
 function addUpgrade( thePlayer, commandName, partialPlayerName, upgradeID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (upgradeID) then
 			
@@ -748,77 +746,74 @@ addCommandHandler("addupgrade", addUpgrade, false, false)
 			
 -- /delveh
 function deleteVehicle( thePlayer, commandName, id )
-	if ( getData(thePlayer, "loggedin") == 1 ) then 
+	local adminLevel = tonumber( getData( thePlayer, "admin" ) )
+	if ( adminLevel == 0 ) then
 		
-		local adminLevel = tonumber( getData( thePlayer, "admin" ) )
-		if ( adminLevel == 0 ) then
+		return
+	else	
+		if (id) then
+			local id = tonumber(id)
 			
-			return
-		else	
-			if (id) then
-				local id = tonumber(id)
+			local theVehicle = false
+			for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
 				
-				local theVehicle = false
-				for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
+				local dbid = getData(vehicle, "dbid")
+				if tonumber(dbid) == id then
 					
-					local dbid = getData(vehicle, "dbid")
-					if tonumber(dbid) == id then
-						
-						theVehicle = vehicle
-						break
-					end
+					theVehicle = vehicle
+					break
 				end
+			end
+			
+			if (theVehicle) then
 				
-				if (theVehicle) then
+				if (id < 0) then
 					
-					if (id < 0) then
-						
-						destroyElement(theVehicle)
-						theVehicle = nil
-					elseif (id > 0) then
-						if ( adminLevel >= 4 ) then
-						
-							local delete = sql:query("DELETE FROM vehicles WHERE id=".. sql:escape_string(id) .."")
-							if (delete) then
-								
-								-- Journey
-								if ( getElementModel(theVehicle) == 508 ) then
-									for key, value in ipairs ( getElementsByType("marker") ) do
-										if ( tonumber( getData(value, "dbid") ) == -id ) then
-											
-											destroyElement(value)
-										end
+					destroyElement(theVehicle)
+					theVehicle = nil
+				elseif (id > 0) then
+					if ( adminLevel >= 4 ) then
+					
+						local delete = sql:query("DELETE FROM vehicles WHERE id=".. sql:escape_string(id) .."")
+						if (delete) then
+							
+							-- Journey
+							if ( getElementModel(theVehicle) == 508 ) then
+								for key, value in ipairs ( getElementsByType("marker") ) do
+									if ( tonumber( getData(value, "dbid") ) == -id ) then
+										
+										destroyElement(value)
 									end
 								end
-								
-								destroyElement(theVehicle)
-								theVehicle = nil
-							else
-								outputDebugString("MySQL Error: Vehicle deletion failed!", 1)
 							end
 							
-							sql:free_result(delete)
+							destroyElement(theVehicle)
+							theVehicle = nil
 						else
-							outputChatBox("You cannot delete a permanent vehicle.", thePlayer, 255, 0, 0)
-						end	
-					end
-					
-					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." deleted vehicle with ID ".. id ..".")
-					outputChatBox("Vehicle ID ".. id .." deleted.", thePlayer, 212, 156, 49)
-				else
-					outputChatBox("Invalid vehicle ID.", thePlayer, 255, 0, 0)
+							outputDebugString("MySQL Error: Vehicle deletion failed!", 1)
+						end
+						
+						sql:free_result(delete)
+					else
+						outputChatBox("You cannot delete a permanent vehicle.", thePlayer, 255, 0, 0)
+					end	
 				end
+				
+				exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." deleted vehicle with ID ".. id ..".")
+				outputChatBox("Vehicle ID ".. id .." deleted.", thePlayer, 212, 156, 49)
 			else
-				outputChatBox("SYNTAX: /".. commandName .." [Vehicle ID]", thePlayer, 212, 156, 49)
+				outputChatBox("Invalid vehicle ID.", thePlayer, 255, 0, 0)
 			end
-		end	
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Vehicle ID]", thePlayer, 212, 156, 49)
+		end
 	end
 end
 addCommandHandler("delveh", deleteVehicle, false, false)
 	
 -- /setvehcolor
 function setVehColor( thePlayer, commandName, partialPlayerName, color1, color2 )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (color1) and (color2) then
 			
@@ -873,7 +868,7 @@ addCommandHandler("setvehcolor", setVehColor, false, false)
 
 -- /setvehcustomcolor
 function setVehicleCustomColor( thePlayer, commandName, partialPlayerName, red1, green1, blue1, red2, green2, blue2 )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (red1) and (green1) and (blue1) and (red2) and (green2) and (blue2) then
 			
@@ -939,7 +934,7 @@ addCommandHandler("setvehcustomcolor", setVehicleCustomColor, false, false)
 -- /respawnvehs
 local vehRespawnTimer = false 
 function respawnVehicles( thePlayer, commandName, timer )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		if (vehRespawnTimer) then
 			
@@ -1037,7 +1032,7 @@ addCommandHandler("respawnvehs", respawnVehicles, false, false)
 -- /respawncivvehs
 local civVehRespawnTimer = false
 function respawnCivVehicles( thePlayer, commandName, timer )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		if (civVehRespawnTimer) then
 			
@@ -1137,7 +1132,7 @@ addCommandHandler("respawncivvehs", respawnCivVehicles, false, false)
 
 -- /respawnveh
 function respawnVeh( thePlayer, commandName, id )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 	
 		if (id) then
 			local id = tonumber(id)
@@ -1222,7 +1217,7 @@ addEventHandler("respawnRemoteVehicle", root, respawnRemoteVehicle)
 
 -- /park
 function parkVehicle( thePlayer, commandName )	
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		local vehicle = getPedOccupiedVehicle(thePlayer)
 		if (vehicle) then
@@ -1430,7 +1425,7 @@ end
 setTimer(checkVehiclesInWater, 600000, 0)
  
 function toggleLights( thePlayer )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		if isPedInVehicle(thePlayer) then
 			local veh = getPedOccupiedVehicle(thePlayer)
@@ -1453,7 +1448,7 @@ end
 
 local strobes = { }
 function toggleStrobes( thePlayer )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( not isPedDead(thePlayer) ) then
+	if not isPedDead(thePlayer) then
 		if ( isPedInVehicle(thePlayer) ) then
 			
 			local veh = getPedOccupiedVehicle(thePlayer)
@@ -1513,7 +1508,7 @@ addEventHandler("onElementDestroy", root,
 )
 	
 function toggleEngine( thePlayer )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		if isPedInVehicle(thePlayer) then
 			
@@ -1596,7 +1591,7 @@ end
 addEventHandler("onVehicleEnter", getRootElement(), checkEngine)
 
 function toggleLock( thePlayer )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		local veh = getPedOccupiedVehicle(thePlayer) 
 		if isElement(veh) then

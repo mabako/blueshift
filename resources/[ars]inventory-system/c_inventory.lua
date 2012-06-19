@@ -31,7 +31,7 @@ addEvent("giveInventoryItems", true)
 addEventHandler("giveInventoryItems", getLocalPlayer( ), giveInventoryItems)	
 
 function showInventory( )
-	if ( getData( localPlayer, "loggedin" ) == 1 ) then
+	if getElementData( localPlayer, "loggedin" ) then
 		
 		local width, height = 400, 440
 		local x = (screenX) - (width)
@@ -896,7 +896,7 @@ end
 addEventHandler("onClientRender", getRootElement(), renderItemInfo)
 
 function checkObjectPointing( cursorX, cursorY, absoluteX, absoluteY )
-	if (isCursorShowing() and getData(getLocalPlayer(), "loggedin") == 1) then
+	if isCursorShowing() and getElementData(getLocalPlayer(), "loggedin") then
 	
 		cx = absoluteX - 0.5
 		cy = absoluteY - 1.5

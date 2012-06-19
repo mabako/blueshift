@@ -33,7 +33,7 @@ lines["Los Santos Taxi Services"] = 500
 local playerRingtone = { }
 
 function callPhone( thePlayer, commandName, phoneNumber )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if getElementData(thePlayer, "loggedin") and not isPedDead(thePlayer) then
 		
 		local hasPhone = exports['[ars]inventory-system']:hasItem(thePlayer, 3)
 		if ( hasPhone ) then
@@ -48,7 +48,7 @@ function callPhone( thePlayer, commandName, phoneNumber )
 						
 						local found = false
 						for key, foundPlayer in ipairs( getElementsByType("player") ) do
-							if ( getData(foundPlayer, "loggedin" ) == 1 ) then
+							if getElementData(foundPlayer, "loggedin" ) then
 								
 								local hasPhone, matchPhoneNumber = exports['[ars]inventory-system']:hasItem(foundPlayer, 3, phoneNumber)
 							
@@ -155,7 +155,7 @@ end
 
 local calling = { }
 function pickupPhone( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		if ( tonumber( getData(thePlayer, "ringing") ) == 1 ) then
 			
@@ -163,7 +163,7 @@ function pickupPhone( thePlayer, commandName )
 			setData(thePlayer, "ringing", 0, true)
 			
 			for key, value in ipairs ( getElementsByType("player") ) do
-				if ( getData(value, "loggedin" ) == 1 ) then
+				if getElementData(value, "loggedin" ) then
 				
 					if ( tonumber(getData(thePlayer, "calling")) == tonumber(getData(value, "dbid")) ) then
 						
@@ -190,13 +190,13 @@ end
 addCommandHandler("pickup", pickupPhone, false, false)
 
 function hangupPhone( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		if ( tonumber( getData(thePlayer, "ringing") ) == 1 or tostring( getData(thePlayer, "calling") ) ~= "0" ) then
 			
 			local found = false
 			for key, value in ipairs ( getElementsByType("player") ) do
-				if ( getData(value, "loggedin" ) == 1 ) then
+				if getElementData(value, "loggedin" ) then
 					
 					if ( tonumber(getData(thePlayer, "calling")) == tonumber(getData(value, "dbid")) ) then
 					
@@ -261,7 +261,7 @@ end
 addCommandHandler("hangup", hangupPhone, false, false)
 
 function togglePlayerPhone( thePlayer )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerLevelTwoDonator( thePlayer ) then
+	if exports['[ars]global']:isPlayerLevelTwoDonator( thePlayer ) then
 		
 		local togglephone = tonumber( getData( thePlayer, "togglephone") )
 		if ( togglephone == 1 ) then
@@ -291,7 +291,7 @@ addCommandHandler("togphone", togglePlayerPhone, false, false)
 addCommandHandler("togglephone", togglePlayerPhone, false, false)
 
 function phoneChat( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 
 		local callingLine = false
 		for key, value in pairs ( lines ) do
@@ -402,7 +402,7 @@ end
 addCommandHandler("p", phoneChat, false, false)
 
 function useShortMessageService( thePlayer, commandName, phoneNumber, ... )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		local hasPhone = exports['[ars]inventory-system']:hasItem(thePlayer, 3)
 		if ( hasPhone ) then
@@ -417,7 +417,7 @@ function useShortMessageService( thePlayer, commandName, phoneNumber, ... )
 					
 					local found = false
 					for key, foundPlayer in ipairs( getElementsByType("player") ) do
-						if ( getData(foundPlayer, "loggedin" ) == 1 ) then
+						if getData(foundPlayer, "loggedin" ) then
 						
 							local hasPhone, matchPhoneNumber = exports['[ars]inventory-system']:hasItem(foundPlayer, 3, phoneNumber)
 							if (hasPhone and matchPhoneNumber) then

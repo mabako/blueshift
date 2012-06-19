@@ -95,7 +95,7 @@ addEventHandler("renderInteriorDetails", localPlayer, renderInteriorDetails)
 
 addEventHandler("onClientResourceStart", resourceRoot,
 	function( )
-		if ( getData( localPlayer, "loggedin" ) == 1 ) then
+		if getElementData( localPlayer, "loggedin" ) then
 			
 			rendering = true
 			addEventHandler("onClientRender", root, drawInteriorDetails)

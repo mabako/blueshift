@@ -5,7 +5,7 @@ local atmWindow = nil
 
 --------- [ ATM Access ] ---------
 function onATMClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getElementData(getLocalPlayer(), "loggedin") == 1) and (not isElement(atmWindow)) and not open then
+	if getElementData(getLocalPlayer(), "loggedin") and (not isElement(atmWindow)) and not open then
 		
 		if (button == "right" and state == "up") then
 			

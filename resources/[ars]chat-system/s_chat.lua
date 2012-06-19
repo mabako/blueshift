@@ -553,7 +553,7 @@ function depChat(thePlayer, commandName, ...)
 				
 				for team in pairs(departmentTeams) do
 					for key, value in ipairs(getPlayersInTeam(getTeamFromName(team)) or {}) do
-						if getData(value, "loggedin") then
+						if getElementData(value, "loggedin") then
 							outputLongChatBox("[DEPARTMENT " .. teamName .. "] " .. getPlayerName(thePlayer):gsub("_", " ") .. " says: ", message, "", value, 0, 102, 255)
 						end	
 					end

@@ -62,7 +62,7 @@ setElementDimension(employee, 37)
 
 addEventHandler("onClientClick", root, 
 	function( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
-		if ( getData(getLocalPlayer(), "loggedin") == 1 and not isElement(sellPhotoWindow) ) then
+		if ( getData(getLocalPlayer(), "loggedin") and not isElement(sellPhotoWindow) ) then
 			if (button == "right" and state == "up") then
 				
 				if (clickedElement) and (clickedElement == employee) then

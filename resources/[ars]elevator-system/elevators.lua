@@ -31,7 +31,7 @@ end
 
 -- /makeelevator
 function makeElevator( thePlayer, commandName, x, y, z, int, dim, vehicle )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if ( x and y and z and int and dim and vehicle ) then
 			
@@ -117,7 +117,7 @@ addCommandHandler("makeelevator", makeElevator, false, false)
 
 -- /delelevator
 function deleteElevator( thePlayer, commandName, elevatorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if ( elevatorID ) then
 			local elevatorID = tonumber( elevatorID )
@@ -154,7 +154,7 @@ addCommandHandler("delelevator", deleteElevator, false, false)
 	
 -- /nearbyelevators
 function nearbyElevators( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		local count = 0
 		outputChatBox("~-~-~-~-~-~ Nearby Elevators ~-~-~-~-~-~", thePlayer, 212, 156, 49)
@@ -187,7 +187,7 @@ addCommandHandler("nearbyelevators", nearbyElevators, false, false)
 	
 -- /setelevatorentrance
 function setElevatorEntrance( thePlayer, commandName, elevatorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (elevatorID) then
 			
@@ -243,7 +243,7 @@ addCommandHandler("setelevatorentrance", setElevatorEntrance, false, false)
 
 -- /setelevatorexit
 function setElevatorExit( thePlayer, commandName, elevatorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (elevatorID) then
 			

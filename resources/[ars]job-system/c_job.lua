@@ -26,7 +26,7 @@ addEventHandler("onClientResourceStart", resourceRoot, createEmployee)
 
 --------- [ Job Access ] ---------
 function onEmployeeClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getData(getLocalPlayer(), "loggedin") == 1) and (not isElement(jobWindow)) then
+	if getElementData(getLocalPlayer(), "loggedin") and (not isElement(jobWindow)) then
 		
 		if (button == "right" and state == "up") then
 			

@@ -27,7 +27,7 @@ function showPlayerStats( thePlayer, commandName, partialPlayerName )
 	
 	if ( partialPlayerName ) then
 		
-		if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+		if getData(thePlayer, "loggedin") and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 			
 			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			

@@ -40,7 +40,7 @@ end
 function clickSupplyNPC( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
 	if ( button == "right" and state == "up" ) then
 		
-		if ( getData( localPlayer, "loggedin" ) == 1 ) then 
+		if getElementData( localPlayer, "loggedin" ) then 
 			
 			if ( clickedElement == crips ) and ( getData( localPlayer, "faction" ) == 5 ) then
 				

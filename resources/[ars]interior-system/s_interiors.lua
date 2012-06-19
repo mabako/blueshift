@@ -39,7 +39,7 @@ end
 
 -- /makeinterior
 function makeInterior( thePlayer, commandName, interiorid, interiorprice, interiortype, interiorrented, ... )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorid) and (...) and (interiorprice) and (interiortype) and (interiorrented) then
 			
@@ -138,7 +138,7 @@ addCommandHandler("makeinterior", makeInterior, false, false)
 
 -- /delinterior
 function deleteInterior( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if ( interiorID ) then
 			local interiorID = tonumber(interiorID)
@@ -192,7 +192,7 @@ addCommandHandler("delinterior", deleteInterior, false, false)
 	
 -- /nearbyinteriors
 function getNearbyInteriors( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		local count = 0
 		outputChatBox("~-~-~-~-~-~ Nearby Interiors ~-~-~-~-~-~", thePlayer, 212, 156, 49)
@@ -225,7 +225,7 @@ addCommandHandler("nearbyinteriors", getNearbyInteriors, false, false)
 	
 -- /setinteriorname
 function setInteriorName( thePlayer, commandName, interiorID, ... )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (...) then
 			
@@ -269,7 +269,7 @@ addCommandHandler("setinteriorname", setInteriorName, false, false)
 	
 -- /setinteriorprice
 function setInteriorPrice( thePlayer, commandName, interiorID, price )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (price) then
 			
@@ -312,7 +312,7 @@ addCommandHandler("setinteriorprice", setInteriorPrice, false, false)
 	
 -- /setinteriortype
 function setInteriorType( thePlayer, commandName, interiorID, interiorType )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (interiorType) then
 			
@@ -398,7 +398,7 @@ addCommandHandler("setinteriortype", setInteriorType, false, false)
 
 -- /tptointerior
 function teleportToInterior( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		if (interiorID) then
 			
@@ -442,7 +442,7 @@ addCommandHandler("tptointerior", teleportToInterior, false, false)
 
 -- /setinteriorid
 function setInteriorID( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorID) then
 			
@@ -512,7 +512,7 @@ addCommandHandler("setinteriorid", setInteriorID, false, false)
 	
 -- /sellproperty
 function sellProperty( thePlayer, commandName )
-	if ( (getData(thePlayer, "loggedin") == 1) and (not isPedDead(thePlayer)) ) then
+	if not isPedDead(thePlayer) then
 		if (getElementDimension(thePlayer) ~= 0 and getElementInterior(thePlayer) ~= 0) then
 			
 			local dbid = getElementDimension(thePlayer)
@@ -591,7 +591,7 @@ addCommandHandler("sellproperty", sellProperty, false, false)
 
 -- /setinteriorentrance
 function setInteriorEntrance( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) then
 			
@@ -647,7 +647,7 @@ addCommandHandler("setinteriorentrance", setInteriorEntrance, false, false)
 
 -- /setinteriorexit
 function setInteriorExit( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorID) then
 			
@@ -702,7 +702,7 @@ addCommandHandler("setinteriorexit", setInteriorExit, false, false)
 
 -- ENTER/EXIT
 function interactInterior( thePlayer )
-	if ( getData(thePlayer, "loggedin") == 1 ) and (not isPedDead(thePlayer) ) then
+	if not isPedDead(thePlayer) then
 		
 		for key, value in ipairs (getElementsByType("marker")) do
 			
@@ -808,7 +808,7 @@ end
 	
 -- LOCK/UNLOCK
 function toggleLock( thePlayer )
-	if ( getData(thePlayer, "loggedin") == 1 ) and (not isPedDead(thePlayer) ) then
+	if not isPedDead(thePlayer) then
 		
 		local adminduty = tonumber(getData(thePlayer, "adminduty"))
 		

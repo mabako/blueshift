@@ -293,7 +293,7 @@ function scrollUp( )
 end
 
 function drawPlayerList( )
-	if (getData(getLocalPlayer(), "loggedin") == 1) then
+	if getElementData(localPlayer, "loggedin") then
 		if not (isEventHandled) then
 			
 			isEventHandled = true

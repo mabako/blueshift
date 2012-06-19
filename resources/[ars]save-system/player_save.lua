@@ -25,7 +25,7 @@ end
 
 --------- [ Saving ] ---------
 function savePlayer( quitType )
-	if (getData(source, "loggedin") == 1) and getData(source, "dbid") then
+	if getData(source, "loggedin") and getData(source, "dbid") then
 	
 		local x, y, z = getElementPosition(source)
 		local rot = getPedRotation(source)
@@ -81,7 +81,7 @@ addEventHandler("onPlayerQuit", getRootElement(), savePlayer)
 function saveAllPlayers( )
 	outputServerLog("===== Saving All Players =====")
 	for key, thePlayer in ipairs(getElementsByType("player")) do
-		if (getData(thePlayer, "loggedin") == 1) then
+		if getElementData(thePlayer, "loggedin") then
 			triggerEvent("savePlayer", thePlayer, "Change Character")
 		end	
 	end	

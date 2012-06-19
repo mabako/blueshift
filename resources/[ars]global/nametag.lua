@@ -21,7 +21,7 @@ local function setData( theElement, key, value, sync )
 end
 
 function updateNametagColor( thePlayer )
-	if ( getData(thePlayer, "loggedin") ~= 1 ) then
+	if not getElementData(thePlayer, "loggedin") then
 	
 		setPlayerNametagColor(thePlayer, 140, 140, 140)
 	elseif ( isPlayerTrialModerator(thePlayer) ) and ( getData(thePlayer, "adminduty") == 1 ) and ( getData(thePlayer, "hiddenadmin") == 0 ) then -- Admin

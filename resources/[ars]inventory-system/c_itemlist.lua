@@ -12,7 +12,7 @@ end
 itemlistWindow = nil
 
 function openItemlist()
-	if getData(getLocalPlayer(), "loggedin") == 1 and exports['[ars]global']:c_isPlayerTrialModerator(getLocalPlayer()) then
+	if exports['[ars]global']:c_isPlayerTrialModerator(getLocalPlayer()) then
 		if not (itemlistWindow) then
 			local screenX, screenY = guiGetScreenSize()
 			

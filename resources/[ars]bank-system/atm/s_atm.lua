@@ -30,7 +30,7 @@ end
 
 -- /makeatm
 function makeATM( thePlayer, commandName, depositable, atmLimit )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		local depositable = tonumber(depositable)
 		local atmLimit = tonumber(atmLimit)
@@ -88,7 +88,7 @@ addCommandHandler("makeatm", makeATM, false, false)
 
 -- /delatm
 function deleteATM( thePlayer, commandName, atmID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (atmID) then
 			
@@ -134,7 +134,7 @@ addCommandHandler("deleteatm", deleteATM, false, false)
 
 -- /setatmlimit
 function setATMWithdrawLimit( thePlayer, commandName, atmID, atmLimit )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (atmID) and (atmLimit) then
 			
@@ -184,7 +184,7 @@ addCommandHandler("setatmlimit", setATMWithdrawLimit, false, false)
 
 -- /setatmdepositable
 function setATMDepositable( thePlayer, commandName, atmID, depositable )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (atmID) and (depositable) then
 			
@@ -233,7 +233,7 @@ end
 addCommandHandler("setatmdepositable", setATMDepositable, false, false)
 
 function nearbyAtms( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local x, y, z = getElementPosition( thePlayer )
 		local count = 0

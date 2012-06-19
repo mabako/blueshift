@@ -65,7 +65,7 @@ end
 
 -- /freconnect
 function forceReconnect( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -100,7 +100,7 @@ addCommandHandler("freconnect", forceReconnect, false, false)
 
 -- /tpto
 function teleportTo( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -120,7 +120,7 @@ function teleportTo( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 					
 						if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
 							
@@ -209,7 +209,7 @@ addCommandHandler("tpto", teleportTo, false, false)
 	
 -- /tphere
 function teleportHere( thePlayer, commandName, partialPlayerName )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -229,7 +229,7 @@ function teleportHere( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 			
 						if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
 							
@@ -319,7 +319,7 @@ addCommandHandler("tphere", teleportHere, false, false)
 
 -- /send [firstplayer] to [secondplayer]
 function sendPlayerTo( thePlayer, commandName, partialPlayerNameFirst, theSpecialWord, partialPlayerNameSecond )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerNameFirst) and theSpecialWord == "to" and (partialPlayerNameSecond) then
 			
@@ -355,7 +355,7 @@ function sendPlayerTo( thePlayer, commandName, partialPlayerNameFirst, theSpecia
 					secondPlayerName = getPlayerName(foundPlayerSecond)
 					secondPlayer = foundPlayerSecond
 					
-					if getData(foundPlayerSecond, "loggedin") == 1 then
+					if getElementData(foundPlayerSecond, "loggedin") then
 						
 						if isPedInVehicle(foundPlayerSecond) then
 							
@@ -429,7 +429,7 @@ local places = {
 	
 -- /tptoplace
 function teleportToPlace( thePlayer, commandName, placeName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if placeName then
 			
@@ -454,7 +454,7 @@ addCommandHandler("tptoplace", teleportToPlace, false, false)
 	
 -- /pmute
 function mutePlayer(thePlayer, commandName, partialPlayerName )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -472,7 +472,7 @@ function mutePlayer(thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						if getData(foundPlayer, "muted") == 0 then
 							
@@ -503,7 +503,7 @@ addCommandHandler("pmute", mutePlayer, false, false)
 
 -- /givegun
 function giveGun( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
 			
@@ -522,7 +522,7 @@ function giveGun( thePlayer, commandName, partialPlayerName, ... )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						local weapon = tonumber(args[1])
 						local ammo = #args ~= 1 and tonumber(args[#args]) or 1
@@ -569,7 +569,7 @@ addCommandHandler("givegun", giveGun, false, false)
 	
 -- /disarm	
 function disarmPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
@@ -586,7 +586,7 @@ function disarmPlayer( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 					
 						takeAllWeapons(foundPlayer)
 						outputChatBox("You disarmed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
@@ -606,7 +606,7 @@ addCommandHandler("disarm", disarmPlayer, false, false)
 
 -- /sethp
 function setHealth( thePlayer, commandName, partialPlayerName, health )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (health) then
 			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
@@ -632,7 +632,7 @@ function setHealth( thePlayer, commandName, partialPlayerName, health )
 						health = 0
 					end
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 					
 						local success = setElementHealth(foundPlayer, health)
 						if (success) then
@@ -656,7 +656,7 @@ addCommandHandler("sethp", setHealth, false, false)
 
 -- /setarmor
 function setArmor( thePlayer, commandName, partialPlayerName, armor )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (armor) then
 			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
@@ -680,7 +680,7 @@ function setArmor( thePlayer, commandName, partialPlayerName, armor )
 						armor = 0
 					end
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 					
 						local success = setPedArmor(foundPlayer, armor)
 						if (success) then
@@ -704,7 +704,7 @@ addCommandHandler("setarmor", setArmor, false, false)
 
 -- /setskin
 function setSkin( thePlayer, commandName, partialPlayerName, skin )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (skin) then
 			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
@@ -721,7 +721,7 @@ function setSkin( thePlayer, commandName, partialPlayerName, skin )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 					
 						local success = setElementModel(foundPlayer, skin)
 						if (success) then
@@ -743,7 +743,7 @@ addCommandHandler("setskin", setSkin, false, false)
 	
 -- /changename		
 function changePlayerName( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
 			
@@ -768,7 +768,7 @@ function changePlayerName( thePlayer, commandName, partialPlayerName, ... )
 				else
 					for k, foundPlayer in ipairs (players) do
 					
-						if getData(foundPlayer, "loggedin") == 1 then
+						if getElementData(foundPlayer, "loggedin") then
 							
 							local formerName = getPlayerName(foundPlayer):gsub("_", " ")
 							local dbid = getData(foundPlayer, "dbid")
@@ -811,7 +811,7 @@ addCommandHandler("changename", changePlayerName, false, false)
 
 -- /hideadmin
 function hideAdmin( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		local state = tonumber( getData(thePlayer, "hiddenadmin") )
 		
@@ -836,7 +836,7 @@ addCommandHandler("hideadmin", hideAdmin, false, false)
 
 -- /adminduty
 function toggleDuty( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local duty = getData(thePlayer, "adminduty")
 		if duty == 1 then
@@ -859,7 +859,7 @@ addCommandHandler("adminduty", toggleDuty, false, false)
 
 -- /slap			
 function slapPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -876,7 +876,7 @@ function slapPlayer( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						local x, y, z = getElementPosition(foundPlayer)
 						setElementPosition(foundPlayer, x, y, z + 10)
@@ -898,7 +898,7 @@ addCommandHandler("slap", slapPlayer, false, false)
 
 -- /hugeslap			
 function hugeslapPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -915,7 +915,7 @@ function hugeslapPlayer( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						local x, y, z = getElementPosition(foundPlayer)
 						setElementPosition(foundPlayer, x, y, z + 20)
@@ -938,7 +938,7 @@ addCommandHandler("hugeslap", hugeslapPlayer, false, false)
 local watching = { }
 -- /watch
 function watchPlayer(thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -956,7 +956,7 @@ function watchPlayer(thePlayer, commandName, partialPlayerName)
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						if not (foundPlayer == thePlayer) then 
 							
@@ -1091,7 +1091,7 @@ addEventHandler("onPlayerQuit", getRootElement(), removeWatch)
 
 -- /pkick
 function playerKick( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -1173,7 +1173,7 @@ addEventHandler("remoteKick", root, remoteKick)
 	
 -- /pban
 function playerBan( thePlayer, commandName, partialPlayerName, hours, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (hours) then
 			
@@ -1266,7 +1266,7 @@ addCommandHandler("pban", playerBan, false, false)
 	
 -- /unban	
 function playerUnban( thePlayer, commandName, ...)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1315,7 +1315,7 @@ addCommandHandler("unban", playerUnban, false, false)
 
 -- /makeadmin		
 function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (rrank) then
 			
@@ -1333,7 +1333,7 @@ function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						local rrank = tonumber(rrank)
 						if (rrank) then
@@ -1414,7 +1414,7 @@ addCommandHandler("makeadmin", makePlayerAdmin, false, false)
 -- /jail
 local jails = { }
 function jailPlayer( thePlayer, commandName, partialPlayerName, minutes, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (minutes) and (...) then
 			
@@ -1474,7 +1474,7 @@ addCommandHandler("jail", jailPlayer, false, false)
 
 -- /unjail
 function forceUnjail( thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -1591,7 +1591,7 @@ addEventHandler("onPlayerQuit", root,
 )
 
 function jailedPlayers( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local count = 0
 		outputChatBox("========= Jailed Players =========", thePlayer, 212, 156, 49)
@@ -1652,7 +1652,7 @@ addEventHandler("remoteJail", getRootElement(), remoteJail)
 
 -- /setmoney
 function setMoney( thePlayer, commandName, partialPlayerName, money )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (money) then
 			
@@ -1670,7 +1670,7 @@ function setMoney( thePlayer, commandName, partialPlayerName, money )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						if (tonumber(money) > 99999999 or tonumber(money) < 0) then
 							
@@ -1696,7 +1696,7 @@ addCommandHandler("setmoney", setMoney, false, false)
 
 -- /givemoney
 function giveMoney( thePlayer, commandName, partialPlayerName, money )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (money) then
 			
@@ -1714,7 +1714,7 @@ function giveMoney( thePlayer, commandName, partialPlayerName, money )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						if (tonumber(money) > 99999999 or tonumber(money) < 0) then
 							
@@ -1740,7 +1740,7 @@ addCommandHandler("givemoney", giveMoney, false, false)
 
 -- /freeze
 function playerFreeze( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -1758,7 +1758,7 @@ function playerFreeze( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then 
+					if getElementData(foundPlayer, "loggedin") then 
 						
 						local vehicle = getPedOccupiedVehicle(foundPlayer)
 						if vehicle then
@@ -1796,7 +1796,7 @@ addCommandHandler("freeze", playerFreeze, false, false)
 
 -- /unfreeze
 function unplayerFreeze( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -1814,7 +1814,7 @@ function unplayerFreeze( thePlayer, commandName, partialPlayerName )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then 
+					if getElementData(foundPlayer, "loggedin") then 
 						
 						local vehicle = getPedOccupiedVehicle(foundPlayer)
 						if vehicle then
@@ -1851,7 +1851,7 @@ addCommandHandler("unfreeze", unplayerFreeze, false, false)
 
 -- /makedon(ator)
 function makePlayerDonator( thePlayer, commandName, partialPlayerName, llevel )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (llevel) then
 			
@@ -1869,7 +1869,7 @@ function makePlayerDonator( thePlayer, commandName, partialPlayerName, llevel )
 			else
 				for k, foundPlayer in ipairs (players) do
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "loggedin") then
 						
 						local llevel = tonumber(llevel)
 						if (llevel) then
@@ -1927,7 +1927,7 @@ addCommandHandler("makedonator", makePlayerDonator, false, false)
 
 -- /setmotd
 function setMOTD( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1948,7 +1948,7 @@ addCommandHandler("setmotd", setMOTD)
 
 -- /setamotd
 function setAMOTD( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1969,7 +1969,7 @@ addCommandHandler("setamotd", setAMOTD)
 	
 -- /warn
 function warnPlayer( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
 			
@@ -2035,7 +2035,7 @@ addCommandHandler("warn", warnPlayer, false, false)
 
 -- /unwarn
 function unWarnPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -2086,7 +2086,7 @@ addCommandHandler("unwarn", unWarnPlayer, false, false)
 
 -- /disappear	
 function toggleDisappear( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local current = getData(thePlayer, "invisible")
 		if (current == 1) then
@@ -2112,7 +2112,7 @@ addCommandHandler("disappear", toggleDisappear, false, false)
 
 -- /tognametag	
 function toggleNametag( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local current = getData(thePlayer, "nametag")
 		if (current == 1) then
@@ -2130,7 +2130,7 @@ addCommandHandler("tognametag", toggleNametag, false, false)
 
 -- /giveitem
 function givePlayerItem(thePlayer, commandName, partialPlayerName, itemID, ...)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (itemID) and (...) then
 			
@@ -2177,7 +2177,7 @@ addCommandHandler("giveitem", givePlayerItem, false, false)
 
 -- /takeitem
 function takePlayerItem(thePlayer, commandName, partialPlayerName, itemID)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (itemID) then
 			
@@ -2217,67 +2217,64 @@ addCommandHandler("takeitem", takePlayerItem, false, false)
 
 -- /checkinv
 function checkInventory( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 then
-		
-		if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
-		
-			if (partialPlayerName) then
-				
-				local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-					for k, foundPlayer in ipairs (players) do
-						
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
-						if ( getData( foundPlayer, "loggedin" ) == 1 ) then
-							
-							if ( commandName == "frisk" ) then
-								local x, y, z = getElementPosition( thePlayer )
-								local px, py, pz = getElementPosition( foundPlayer )
-								
-								if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) > 5 ) then
-									outputChatBox("You are too far away from that player", thePlayer, 255, 0, 0 )
-									return
-								end
-							end
-							
-							local items, values = exports['[ars]inventory-system']:getPlayerInventory( foundPlayer )
-							
-							local weapons = { }
-							for i = 1, 12 do
-								local playerWeapon = getPedWeapon( foundPlayer, i )
-								if ( playerWeapon ~= 0 and playerWeapon ~= 1 ) then
-									
-									local weaponName = getWeaponNameFromID( playerWeapon )
-									local weaponAmmo = getPedTotalAmmo( foundPlayer, i )
-									
-									if ( weaponAmmo > 0 ) then
-										weapons[#weapons+1] = { weaponName, weaponAmmo }
-									end	
-								end	
-							end
-							
-							if ( items ) and ( values ) and ( weapons ) then
-							
-								triggerClientEvent(thePlayer, "showClientInventory", thePlayer, foundPlayer, items, values, weapons )
-								
-								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." checked ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s inventory.")
-							end
-						else
-							outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
-						end	
-					end
-				end
+	if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
+	
+		if (partialPlayerName) then
+			
+			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
+			
+			if #players == 0 then
+				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
+			elseif #players > 1 then
+				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			
+				for k, foundPlayer in ipairs (players) do
+					
+					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
+				end		
 			else
-				outputChatBox("SYNTAX: /".. commandName .." [Player Name/ID]", thePlayer, 212, 156, 49)
+				for k, foundPlayer in ipairs (players) do
+					if getElementData( foundPlayer, "loggedin" ) then
+						
+						if ( commandName == "frisk" ) then
+							local x, y, z = getElementPosition( thePlayer )
+							local px, py, pz = getElementPosition( foundPlayer )
+							
+							if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) > 5 ) then
+								outputChatBox("You are too far away from that player", thePlayer, 255, 0, 0 )
+								return
+							end
+						end
+						
+						local items, values = exports['[ars]inventory-system']:getPlayerInventory( foundPlayer )
+						
+						local weapons = { }
+						for i = 1, 12 do
+							local playerWeapon = getPedWeapon( foundPlayer, i )
+							if ( playerWeapon ~= 0 and playerWeapon ~= 1 ) then
+								
+								local weaponName = getWeaponNameFromID( playerWeapon )
+								local weaponAmmo = getPedTotalAmmo( foundPlayer, i )
+								
+								if ( weaponAmmo > 0 ) then
+									weapons[#weapons+1] = { weaponName, weaponAmmo }
+								end	
+							end	
+						end
+						
+						if ( items ) and ( values ) and ( weapons ) then
+						
+							triggerClientEvent(thePlayer, "showClientInventory", thePlayer, foundPlayer, items, values, weapons )
+							
+							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." checked ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s inventory.")
+						end
+					else
+						outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
+					end	
+				end
 			end
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Player Name/ID]", thePlayer, 212, 156, 49)
 		end	
 	end	
 end
@@ -2286,7 +2283,7 @@ addCommandHandler("frisk", checkInventory, false, false)
 
 -- /x
 function setXcoordinate(thePlayer, commandName, ix)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (ix) then
 			outputChatBox("SYNTAX: /".. commandName .." [x value]", thePlayer, 212, 156, 49)
 		else
@@ -2305,7 +2302,7 @@ addCommandHandler("x", setXcoordinate)
 
 -- /y
 function setYcoordinate(thePlayer, commandName, iy)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (iy) then
 			outputChatBox("SYNTAX: /".. commandName .." [y value]", thePlayer, 212, 156, 49)
 		else
@@ -2324,7 +2321,7 @@ addCommandHandler("y", setYcoordinate, false, false)
 
 -- /z
 function setZcoordinate(thePlayer, commandName, iz)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (iz) then
 			outputChatBox("SYNTAX: /".. commandName .." [z value]", thePlayer, 212, 156, 49)
 		else
@@ -2343,7 +2340,7 @@ addCommandHandler("z", setZcoordinate, false, false)
 
 -- /xyz
 function setXYZcoordinates(thePlayer, commandName, x, y, z)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not tonumber(x) or not tonumber(y) or not tonumber(z) then
 			outputChatBox("SYNTAX: /".. commandName .." [x] [y] [z]", thePlayer, 212, 156, 49)
 		else
@@ -2355,7 +2352,7 @@ addCommandHandler("xyz", setXYZcoordinates, false, false)
 
 -- /allchars
 function getAllCharacters( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
@@ -2372,7 +2369,7 @@ function getAllCharacters( thePlayer, commandName, partialPlayerName )
 				end		
 			else
 				for k, foundPlayer in ipairs (players) do
-					if ( getData( foundPlayer, "loggedin" ) == 1 ) then
+					if getElementData( foundPlayer, "loggedin" ) then
 					
 						local accountid = tonumber( getData(foundPlayer, "accountid") )
 						local accountname = tostring( getData(foundPlayer, "accountname") )
@@ -2421,7 +2418,7 @@ addCommandHandler("allchars", getAllCharacters, false, false)
 
 -- /allaccs
 function getAllAccounts( thePlayer, commandName, ... )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (...) then
 			
