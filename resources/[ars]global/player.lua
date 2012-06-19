@@ -1,40 +1,41 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end
-
-function findPlayer( thePlayer, partialName )
-	local possiblePlayers = { }
-	
+function findPlayer( thePlayer, partialName, options )
 	if partialName == "*" then
-		table.insert(possiblePlayers, thePlayer)
-		
-		return possiblePlayers	
+		return thePlayer
 	elseif tonumber(partialName) then -- The id was given
-	
 		for k, v in ipairs (getElementsByType("player")) do
-			local id = getData(v, "playerid")
+			local id = getElementData(v, "playerid")
 				
 			if (id == tonumber(partialName)) then
-				table.insert(possiblePlayers, v)
+				return v
 			end
 		end
-		return possiblePlayers
-	elseif tostring(partialName) then -- The name was given
 		
+		if not options.hideNoPlayers then
+			outputChatBox("There is no player with ID " .. partialName .. ".", thePlayer, 255, 0, 0)
+		end
+		return nil
+	elseif tostring(partialName) then -- The name was given
+		local possiblePlayers = {}
 		for k, v in ipairs (getElementsByType("player")) do
 			local name = string.lower(getPlayerName(v))
 				
 			if (string.find(name, string.lower(tostring(partialName)))) then
-				table.insert(possiblePlayers, v)	
+				table.insert(possiblePlayers, v)
 			end
 		end
-		return possiblePlayers
+		
+		if #possiblePlayers == 1 then
+			return possiblePlayers[1]
+		elseif #possiblePlayers == 0 then
+			if not options.hideNoPlayers then
+				outputChatBox("There is no player with a name like " .. partialName .. ".", thePlayer, 255, 0, 0)
+			end
+		else
+			outputChatBox("Found " .. #possiblePlayers .. " players matching " .. partialName .. ".", thePlayer, 255, 127, 0)
+			for _, v in ipairs(possiblePlayers) do
+				outputChatBox("  [".. getElementData(v, "playerid") .."] ".. getPlayerName(v):gsub("_", " "), thePlayer, 255, 255, 0)
+			end
+		end
+		return nil
 	end
 end

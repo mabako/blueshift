@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Commands ] ---------
 local generalCmds = 
 {
@@ -189,7 +178,7 @@ local screenX, screenY = guiGetScreenSize( )
 function createCommandList(	)
 	if ( exports['[ars]global']:c_isPlayerTrialModerator( localPlayer ) ) then
 		
-		local adminLevel = tonumber( getData( localPlayer, "admin") )
+		local adminLevel = tonumber( getElementData( localPlayer, "admin") ) or 0
 		if ( adminLevel > 5 ) then
 			adminLevel = 5
 		end

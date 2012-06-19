@@ -239,39 +239,24 @@ function transferReport( thePlayer, commandName, reportID, partialPlayerName )
 				
 					local reporter = reports[reportID][4]
 					
-					local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-					
-					if #players == 0 then
-						outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-					elseif #players > 1 then
-						outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-						
-						local count = 0
-						for k, foundPlayer in ipairs (players) do
+					local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+					if foundPlayer then
+						if (tonumber(getData(foundPlayer, "admin")) > 0) then
 							
-							count = count + 1
-							outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-						end		
-					else
-						for k, foundPlayer in ipairs (players) do
+							reports[reportID][5] = foundPlayer
 							
-							if (tonumber(getData(foundPlayer, "admin")) > 0) then
-								
-								reports[reportID][5] = foundPlayer
-								
-								outputChatBox("You transferred your report (#".. reportID ..") to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
-								outputChatBox(getPlayerName(thePlayer):gsub("_", " ") .." transffered his report (#".. reportID ..") to you.", foundPlayer, 0, 255, 0)
-								
-								outputChatBox("Your report (#".. reportID ..") was transffered to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
-								
-								local reports = tonumber( getData( thePlayer, "adminreports" ) )
-								setData( thePlayer, "adminreports", reports - 1, true )
-								
-								local reports = tonumber( getData( foundPlayer, "adminreports") )
-								setData( foundPlayer, "adminreports", reports + 1, true )
-							else
-								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not an admin.", thePlayer, 255, 0, 0)
-							end
+							outputChatBox("You transferred your report (#".. reportID ..") to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
+							outputChatBox(getPlayerName(thePlayer):gsub("_", " ") .." transffered his report (#".. reportID ..") to you.", foundPlayer, 0, 255, 0)
+							
+							outputChatBox("Your report (#".. reportID ..") was transffered to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
+							
+							local reports = tonumber( getData( thePlayer, "adminreports" ) )
+							setData( thePlayer, "adminreports", reports - 1, true )
+							
+							local reports = tonumber( getData( foundPlayer, "adminreports") )
+							setData( foundPlayer, "adminreports", reports + 1, true )
+						else
+							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not an admin.", thePlayer, 255, 0, 0)
 						end
 					end
 				else

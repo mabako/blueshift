@@ -27,27 +27,11 @@ function showPlayerStats( thePlayer, commandName, partialPlayerName )
 	
 	if ( partialPlayerName ) then
 		
-		if getData(thePlayer, "loggedin") and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("~-~-~-~-~~-~ Stats: ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~", thePlayer, 212, 156, 49)
-					outputStats( thePlayer, getPlayerStats( foundPlayer ) )
-				end
+		if getElementData(thePlayer, "loggedin") and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				outputChatBox("~-~-~-~-~~-~ Stats: ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~", thePlayer, 212, 156, 49)
+				outputStats( thePlayer, getPlayerStats( foundPlayer ) )
 			end	
 		end
 	else

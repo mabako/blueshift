@@ -5,58 +5,43 @@ local send = false
 function checkPlayer( thePlayer, commandName, partialPlayerName )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if ( partialPlayerName ) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayer in ipairs ( players ) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData( foundPlayer, "loggedin" ) then
 					
-					count = count + 1
-					outputChatBox("(".. getData( foundPlayer, "playerid" ) ..") ".. getPlayerName( foundPlayer ):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs ( players ) do
-					if getElementData( foundPlayer, "loggedin" ) then
-						
-						local accountname = tostring( getData( foundPlayer, "accountname" ) )
-						local accountid = tostring( getData( foundPlayer, "accountid" ) )
-						local ip = tostring( getPlayerIP( foundPlayer ) )
-						local admin = tostring( exports['[ars]global']:getPlayerAdminTitle( foundPlayer ) )
-						local reports = tostring( getData( foundPlayer, "adminreports" ) )
-						
-						local name = tostring( getPlayerName( foundPlayer ):gsub("_", " " ) )
-						
-						local factionid = tonumber( getData( foundPlayer, "faction") )
-						local faction = "Not in a faction"
-						
-						if ( factionid > 0 ) then
-							local result = sql:query_fetch_assoc("SELECT `name` FROM `factions` WHERE `id`=".. sql:escape_string( tonumber( factionid ) ) .."")
-							if ( result ) then
-								
-								faction = tostring( result['name'] )
-							end
-						end
-						
-						local adminnote = ""
-						local result = sql:query_fetch_assoc("SELECT `adminnote` FROM `accounts` WHERE `id`=".. sql:escape_string( tonumber( accountid ) ) .."")
+					local accountname = tostring( getElementData( foundPlayer, "accountname" ) )
+					local accountid = tostring( getElementData( foundPlayer, "accountid" ) )
+					local ip = tostring( getPlayerIP( foundPlayer ) )
+					local admin = tostring( exports['[ars]global']:getPlayerAdminTitle( foundPlayer ) )
+					local reports = tostring( getElementData( foundPlayer, "adminreports" ) )
+					
+					local name = tostring( getPlayerName( foundPlayer ):gsub("_", " " ) )
+					
+					local factionid = tonumber( getElementData( foundPlayer, "faction") )
+					local faction = "Not in a faction"
+					
+					if ( factionid > 0 ) then
+						local result = sql:query_fetch_assoc("SELECT `name` FROM `factions` WHERE `id`=".. sql:escape_string( tonumber( factionid ) ) .."")
 						if ( result ) then
 							
-							adminnote = result['adminnote']
+							faction = tostring( result['name'] )
 						end
-						
-						triggerClientEvent( thePlayer, "showCheckUI", thePlayer, foundPlayer, accountname, accountid, ip, admin, reports, name, faction, adminnote )
-						
-						-- Others
-						send = true
-						setTimer(getServerData, 500, 1, thePlayer, foundPlayer )
-					else
-						outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
 					end
+					
+					local adminnote = ""
+					local result = sql:query_fetch_assoc("SELECT `adminnote` FROM `accounts` WHERE `id`=".. sql:escape_string( tonumber( accountid ) ) .."")
+					if ( result ) then
+						
+						adminnote = result['adminnote']
+					end
+					
+					triggerClientEvent( thePlayer, "showCheckUI", thePlayer, foundPlayer, accountname, accountid, ip, admin, reports, name, faction, adminnote )
+					
+					-- Others
+					send = true
+					setTimer(getServerData, 500, 1, thePlayer, foundPlayer )
+				else
+					outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -103,7 +88,7 @@ addEventHandler("stopSending", root, stopSending)
 function savePlayerNote( thePlayer, note )
 	local note = tostring( note )
 	
-	local update = sql:query("UPDATE `accounts` SET `adminnote`='".. sql:escape_string( note ) .."' WHERE `id`=".. sql:escape_string( getData( thePlayer, "accountid" ) ) .."")
+	local update = sql:query("UPDATE `accounts` SET `adminnote`='".. sql:escape_string( note ) .."' WHERE `id`=".. sql:escape_string( getElementData( thePlayer, "accountid" ) ) .."")
 	if ( update ) then
 		
 		outputChatBox("Note saved!", source, 0, 255, 0)

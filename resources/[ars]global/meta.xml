@@ -25,7 +25,7 @@
 	<script src="player.lua" type="server"/>
 	<export function="findPlayer" type="server"/>
 	
-	<script src="c_player.lua" type="client"/>
+	<script src="player.lua" type="client"/>
 	<export function="findPlayer" type="client"/>
 	
 	<script src="nametag.lua" type="server"/>

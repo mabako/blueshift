@@ -435,34 +435,18 @@ addCommandHandler("daps",
 addCommandHandler("givedaps", 
 	function( thePlayer, command, partialPlayerName )
 		if (partialPlayerName) then
-		
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multiple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local targX, targY, targZ = getElementPosition( foundPlayer )
+				local x, y, z = getElementPosition( thePlayer )
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+				if ( getDistanceBetweenPoints3D( x, y, z, targX, targY, targZ ) < 2 ) then 
 					
-					count = count + 1
-					outputChatBox("(".. getElementData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					local targX, targY, targZ = getElementPosition( foundPlayer )
-					local x, y, z = getElementPosition( thePlayer )
-					
-					if ( getDistanceBetweenPoints3D( x, y, z, targX, targY, targZ ) < 2 ) then 
-						
-						setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, false, false, false)
-						setPedAnimation( foundPlayer, "GANGS", "hndshkfa", -1, false, false, false)
-					else
-						outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 0, 0)
-					end	
-				end
+					setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, false, false, false)
+					setPedAnimation( foundPlayer, "GANGS", "hndshkfa", -1, false, false, false)
+				else
+					outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 0, 0)
+				end	
 			end
 		else
 			outputChatBox("SYNTAX: /".. command .." [ Player Name/ID ]", thePlayer, 212, 156, 49)

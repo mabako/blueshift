@@ -39,50 +39,34 @@ function setPlayerFaction( thePlayer, commandName, partialPlayerName, factionID,
 	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		if (partialPlayerName) and (factionID) and (rankID) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multiple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local factionID = tonumber(factionID)
+				local rankID = tonumber(rankID)
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
-				
-					local factionID = tonumber(factionID)
-					local rankID = tonumber(rankID)
-					
-					local found = false
-					for k, team in ipairs ( getElementsByType("team") ) do
-						if tonumber(getData(team, "id")) == factionID then
+				local found = false
+				for k, team in ipairs ( getElementsByType("team") ) do
+					if tonumber(getData(team, "id")) == factionID then
+						
+						found = true
+						
+						local update = sql:query("UPDATE characters SET faction=".. factionID ..", rank=".. rankID .." WHERE id=".. sql:escape_string(getData(foundPlayer, "dbid")) .."")
+						if (update) then
+							setPlayerTeam(foundPlayer, team)
+							setData(foundPlayer, "faction", factionID, true)
+							setData(foundPlayer, "f:rank", rankID, true)
 							
-							found = true
-							
-							local update = sql:query("UPDATE characters SET faction=".. factionID ..", rank=".. rankID .." WHERE id=".. sql:escape_string(getData(foundPlayer, "dbid")) .."")
-							if (update) then
-								setPlayerTeam(foundPlayer, team)
-								setData(foundPlayer, "faction", factionID, true)
-								setData(foundPlayer, "f:rank", rankID, true)
-								
-								outputChatBox("You were set to the faction '".. getTeamName(team) ..".", foundPlayer, 212, 156, 49)
-								outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .." to the faction '".. getTeamName(team) ..".", thePlayer, 212, 156, 49)
-								break
-							end	
-							
-							sql:free_result(update)
-						end
+							outputChatBox("You were set to the faction '".. getTeamName(team) ..".", foundPlayer, 212, 156, 49)
+							outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .." to the faction '".. getTeamName(team) ..".", thePlayer, 212, 156, 49)
+							break
+						end	
+						
+						sql:free_result(update)
 					end
-					
-					if not (found) then
-						outputChatBox("Invalid faction ID.", thePlayer, 255, 0, 0)
-					end	
+				end
+				
+				if not (found) then
+					outputChatBox("Invalid faction ID.", thePlayer, 255, 0, 0)
 				end
 			end
 		else

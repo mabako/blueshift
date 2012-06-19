@@ -533,36 +533,20 @@ addEventHandler("onResourceStart", root,
 -- /look
 function lookAtPlayer( thePlayer, commandName, partialPlayerName )
 	if (partialPlayerName) then
-		
-		local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+		local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+		if foundPlayer then
+			local age, weight, height, description = getPlayerAppearance( foundPlayer )
 			
-		if #players == 0 then
-			outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-		elseif #players > 1 then
-			outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local len = string.len( description )
+			if ( len >= 95 ) then
+				description = string.sub(description, 1, 95)
+			end
 			
-			local count = 0
-			for k, foundPlayer in ipairs (players) do
-				
-				count = count + 1
-				outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-			end		
-		else
-			for k, foundPlayer in ipairs (players) do
-				
-				local age, weight, height, description = getPlayerAppearance( foundPlayer )
-				
-				local len = string.len( description )
-				if ( len >= 95 ) then
-					description = string.sub(description, 1, 95)
-				end
-				
-				outputChatBox("~-~-~-~-~~-~-~-~-~ ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~-~-~-~", thePlayer, 212, 156, 49)
-				outputChatBox("Age: ".. tostring( age ) .." years", thePlayer, 212, 156, 49)
-				outputChatBox("Weight: ".. tostring( weight ) .." kg", thePlayer, 212, 156, 49)
-				outputChatBox("Height: ".. tostring( height ) .." cm", thePlayer, 212, 156, 49)
-				outputChatBox("Description: ".. tostring( description ), thePlayer, 212, 156, 49)
-			end	
+			outputChatBox("~-~-~-~-~~-~-~-~-~ ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~-~-~-~", thePlayer, 212, 156, 49)
+			outputChatBox("Age: ".. tostring( age ) .." years", thePlayer, 212, 156, 49)
+			outputChatBox("Weight: ".. tostring( weight ) .." kg", thePlayer, 212, 156, 49)
+			outputChatBox("Height: ".. tostring( height ) .." cm", thePlayer, 212, 156, 49)
+			outputChatBox("Description: ".. tostring( description ), thePlayer, 212, 156, 49)
 		end		
 	else
 		outputChatBox("SYNTAX: /".. commandName .." [ Player Name/ID ]", thePlayer, 212, 156, 49)

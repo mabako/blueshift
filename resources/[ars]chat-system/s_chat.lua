@@ -306,39 +306,25 @@ addCommandHandler("GlobalOOC", globalOOC)
 function privateMessage( thePlayer, commandName, partialPlayerName, ... )
 	if (partialPlayerName) and (...) then
 		local message = table.concat({...}, " ")
-		local players = findPlayer( thePlayer, partialPlayerName )
-		
-		if #players == 0 then
-			outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-		elseif #players > 1 then
-			outputChatBox("Multiple Players found!", thePlayer, 255, 200, 0)
-			
-			local count = 0
-			for k, foundPlayer in ipairs (players) do
+		local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+		if foundPlayer then
+			if getElementData(foundPlayer, "loggedin") then
 				
-				count = count + 1
-				outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-			end		
-		else
-			for k, foundPlayer in ipairs (players) do
-				if getElementData(foundPlayer, "loggedin") then
+				local thePlayerAdminlevel = tonumber( getData( thePlayer, "admin" ) )
+				local targetPlayerAdminLevel = tonumber( getData( foundPlayer, "admin" ) )
+				
+				if ( isPlayerPrivateMessagingDisabled( foundPlayer ) ) and ( targetPlayerAdminLevel >= thePlayerAdminlevel ) then
 					
-					local thePlayerAdminlevel = tonumber( getData( thePlayer, "admin" ) )
-					local targetPlayerAdminLevel = tonumber( getData( foundPlayer, "admin" ) )
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is ignoring Private Messages.", thePlayer, 212, 156, 49)
+					return
+				else	
+					outputLongChatBox("PM sent to [".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ", message, "", thePlayer, 255, 255, 0)
+					outputLongChatBox("PM from [".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", foundPlayer, 255, 255, 0)
 					
-					if ( isPlayerPrivateMessagingDisabled( foundPlayer ) ) and ( targetPlayerAdminLevel >= thePlayerAdminlevel ) then
-						
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is ignoring Private Messages.", thePlayer, 212, 156, 49)
-						return
-					else	
-						outputLongChatBox("PM sent to [".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ", message, "", thePlayer, 255, 255, 0)
-						outputLongChatBox("PM from [".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", foundPlayer, 255, 255, 0)
-						
-						outputDebugString("PM from " .. getPlayerName(thePlayer):gsub("_", " ") .. " to " .. getPlayerName(foundPlayer):gsub("_", " ")	.. ": " .. message)
-					end	
-				else
-					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-				end
+					outputDebugString("PM from " .. getPlayerName(thePlayer):gsub("_", " ") .. " to " .. getPlayerName(foundPlayer):gsub("_", " ")	.. ": " .. message)
+				end	
+			else
+				outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 			end
 		end
 	else
@@ -634,55 +620,13 @@ addCommandHandler("tuneradio", tuneRadio, false, false)
 -- /find	
 function findPerson( thePlayer, commandName, partialPlayerName)
 	
-	local players = findPlayer( thePlayer, partialPlayerName )
-		
-	if #players == 0 then
-		outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-	else 
-		outputChatBox("Matches:", thePlayer, 255, 200, 0)
-		
-		local count = 0
-		
-		for k, foundPlayer in ipairs (players) do
-			
-			count = count + 1
-			outputChatBox("[".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-		end	
+	local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+	if foundPlayer then
+		outputChatBox("[".. getElementData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 0, 255, 0)
 	end
 end
 addCommandHandler("find", findPerson)
-	
-function findPlayer( thePlayer, partialName )
-	local possiblePlayers = { }
-	
-	if partialName == "*" then
-		table.insert(possiblePlayers, thePlayer)
-		
-		return possiblePlayers	
-	elseif tonumber(partialName) then -- The id was given
-	
-		for k, v in ipairs (getElementsByType("player")) do
-			local id = getData(v, "playerid")
-				
-			if (id == tonumber(partialName)) then
-				table.insert(possiblePlayers, v)
-			end
-		end
-		return possiblePlayers
-	elseif tostring(partialName) then -- The name was given
-		
-		for k, v in ipairs (getElementsByType("player")) do
-			local name = string.lower(getPlayerName(v))
-				
-			if (string.find(name, string.lower(tostring(partialName)))) then
-				table.insert(possiblePlayers, v)	
-			end
-		end
-		return possiblePlayers
-	end
-end
 
-	
 function bindOOC( )
 	bindKey(source, "u", "down", "chatbox", "GlobalOOC")
 	bindKey(source, "b", "down", "chatbox", "LocalOOC")

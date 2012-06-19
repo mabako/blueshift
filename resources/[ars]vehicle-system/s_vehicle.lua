@@ -94,89 +94,74 @@ function makeVehicle( thePlayer, commandName, partialPlayerName, faction, tinted
 			
 			local id = model
 			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if not (faction) then faction = -1 end
+				if not (tinted) then tinted = 0 end
+				if not (job) then job = -1 end
+				if not (color1) then color1 = math.random(0, 126) end
+				if not (color2) then color2 = math.random(0, 126) end
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+				local x, y, z = getElementPosition(foundPlayer)
+				local rot = getPedRotation(foundPlayer)
+				local dim = getElementDimension(foundPlayer)
+				local int = getElementInterior(foundPlayer)
+				local owner = getData(foundPlayer, "dbid")
+				local plate = generateRandomPlate(foundPlayer)
+				
+				x = x + ( ( math.cos ( math.rad ( rot ) ) ) * 3 )
+				y = y + ( ( math.sin ( math.rad ( rot ) ) ) * 3 )
+				local vehicle = createVehicle( id, x, y, z, 0, 0, rot, tostring(plate) )
+				if (vehicle) then
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
-					
-					if not (faction) then faction = -1 end
-					if not (tinted) then tinted = 0 end
-					if not (job) then job = -1 end
-					if not (color1) then color1 = math.random(0, 126) end
-					if not (color2) then color2 = math.random(0, 126) end
-					
-					local x, y, z = getElementPosition(foundPlayer)
-					local rot = getPedRotation(foundPlayer)
-					local dim = getElementDimension(foundPlayer)
-					local int = getElementInterior(foundPlayer)
-					local owner = getData(foundPlayer, "dbid")
-					local plate = generateRandomPlate(foundPlayer)
-					
-					x = x + ( ( math.cos ( math.rad ( rot ) ) ) * 3 )
-					y = y + ( ( math.sin ( math.rad ( rot ) ) ) * 3 )
-					local vehicle = createVehicle( id, x, y, z, 0, 0, rot, tostring(plate) )
-					if (vehicle) then
+					local insert = sql:query("INSERT INTO vehicles SET model=".. sql:escape_string(id) ..", currx=".. sql:escape_string(x) ..", x=".. sql:escape_string(x) ..", curry=".. sql:escape_string(y) ..", y=".. sql:escape_string(y) ..", currz=".. sql:escape_string(z) ..", z=".. sql:escape_string(z) ..", currrotx='0', rotx='0', currroty='0', roty='0', currrotz=".. sql:escape_string(rot) ..", rotz=".. sql:escape_string(rot) ..", currdimension=".. sql:escape_string(dim) ..", dimension=".. sql:escape_string(dim) ..", currinterior=".. sql:escape_string(int) ..", interior=".. sql:escape_string(int) ..", upgrades='', wheelStates='', panelStates='', doorStates='', color1=".. sql:escape_string(color1) ..", color2=".. sql:escape_string(color2) ..", faction=".. sql:escape_string(faction) ..", owner=".. sql:escape_string(owner) ..", job=".. sql:escape_string(job) ..", plate='".. sql:escape_string(plate) .."', tinted=".. sql:escape_string(tinted) ..", items='', itemvalues=''") 
+					if (insert) then
+						local insertid = sql:insert_id()
 						
-						local insert = sql:query("INSERT INTO vehicles SET model=".. sql:escape_string(id) ..", currx=".. sql:escape_string(x) ..", x=".. sql:escape_string(x) ..", curry=".. sql:escape_string(y) ..", y=".. sql:escape_string(y) ..", currz=".. sql:escape_string(z) ..", z=".. sql:escape_string(z) ..", currrotx='0', rotx='0', currroty='0', roty='0', currrotz=".. sql:escape_string(rot) ..", rotz=".. sql:escape_string(rot) ..", currdimension=".. sql:escape_string(dim) ..", dimension=".. sql:escape_string(dim) ..", currinterior=".. sql:escape_string(int) ..", interior=".. sql:escape_string(int) ..", upgrades='', wheelStates='', panelStates='', doorStates='', color1=".. sql:escape_string(color1) ..", color2=".. sql:escape_string(color2) ..", faction=".. sql:escape_string(faction) ..", owner=".. sql:escape_string(owner) ..", job=".. sql:escape_string(job) ..", plate='".. sql:escape_string(plate) .."', tinted=".. sql:escape_string(tinted) ..", items='', itemvalues=''") 
-						if (insert) then
-							local insertid = sql:insert_id()
-							
-							setVehicleColor(vehicle, tonumber(color1), tonumber(color2), 0, 0)
-							
-							engineVal, engine = 0, false
-							if ( bike[getVehicleName( vehicle )] ) then
-								engineVal, engine = 1, true
-							end
-					
-							setData(vehicle, "faction", tonumber(faction), true)
-							setData(vehicle, "dbid", tonumber(insertid), true)
-							setData(vehicle, "owner", tonumber(owner), true)
-							setData(vehicle, "fuel", 151, true)
-							setData(vehicle, "plate", tostring(plate), true)
-							setData(vehicle, "tinted", tonumber(tinted), true)
-							setData(vehicle, "engine", engineVal, true)
-							setData(vehicle, "enginebroke", 0, true)
-							setData(vehicle, "impounded", 0, true)
-							setData(vehicle, "handbrake", 0, true)
-							setData(vehicle, "custom_color", 0, true)
-							setData(vehicle, "job", tonumber(job), true)
-							
-							-- Items
-							setData(vehicle, "items", "", true) 
-							setData(vehicle, "values", "", true) 
-							
-							setVehicleEngineState(vehicle, engine)
-							
-							-- Journey
-							if ( id == 508 ) then
-								if ( owner > 0 ) and ( tonumber( faction ) <= 0 ) then
-									exports['[ars]interior-system']:createVehicleInterior( vehicle )
-								else
-									outputChatBox("An interior is only available for a owned Journey.", thePlayer, 255, 0, 0)
-								end	
-							end
-					
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." created ".. getVehicleNameFromModel(id) .." with ID ".. insertid ..".")
-							outputChatBox(getVehicleNameFromModel(id) .." created with ID ".. insertid ..".", thePlayer, 212, 156, 49)
-						else
-							outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
+						setVehicleColor(vehicle, tonumber(color1), tonumber(color2), 0, 0)
+						
+						engineVal, engine = 0, false
+						if ( bike[getVehicleName( vehicle )] ) then
+							engineVal, engine = 1, true
 						end
-
-						sql:free_result(insert)
+				
+						setData(vehicle, "faction", tonumber(faction), true)
+						setData(vehicle, "dbid", tonumber(insertid), true)
+						setData(vehicle, "owner", tonumber(owner), true)
+						setData(vehicle, "fuel", 151, true)
+						setData(vehicle, "plate", tostring(plate), true)
+						setData(vehicle, "tinted", tonumber(tinted), true)
+						setData(vehicle, "engine", engineVal, true)
+						setData(vehicle, "enginebroke", 0, true)
+						setData(vehicle, "impounded", 0, true)
+						setData(vehicle, "handbrake", 0, true)
+						setData(vehicle, "custom_color", 0, true)
+						setData(vehicle, "job", tonumber(job), true)
+						
+						-- Items
+						setData(vehicle, "items", "", true) 
+						setData(vehicle, "values", "", true) 
+						
+						setVehicleEngineState(vehicle, engine)
+						
+						-- Journey
+						if ( id == 508 ) then
+							if ( owner > 0 ) and ( tonumber( faction ) <= 0 ) then
+								exports['[ars]interior-system']:createVehicleInterior( vehicle )
+							else
+								outputChatBox("An interior is only available for a owned Journey.", thePlayer, 255, 0, 0)
+							end	
+						end
+				
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." created ".. getVehicleNameFromModel(id) .." with ID ".. insertid ..".")
+						outputChatBox(getVehicleNameFromModel(id) .." created with ID ".. insertid ..".", thePlayer, 212, 156, 49)
 					else
-						outputChatBox("Invalid Vehicle ID", thePlayer, 255, 0, 0)
-					end	
+						outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
+					end
+
+					sql:free_result(insert)
+				else
+					outputChatBox("Invalid Vehicle ID", thePlayer, 255, 0, 0)
 				end	
 			end
 		else
@@ -370,36 +355,20 @@ addCommandHandler("veh", makeTemporaryVehicle, false, false)
 function fixVeh( thePlayer, commandName, partialPlayerName)
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if (partialPlayerName) then
-				
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
-					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						
-						local success = fixVehicle(vehicle)
-						if success then
-							outputChatBox("You fixed ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." fixed ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
-						else
-							outputChatBox("Failed to fix ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
-						end	
+					local success = fixVehicle(vehicle)
+					if success then
+						outputChatBox("You fixed ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." fixed ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
-					end
+						outputChatBox("Failed to fix ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
+					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -439,33 +408,17 @@ addCommandHandler("refuelvehs", refuelVehicles, false, false)
 function refeulVehicle( thePlayer, commandName, partialPlayerName)
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if (partialPlayerName) then
-				
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
+					setData(vehicle, "fuel", 151, true)
+					outputChatBox("You refueled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
 					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						
-						setData(vehicle, "fuel", 151, true)
-						outputChatBox("You refueled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." refilled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
-					end
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." refilled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -479,43 +432,27 @@ addCommandHandler("refuelveh", refeulVehicle, false, false)
 function setVehHealth( thePlayer, commandName, partialPlayerName, health)
 	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		if (partialPlayerName) and (health) then
-				
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
-					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						
-						local health = tonumber(health)
-						if health > 1000 then
-							health = 1000
-						elseif health < 0 then
-							health = 0
-						end
-						
-						local success = setElementHealth(vehicle, tonumber(health))
-						if success then
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle's health set to ".. tostring(health) ..".", thePlayer, 212, 156, 49)
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle HP to ".. tostring(health) ..".")
-						else
-							outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle's health.", thePlayer, 255, 0, 0)
-						end	
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
+					local health = tonumber(health)
+					if health > 1000 then
+						health = 1000
+					elseif health < 0 then
+						health = 0
 					end
+					
+					local success = setElementHealth(vehicle, tonumber(health))
+					if success then
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle's health set to ".. tostring(health) ..".", thePlayer, 212, 156, 49)
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle HP to ".. tostring(health) ..".")
+					else
+						outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle's health.", thePlayer, 255, 0, 0)
+					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -557,38 +494,22 @@ function unflipVehicle( thePlayer, commandName, partialPlayerName )
 	if ( getData(thePlayer, "faction") == 3 ) or ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
 	
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
+					local rotx, roty, rotz = getVehicleRotation(vehicle)
 					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						
-						local rotx, roty, rotz = getVehicleRotation(vehicle)
-						
-						local success = setVehicleRotation(vehicle, 0, roty, rotz)
-						if success then
-							outputChatBox("You unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
-						else
-							outputChatBox("Failed to unflip ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
-						end	
+					local success = setVehicleRotation(vehicle, 0, roty, rotz)
+					if success then
+						outputChatBox("You unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unflipped ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
+						outputChatBox("Failed to unflip ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
 					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -705,36 +626,20 @@ function addUpgrade( thePlayer, commandName, partialPlayerName, upgradeID )
 	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (upgradeID) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						
-						local success = addVehicleUpgrade( vehicle, upgradeID )
-						if success then
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." upgraded ".. getVehicleUpgradeSlotName(upgradeID) .."' to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
-							outputChatBox(getVehicleUpgradeSlotName(upgradeID) .." added to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
-						else
-							outputChatBox("Failed to add an upgrade to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
-						end	
+					local success = addVehicleUpgrade( vehicle, upgradeID )
+					if success then
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." upgraded ".. getVehicleUpgradeSlotName(upgradeID) .."' to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
+						outputChatBox(getVehicleUpgradeSlotName(upgradeID) .." added to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
+						outputChatBox("Failed to add an upgrade to ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 255, 0, 0)
 					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -816,47 +721,31 @@ function setVehColor( thePlayer, commandName, partialPlayerName, color1, color2 
 	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (color1) and (color2) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local color1 = tonumber(color1)
+				local color2 = tonumber(color2)
+				
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
+					local dbid = tonumber(getData(vehicle, "dbid"))
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+					local success = setVehicleColor(vehicle, color1, color2, 0, 0)
+					if (success) then
 						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					local color1 = tonumber(color1)
-					local color2 = tonumber(color2)
-					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						local dbid = tonumber(getData(vehicle, "dbid"))
-						
-						local success = setVehicleColor(vehicle, color1, color2, 0, 0)
-						if (success) then
+						local update = sql:query("UPDATE vehicles SET `color1`=".. sql:escape_string(color1) ..", `color2`=".. sql:escape_string(color2) ..", `custom_colors`='' WHERE `id`=".. sql:escape_string(dbid) .."")
+						if (update) then
 							
-							local update = sql:query("UPDATE vehicles SET `color1`=".. sql:escape_string(color1) ..", `color2`=".. sql:escape_string(color2) ..", `custom_colors`='' WHERE `id`=".. sql:escape_string(dbid) .."")
-							if (update) then
-								
-								setData( vehicle, "custom_color", 0, true )
-								outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
-							end
-
-							sql:free_result(update)
-						else
-							outputChatBox("Failed to update ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 255, 0, 0)
+							setData( vehicle, "custom_color", 0, true )
+							outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
 						end
+
+						sql:free_result(update)
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
-					end	
+						outputChatBox("Failed to update ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 255, 0, 0)
+					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -871,58 +760,42 @@ function setVehicleCustomColor( thePlayer, commandName, partialPlayerName, red1,
 	if exports['[ars]global']:isPlayerModerator(thePlayer) then	
 		
 		if (partialPlayerName) and (red1) and (green1) and (blue1) and (red2) and (green2) and (blue2) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local red1 = tonumber(red1)
+				local green1 = tonumber(green1)
+				local blue1 = tonumber(blue1)
+				local red2 = tonumber(red2)
+				local green2 = tonumber(green2)
+				local blue2 = tonumber(blue2)
+				
+				local vehicle = getPedOccupiedVehicle(foundPlayer)
+				if isElement(vehicle) then
+					local dbid = tonumber(getData(vehicle, "dbid"))
 					
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+					local success = setVehicleColor(vehicle, red1, green1, blue1, red2, green2, blue2 )
+					if (success) then
 						
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					local red1 = tonumber(red1)
-					local green1 = tonumber(green1)
-					local blue1 = tonumber(blue1)
-					local red2 = tonumber(red2)
-					local green2 = tonumber(green2)
-					local blue2 = tonumber(blue2)
-					
-					local vehicle = getPedOccupiedVehicle(foundPlayer)
-					if isElement(vehicle) then
-						local dbid = tonumber(getData(vehicle, "dbid"))
-						
-						local success = setVehicleColor(vehicle, red1, green1, blue1, red2, green2, blue2 )
-						if (success) then
+						local strng = red1 ..",".. green1 ..",".. blue1 ..",".. red2 ..",".. green2 ..",".. blue2
+						if ( strng ) then
 							
-							local strng = red1 ..",".. green1 ..",".. blue1 ..",".. red2 ..",".. green2 ..",".. blue2
-							if ( strng ) then
-								
-								local update = sql:query("UPDATE vehicles SET `color1`='', `color2`='', `custom_colors`='".. sql:escape_string(strng) .."' WHERE `id`=".. sql:escape_string(dbid) .."")
-								if (update) then
-								
-									outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
-									setData( vehicle, "custom_color", 1, true )
-								else
-									outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
-								end	
-								
-								sql:free_result(update)
+							local update = sql:query("UPDATE vehicles SET `color1`='', `color2`='', `custom_colors`='".. sql:escape_string(strng) .."' WHERE `id`=".. sql:escape_string(dbid) .."")
+							if (update) then
+							
+								outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
+								setData( vehicle, "custom_color", 1, true )
+							else
+								outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 							end	
-						else
-							outputChatBox("Failed to update ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 255, 0, 0)
-						end
+							
+							sql:free_result(update)
+						end	
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
-					end	
-				end
+						outputChatBox("Failed to update ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 255, 0, 0)
+					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not in a vehicle.", thePlayer, 255, 0, 0)
+				end	
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Player Name/ID] [Red 1] [Green 1] [Blue 1] [Red 2] [Green 2] [Blue 2]", thePlayer, 212, 156, 49)
