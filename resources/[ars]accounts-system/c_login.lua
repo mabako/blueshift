@@ -51,28 +51,21 @@ function getPlayerDetails( changingAccount )
 		
 		-- Children
 		xmlCreateChild(xml, "username")
-		xmlCreateChild(xml, "password")
+		xmlCreateChild(xml, "login")
 		xmlNodeSetValue( xmlCreateChild(xml, "remember"), "0" )
 		xmlNodeSetValue( xmlCreateChild(xml, "autologin"), "0" )
 	
 		-- Save
 		xmlSaveFile(xml)
 	else
+		remember = tonumber( xmlNodeGetValue( xmlFindChild(xml, "remember", 0 ) ) ) == 1
+		autologin = tonumber( xmlNodeGetValue( xmlFindChild(xml, "autologin", 0 ) ) ) == 1
 		
-		local children = xmlNodeGetChildren(xml)
-		for key, node in ipairs ( children ) do
-			
-			local value = tonumber(xmlNodeGetValue(node))
-			if ( value == 1 ) then
-				
-				if ( key == 3 ) then -- Remember
-					remember = true
-				elseif ( key == 4 ) then -- Autologin
-					autologin = true
-				end	
-			end
+		local oldNode = xmlFindChild( xml, "password", 0 )
+		if oldNode then
+			xmlDestroyNode( oldNode )
+			xmlSaveFile( xml )
 		end
-		
 	end
 	
 	guiCheckBoxSetSelected( checkboxRemember, remember )
@@ -81,17 +74,19 @@ function getPlayerDetails( changingAccount )
 	if ( remember ) then
 		
 		local user = xmlFindChild( xml, "username", 0 )
-		local pass = xmlFindChild( xml, "password", 0 )
+		local login = xmlFindChild( xml, "login", 0 )
 		
-		local username = tostring( xmlNodeGetValue( user ) )
-		local password = tostring( xmlNodeGetValue( pass ) )
-		
-		guiSetText( editUsername, username )
-		guiSetText( editPassword, password )
-		
-		if ( autologin ) and ( changingAccount == 0 ) then
-			
-			signIn("left", "up")
+		if user and login then
+			local username = tostring( xmlNodeGetValue( user ) )
+			local logintoken = tostring( xmlNodeGetValue( login ) )
+			if #username > 0 and #logintoken > 0 then
+				guiSetText( editUsername, username )
+				guiSetText( editPassword, logintoken )
+				
+				if ( autologin ) and ( changingAccount == 0 ) then
+					signIn("left", "up")
+				end
+			end
 		end	
 	end
 
@@ -173,6 +168,7 @@ function createUserInterface( )
 	editPassword = guiCreateEdit(ep_x, ep_y, ep_width, ep_height, "", false, nil)
 	guiEditSetMasked(editPassword, true)
 	guiSetProperty(editPassword, "MaskCodepoint", "8226")
+	guiEditSetMaxLength(editPassword, 63)
 	
 	lblUsername = guiCreateLabel(lu_x, lu_y, lu_width, lu_height, "Username:", false, nil)
 	lblPassword = guiCreateLabel(lp_x, lp_y, lp_width, lp_height, "Password:", false, nil)
@@ -388,7 +384,7 @@ function signIn( button, state )
 			local password = guiGetText(editPassword)
 			
 			if string.len(username) > 2 then
-				
+			
 				if string.len(password) > 5 then
 					
 					if ( not clickedSignin ) then
@@ -398,7 +394,7 @@ function signIn( button, state )
 						local remb = 0
 						if ( remember == true ) then
 							remb = 1
-						end	
+						end
 						
 						triggerServerEvent("attemptLogin", getLocalPlayer(), username, password, remb)
 					end	
@@ -512,8 +508,8 @@ end
 addEvent("cleanUpLogin", true)
 addEventHandler("cleanUpLogin", getLocalPlayer(), cleanLoginScreen)	
 
-function savePlayerDetails( username, password )
-	if ( username and password ) then
+function savePlayerDetails( username, logintoken )
+	if ( username and logintoken ) then
 		
 		if ( remember ) then
 			
@@ -521,16 +517,20 @@ function savePlayerDetails( username, password )
 			if ( xml ) then
 				
 				local user = xmlFindChild( xml, "username", 0 )
-				local pass = xmlFindChild( xml, "password", 0 )
+				local login = xmlFindChild( xml, "login", 0 ) or xmlCreateChild( xml, "login" )
 				
 				xmlNodeSetValue( user, tostring(username) )
-				xmlNodeSetValue( pass, tostring(password) )
+				xmlNodeSetValue( login, tostring(logintoken) )
 				
 				xmlSaveFile(xml)
 				xmlUnloadFile(xml)
+				
+				return
 			end
 		end	
 	end
+	
+	fileDelete("@login.xml")
 end
 addEvent("savePlayerDetails", true)
 addEventHandler("savePlayerDetails", localPlayer, savePlayerDetails)

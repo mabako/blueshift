@@ -55,27 +55,39 @@ addEvent("attemptRegister", true)
 addEventHandler("attemptRegister", getRootElement(), attemptRegister)
 
 function attemptLogin( username, password, remember )
-	
+	outputDebugString(password)
 	local username = tostring(username)
 	local password = tostring(password)
-	local safepassword = ""
+	local passwordQuery
 	
-	if ( string.len( password ) < 32 ) then -- Not MD5'd
-		safepassword = string.upper(tostring(md5(salt .. password))) 
+	if ( string.len( password ) < 64 ) then -- Not MD5'd
+		local safepassword = string.upper(tostring(md5(salt .. password))) 
+		passwordQuery = "`password`='".. sql:escape_string(tostring(safepassword)) .."'"
 	else
-		safepassword = password
+		-- to successfully login with a token, two things need to be given:
+		-- 1. you have the same serial as when the token was created
+		-- 2. the correct username is given
+		passwordQuery = "logintoken = '" .. md5(getPlayerSerial(source) .. tostring(password)) .. "'"
 	end
 	
-	if ( remember == 1 ) then
-		triggerClientEvent( source, "savePlayerDetails", source, username, safepassword )
-	end	
-	
-	local result = sql:query_fetch_assoc("SELECT * FROM accounts WHERE `username`='".. sql:escape_string(tostring(username)) .."' AND `password`='".. sql:escape_string(tostring(safepassword)) .."'")
+	local result = sql:query_fetch_assoc("SELECT * FROM accounts WHERE `username`='".. sql:escape_string(tostring(username)) .."' AND " .. passwordQuery)
 	if result then
 		
 		if tonumber(result['banned']) == 0 then -- they are not banned
+			-- we generate a new random 64-chars long string here which is stored client-side.
+			-- md5(playerSerial .. that string) is stored on the server
+			local newToken = "NULL"
+			if ( remember == 1 ) then
+				newToken = ""
+				for i = 1, 64 do
+					newToken = newToken .. string.char(math.random(33, 122))
+				end
+				triggerClientEvent( source, "savePlayerDetails", source, username, newToken )
+				
+				newToken = "'" .. md5(getPlayerSerial(source) .. newToken) .. "'"
+			end
 			
-			local update = sql:query("UPDATE `accounts` SET `lastlogin`=NOW() WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
+			local update = sql:query("UPDATE `accounts` SET `lastlogin`=NOW(), logintoken = " .. newToken .. " WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
 			if (update) then
 				
 				triggerEvent("loginPlayer", source, result['username'], result['id'], result['admin'], result['adminduty'], result['hiddenadmin'], result['reports'], result['donator'], result['togpm'], result['tutorial'], result['friends'], result['skinmods'], result['weaponmods'], result['vehiclemods'], true)
@@ -114,7 +126,6 @@ function attemptLogin( username, password, remember )
 			sql:free_result(update)
 		end	
 	else
-		
 		triggerClientEvent(source, "showSignInMessage", source, "Invalid username/password!", 150)
 	end
 end
