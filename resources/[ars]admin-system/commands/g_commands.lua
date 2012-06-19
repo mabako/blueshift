@@ -50,6 +50,7 @@ local generalCmds =
 			{"/x", "Sets your x-position"},
 			{"/y", "Sets your y-position"},
 			{"/z", "Sets your z-position"},
+			{"/xyz", "Sets your x, y and z-position"},
 			{"/allchars", "List all characters of a player"},
 			{"/allaccs", "List all accounts of a player"}
 		},

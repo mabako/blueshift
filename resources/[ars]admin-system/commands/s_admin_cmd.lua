@@ -36,6 +36,7 @@
 -- /x
 -- /y
 -- /z
+-- /xyz
 -- /allchars
 -- /allaccs
 
@@ -2339,6 +2340,18 @@ function setZcoordinate(thePlayer, commandName, iz)
 	end
 end
 addCommandHandler("z", setZcoordinate, false, false)
+
+-- /xyz
+function setXYZcoordinates(thePlayer, commandName, x, y, z)
+	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+		if not tonumber(x) or not tonumber(y) or not tonumber(z) then
+			outputChatBox("SYNTAX: /".. commandName .." [x] [y] [z]", thePlayer, 212, 156, 49)
+		else
+			setElementPosition(getPedOccupiedVehicle(thePlayer) or thePlayer, tonumber(x), tonumber(y), tonumber(z))
+		end
+	end
+end
+addCommandHandler("xyz", setXYZcoordinates, false, false)
 
 -- /allchars
 function getAllCharacters( thePlayer, commandName, partialPlayerName )
