@@ -953,15 +953,13 @@ function endCharacterCreation( )
 		destroyElement(windowRules)
 	end
 		
-	local getData = exports['[ars]anticheat-system']
-	
-	local username = getData:c_callData(getLocalPlayer(), "accountname")
-	local id = getData:c_callData(getLocalPlayer(), "accountid")
-	local admin = getData:c_callData(getLocalPlayer(), "admin")
-	local adminduty = getData:c_callData(getLocalPlayer(), "adminduty")
-	local hiddenadmin = getData:c_callData(getLocalPlayer(), "hiddenadmin")
-	local reports = getData:c_callData(getLocalPlayer(), "adminreports")
-	local donator = getData:c_callData(getLocalPlayer(), "donator")
+	local username = getElementData(getLocalPlayer(), "accountname")
+	local id = getElementData(getLocalPlayer(), "accountid")
+	local admin = getElementData(getLocalPlayer(), "admin")
+	local adminduty = getElementData(getLocalPlayer(), "adminduty")
+	local hiddenadmin = getElementData(getLocalPlayer(), "hiddenadmin")
+	local reports = getElementData(getLocalPlayer(), "adminreports")
+	local donator = getElementData(getLocalPlayer(), "donator")
 	
 	triggerServerEvent("loginPlayer", getLocalPlayer(), username, id, admin, adminduty, hiddenadmin, reports, donator, false)
 			

@@ -1,16 +1,5 @@
 local sql = exports.sql
 
-local function setElementData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Department of Motor Vehicles ] ---------
 local students = { }
 

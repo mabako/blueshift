@@ -75,7 +75,7 @@ local function setPlayerFlying(player, state)
   if state == true then state = true
   else state = false end
 
-  setElementData(player, "superman:flying", state)
+  setElementData(player, "superman:flying", state, false)
 end
 
 local function iterateFlyingPlayers()
