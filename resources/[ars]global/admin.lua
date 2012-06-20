@@ -84,260 +84,43 @@ function getPlayerAdminLevel( thePlayer )
 end	
 
 function onlineAdmins( thePlayer, commandName )
-	
 	local admins = { }
-	admins["Trial-Moderator"] = { }
-	admins["Moderator"] = { }
-	admins["High-Moderator"] = { }
-	admins["Administrator"] = { }
-	admins["High-Administrator"] = { }
-	admins["Sub-Owner"] = { }
-	admins["Server-Owner"] = { }
-	
 	for k, player in ipairs ( getElementsByType("player") ) do
-		
-		local adminlevel = tonumber( getElementData( player, "admin") )
-		if ( adminlevel ~= nil and adminlevel > 0 ) and getElementData( player, "loggedin" ) then
-			
-			if adminlevel == 1 then
-				table.insert(admins["Trial-Moderator"], player)
-			elseif adminlevel == 2 then	
-				table.insert(admins["Moderator"], player)
-			elseif adminlevel == 3 then	
-				table.insert(admins["High-Moderator"], player)
-			elseif adminlevel == 4 then	
-				table.insert(admins["Administrator"], player)
-			elseif adminlevel == 5 then	
-				table.insert(admins["High-Administrator"], player)
-			elseif adminlevel == 6 then	
-				table.insert(admins["Sub-Owner"], player)
-			elseif adminlevel == 7 then	
-				table.insert(admins["Server-Owner"], player)
-			end	
-		end	
+		-- logged in?
+		if getElementData( player, "loggedin" ) and isPlayerTrialModerator( player ) then
+			-- can we even see that guy?
+			if getElementData( player, "hiddenadmin" ) == 0 or isPlayerTrialModerator( thePlayer ) then
+				table.insert(admins, {player, getElementData( player, "admin"), getPlayerName(player):gsub("_", " ")})
+			end
+		end
 	end
 	
-	local count = 0
+	table.sort(admins, function( a, b )
+		if b[2] < a[2] then
+			return true
+		end
+		
+		return b[2] == a[2] and b[3] > a[3]
+	end)
+	
 	outputChatBox("~~~ Online Staff: ~~~", thePlayer, 212, 156, 49)
-	
-	-- Server Owner
-	for iOwner = 1, #admins["Server-Owner"] do
-		local Owner = admins["Server-Owner"][iOwner]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if ( getElementData( Owner, "adminduty") == 1 ) then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( Owner, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( Owner, "hiddenadmin" ) == 1 ) then
+	if #admins > 0 then
+		for _, admin in ipairs(admins) do
+			local r, g, b = nil, nil, nil
+			local duty = "(Off Duty)"
+			if getElementData( admin[1], "adminduty") == 1 then
+				r, g, b = 212, 156, 49
+				duty = "(On Duty)"
+			end	
 			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then
-				hiddenShow = false
+			local username = ""
+			if isPlayerTrialModerator( thePlayer ) then
+				username = "[".. tostring( getElementData( admin[1], "accountname" ) ) .."] "
 			end
-		end
-		
-		if ( hiddenShow ) then
 			
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(Owner) .." ".. getPlayerName(Owner):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-	
-	-- Sub-Owner
-	for iSubOwner = 1, #admins["Sub-Owner"] do
-		local SubOwner = admins["Sub-Owner"][iSubOwner]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( SubOwner, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( SubOwner, "accountname" ) ) .."] "
+			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(admin[1]) .." ".. admin[3] .." ".. duty, thePlayer, r, g, b)
 		end
-		
-		local hiddenShow = true
-		if ( getElementData( SubOwner, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-			
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(SubOwner) .." ".. getPlayerName(SubOwner):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-	
-	-- High Administrators
-	for iHighAdmin = 1, #admins["High-Administrator"] do
-		local HighAdmin = admins["High-Administrator"][iHighAdmin]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( HighAdmin, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( HighAdmin, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( HighAdmin, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-			
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(HighAdmin) .." ".. getPlayerName(HighAdmin):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-		
-	-- Administrators
-	for iAdministrator = 1, #admins["Administrator"] do
-		local Administrator = admins["Administrator"][iAdministrator]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( Administrator, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( Administrator, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( Administrator, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-			
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(Administrator) .." ".. getPlayerName(Administrator):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-	
-	-- High Moderators
-	for iHighMod = 1, #admins["High-Moderator"] do
-		local HighMod = admins["High-Moderator"][iHighMod]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( HighMod, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( HighMod, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( HighMod, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-		
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(HighMod) .." ".. getPlayerName(HighMod):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-		
-	-- Moderators
-	for iModerator = 1, #admins["Moderator"] do
-		local Moderator = admins["Moderator"][iModerator]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( Moderator, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( Moderator, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( Moderator, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-		
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(Moderator) .." ".. getPlayerName(Moderator):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-
-	-- Trial Moderators
-	for iTrialMod = 1, #admins["Trial-Moderator"] do
-		local TrialMod = admins["Trial-Moderator"][iTrialMod]
-		
-		local r, g, b = nil, nil, nil
-		local duty = "(Off Duty)"
-		if getElementData( TrialMod, "adminduty") == 1 then
-			r, g, b = 212, 156, 49
-			duty = "(On Duty)"
-		end	
-		
-		local username = ""
-		if ( getElementData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( getElementData( TrialMod, "accountname" ) ) .."] "
-		end
-		
-		local hiddenShow = true
-		if ( getElementData( TrialMod, "hiddenadmin" ) == 1 ) then
-			
-			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
-				hiddenShow = false
-			end
-		end
-		
-		if ( hiddenShow ) then
-			
-			outputChatBox(username .."".. exports['[ars]global']:getPlayerAdminTitle(TrialMod) .." ".. getPlayerName(TrialMod):gsub("_", " ") .." ".. duty, thePlayer, r, g, b)
-			count = count + 1
-		end	
-	end
-	
-	if ( count == 0 ) then
+	else
 		outputChatBox("No staff online at the moment.", thePlayer)
 	end
 end
