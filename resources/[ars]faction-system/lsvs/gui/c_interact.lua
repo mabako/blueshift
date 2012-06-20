@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Vehicle Repairing ] ---------
 addEventHandler("onClientDoubleClick", root,
 	function( button, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
@@ -29,8 +18,8 @@ addEventHandler("onClientDoubleClick", root,
 local theVehicle = nil
 function createVehicleInteractUI( vehicle )
 	
-	local faction = tonumber( getData( localPlayer, "faction" ) )
-	local duty = tonumber( getData( localPlayer, "duty" ) )
+	local faction = tonumber( getElementData( localPlayer, "faction" ) )
+	local duty = tonumber( getElementData( localPlayer, "duty" ) )
 	
 	if ( faction == 4 and duty == 1 ) then
 		
@@ -103,7 +92,7 @@ function createPaintVehicleUI(  )
 	paintWindow = guiCreateWindow(x, y, width, height, "Paint Vehicle", false)
 	paintLabelOne = guiCreateLabel(20, 30, 300, 20, "Enter the color IDs to change the vehicle's color", false, paintWindow)
 	
-	local customColors = tonumber( getData( theVehicle, "custom_color") )
+	local customColors = tonumber( getElementData( theVehicle, "custom_color") )
 	
 	local isVehicleCustomColored = false
 	if ( customColors == 1 ) then

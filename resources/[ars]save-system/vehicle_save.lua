@@ -1,39 +1,17 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Save Vehicle ] ---------
 function saveVehicle( thePlayer )
 
-	local dbid = getData(source, "dbid")
+	local dbid = getElementData(source, "dbid")
 	
-	local fuel = getData(source, "fuel")
-	local engine = getData(source, "engine")
-	local enginebroke = getData(source, "enginebroke")
-	local handbrake = getData(source, "handbrake")
-	local impounded = getData(source, "impounded")
+	local fuel = getElementData(source, "fuel")
+	local engine = getElementData(source, "engine")
+	local enginebroke = getElementData(source, "enginebroke")
+	local handbrake = getElementData(source, "handbrake")
+	local impounded = getElementData(source, "impounded")
 	
-	local customColors = tonumber( getData( source, "custom_color") )
+	local customColors = tonumber( getElementData( source, "custom_color") )
 	local isVehicleCustomColored = false
 	if ( customColors == 1 ) then
 		isVehicleCustomColored = true

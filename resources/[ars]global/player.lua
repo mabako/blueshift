@@ -1,4 +1,5 @@
 function findPlayer( thePlayer, partialName, options )
+	options = options or {}
 	if partialName == "*" then
 		return thePlayer
 	elseif tonumber(partialName) then -- The id was given

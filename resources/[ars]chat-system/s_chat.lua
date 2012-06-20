@@ -18,27 +18,6 @@ TO DO:
 local g_OOCState = false
 local sql = exports.sql
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- Helper to output long chat lines
 -- best example is prolly /b:
 --   before = My char: (( [text at the beginning of each line]
@@ -282,11 +261,11 @@ function globalOOC( thePlayer, commandName, ...)
 		
 		if (g_OOCState) or not (g_OOCState) and (exports['[ars]global']:isPlayerTrialModerator(thePlayer)) then	
 		
-			if (getData(thePlayer, "muted") == 0) then
+			if (getElementData(thePlayer, "muted") == 0) then
 				local message = table.concat({...}, " ")
 				for k, v in ipairs (getElementsByType("player")) do
-					if getElementData(v, "loggedin") and (getData(v, "globalooc") == 1) then
-						outputLongChatBox("[".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": (( ", message, " ))", v, 95, 166, 163)
+					if getElementData(v, "loggedin") and (getElementData(v, "globalooc") == 1) then
+						outputLongChatBox("[".. getElementData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": (( ", message, " ))", v, 95, 166, 163)
 					end	
 				end
 			else
@@ -310,16 +289,16 @@ function privateMessage( thePlayer, commandName, partialPlayerName, ... )
 		if foundPlayer then
 			if getElementData(foundPlayer, "loggedin") then
 				
-				local thePlayerAdminlevel = tonumber( getData( thePlayer, "admin" ) )
-				local targetPlayerAdminLevel = tonumber( getData( foundPlayer, "admin" ) )
+				local thePlayerAdminlevel = tonumber( getElementData( thePlayer, "admin" ) )
+				local targetPlayerAdminLevel = tonumber( getElementData( foundPlayer, "admin" ) )
 				
 				if ( isPlayerPrivateMessagingDisabled( foundPlayer ) ) and ( targetPlayerAdminLevel >= thePlayerAdminlevel ) then
 					
 					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is ignoring Private Messages.", thePlayer, 212, 156, 49)
 					return
 				else	
-					outputLongChatBox("PM sent to [".. getData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ", message, "", thePlayer, 255, 255, 0)
-					outputLongChatBox("PM from [".. getData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", foundPlayer, 255, 255, 0)
+					outputLongChatBox("PM sent to [".. getElementData(foundPlayer, "playerid") .."] ".. getPlayerName(foundPlayer):gsub("_", " ") ..": ", message, "", thePlayer, 255, 255, 0)
+					outputLongChatBox("PM from [".. getElementData(thePlayer, "playerid") .."] ".. getPlayerName(thePlayer):gsub("_", " ") ..": ", message, "", foundPlayer, 255, 255, 0)
 					
 					outputDebugString("PM from " .. getPlayerName(thePlayer):gsub("_", " ") .. " to " .. getPlayerName(foundPlayer):gsub("_", " ")	.. ": " .. message)
 				end	
@@ -338,18 +317,18 @@ function togglePrivateMessages( thePlayer )
 		
 		if ( isPlayerPrivateMessagingDisabled( thePlayer ) ) then
 			
-			local update = sql:query("UPDATE `accounts` SET `togpm`='0' WHERE `id`=".. sql:escape_string( tonumber( getData( thePlayer, "accountid") ) ) .."")
+			local update = sql:query("UPDATE `accounts` SET `togpm`='0' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "accountid") ) ) .."")
 			if ( update ) then
 				
-				setData( thePlayer, "togglepm", 0, true )
+				setElementData( thePlayer, "togglepm", 0, true )
 				outputChatBox("You are no longer ignoring Private Messages.", thePlayer, 212, 156, 49)
 			end
 		elseif ( not isPlayerPrivateMessagingDisabled( thePlayer ) ) then
 			
-			local update = sql:query("UPDATE `accounts` SET `togpm`='1' WHERE `id`=".. sql:escape_string( tonumber( getData( thePlayer, "accountid") ) ) .."")
+			local update = sql:query("UPDATE `accounts` SET `togpm`='1' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "accountid") ) ) .."")
 			if ( update ) then
 				
-				setData( thePlayer, "togglepm", 1, true )
+				setElementData( thePlayer, "togglepm", 1, true )
 				outputChatBox("You are now ignoring Private Messages.", thePlayer, 212, 156, 49)
 			end	
 		end	
@@ -358,7 +337,7 @@ end
 addCommandHandler("togpm", togglePrivateMessages, false, false)
 	
 function isPlayerPrivateMessagingDisabled( thePlayer )
-	if ( getData( thePlayer, "togglepm" ) == 1 ) then
+	if ( getElementData( thePlayer, "togglepm" ) == 1 ) then
 		return true
 	else
 		return false
@@ -441,9 +420,9 @@ addCommandHandler("donator", donatorChat, false, false)
 -- /gov(ernment announcement)
 function govChat(thePlayer, commandName, ...)
 	if (...) then
-		if ( getData(thePlayer, "faction") == 1 or getData(thePlayer, "faction") == 2 ) then -- PD/FD
+		if ( getElementData(thePlayer, "faction") == 1 or getElementData(thePlayer, "faction") == 2 ) then -- PD/FD
 			
-			if (getData(thePlayer, "muted") == 0) then
+			if (getElementData(thePlayer, "muted") == 0) then
 				local message = table.concat({...}, " ")
 				for k, v in ipairs (getElementsByType("player")) do
 					if getElementData(v, "loggedin") then
@@ -465,9 +444,9 @@ addCommandHandler("gov", govChat)
 function useMegaPhone(thePlayer, commandName, ...)
 	if not isPedDead(thePlayer) then
 		if (...) then
-			if ( getData(thePlayer, "faction") == 1 or getData(thePlayer, "faction") == 2 ) then -- PD/FD
+			if ( getElementData(thePlayer, "faction") == 1 or getElementData(thePlayer, "faction") == 2 ) then -- PD/FD
 				
-				if ( getData(thePlayer, "muted") == 0 ) then
+				if ( getElementData(thePlayer, "muted") == 0 ) then
 					
 					local message = table.concat({...}, " ")
 					for k, players in ipairs ( getElementsByType("player") ) do
@@ -500,7 +479,7 @@ function factionOOC(thePlayer, commandName, ...)
 		local theTeam = getPlayerTeam(thePlayer)
 		local theTeamName = getTeamName(theTeam)
 		local playerName = getPlayerName(thePlayer)
-		local playerFaction = getData(thePlayer, "faction")
+		local playerFaction = getElementData(thePlayer, "faction")
 		
 		if (playerFaction > 0) then
 			local message = table.concat({...}, " ")
@@ -534,7 +513,7 @@ function depChat(thePlayer, commandName, ...)
 		-- if it's a faction with access to /d, it should be in departmentTeams. If that's not the case, ignore it.
 		local teamName = departmentTeams[tostring(getTeamName(theTeam))]
 		if teamName then
-			if (getData(thePlayer, "muted") == 0) then
+			if (getElementData(thePlayer, "muted") == 0) then
 				local message = table.concat({...}, " ")
 				
 				for team in pairs(departmentTeams) do
@@ -562,13 +541,13 @@ function radioChat( thePlayer, commandName, ... )
 			local hasRadio = exports['[ars]inventory-system']:hasItem(thePlayer, 4)
 			if ( hasRadio ) then 
 			
-				local frequency = tonumber( getData(thePlayer, "radio") )
+				local frequency = tonumber( getElementData(thePlayer, "radio") )
 				if ( frequency > 0 ) then
 					
 					for key, foundPlayer in ipairs ( getElementsByType("player") ) do
 						if getElementData( foundPlayer, "loggedin" ) then
 							local hasRadio = exports['[ars]inventory-system']:hasItem(foundPlayer, 4)
-							local matchFrequency = tonumber( getData(foundPlayer, "radio") )
+							local matchFrequency = tonumber( getElementData(foundPlayer, "radio") )
 							
 							if ( hasRadio and matchFrequency == frequency ) then
 								
@@ -601,9 +580,9 @@ function tuneRadio( thePlayer, commandName, frequency )
 			local hasRadio = exports['[ars]inventory-system']:hasItem(thePlayer, 4)
 			if ( hasRadio ) then 
 				
-				local update = sql:query("UPDATE `characters` SET `radio`=".. sql:escape_string(frequency) .." WHERE `id`=".. sql:escape_string(tonumber(getData(thePlayer, "dbid"))) .."")
+				local update = sql:query("UPDATE `characters` SET `radio`=".. sql:escape_string(frequency) .." WHERE `id`=".. sql:escape_string(tonumber(getElementData(thePlayer, "dbid"))) .."")
 				if ( update ) then
-					setData(thePlayer, "radio", frequency, true)
+					setElementData(thePlayer, "radio", frequency, true)
 					outputChatBox("You tuned your frequency to #".. frequency ..".", thePlayer, 212, 156, 49)
 				end	
 			else

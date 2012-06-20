@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Resource System ] ---------
 local function output( console, text, baseElement )
 	if ( console == true ) then
@@ -50,7 +39,7 @@ function resourceStart( thePlayer, commandName, resourceName )
 						output(console, "Resource '".. resourceVirtualName .."' could not be started.", baseElement)
 					end	
 				else	
-					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
+					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getElementData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
 						
 						local success = startResource(resource)
 						if (success) then
@@ -109,7 +98,7 @@ function resourceStop( thePlayer, commandName, resourceName )
 						output(console, "Resource '".. resourceVirtualName .."' could not be stopped.", baseElement)
 					end	
 				else	
-					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
+					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getElementData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
 						
 						local success = stopResource(resource)
 						if (success) then
@@ -164,7 +153,7 @@ function resourceRestart( thePlayer, commandName, resourceName )
 					end	
 						
 				else	
-					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
+					if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getElementData(baseElement, "accountname" ) ) == "tajiri" and resourceVirtualName == "map-system" ) then
 						
 						local success = restartResource(resource)
 						if (success) then
@@ -216,7 +205,7 @@ function resourceRefresh( thePlayer, commandName )
 		end
 		
 	else	
-		if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getData(baseElement, "accountname" ) ) == "tajiri" ) then
+		if ( exports['[ars]global']:isPlayerHighAdministrator(baseElement) or exports['[ars]global']:isPlayerScripter(baseElement) ) or ( tostring( getElementData(baseElement, "accountname" ) ) == "tajiri" ) then
 			
 			local success = refreshResources(true)
 			if (success) then

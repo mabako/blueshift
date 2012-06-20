@@ -1,26 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Admin Commands ] ---------
 
 -- /makeatm
@@ -60,9 +39,9 @@ function makeATM( thePlayer, commandName, depositable, atmLimit )
 					local dbid = tonumber(sql:insert_id())
 						
 					local atm = createObject(2942, x, y, z, 0, 0, rot)
-					setData(atm, "dbid", dbid, true)
-					setData(atm, "deposit", depositable, true)
-					setData(atm, "limit", atmLimit, true)
+					setElementData(atm, "dbid", dbid, true)
+					setElementData(atm, "deposit", depositable, true)
+					setElementData(atm, "limit", atmLimit, true)
 						
 					setElementPosition(thePlayer, x, y, z+1)
 					
@@ -98,7 +77,7 @@ function deleteATM( thePlayer, commandName, atmID )
 			for i, v in ipairs (getElementsByType("object")) do
 				if (getElementModel(v) == 2942) then
 					
-					local dbid = tonumber(getData(v, "dbid"))
+					local dbid = tonumber(getElementData(v, "dbid"))
 					if (dbid == atmID) then
 						
 						destroyElement(v)
@@ -147,10 +126,10 @@ function setATMWithdrawLimit( thePlayer, commandName, atmID, atmLimit )
 				for i, v in ipairs (getElementsByType("object")) do
 					if (getElementModel(v) == 2942) then
 						
-						local dbid = tonumber(getData(v, "dbid"))
+						local dbid = tonumber(getElementData(v, "dbid"))
 						if (dbid == atmID) then
 							
-							setData(v, "limit", atmLimit, true)
+							setElementData(v, "limit", atmLimit, true)
 							outputChatBox("Changed widthdraw limit of ATM ID ".. atmID .." to ".. atmLimit ..".", thePlayer, 0, 255, 0)
 							
 							found = true
@@ -197,10 +176,10 @@ function setATMDepositable( thePlayer, commandName, atmID, depositable )
 				for i, v in ipairs (getElementsByType("object")) do
 					if (getElementModel(v) == 2942) then
 						
-						local dbid = tonumber(getData(v, "dbid"))
+						local dbid = tonumber(getElementData(v, "dbid"))
 						if (dbid == atmID) then
 							
-							setData(v, "deposit", depositable, true)
+							setElementData(v, "deposit", depositable, true)
 							outputChatBox("Changed deposit value of ATM ID ".. atmID .." to ".. depositable ..".", thePlayer, 0, 255, 0)
 							
 							found = true
@@ -248,7 +227,7 @@ function nearbyAtms( thePlayer, commandName )
 					
 					count = count + 1
 					
-					local dbid = tonumber( getData( v, "dbid" ) )
+					local dbid = tonumber( getElementData( v, "dbid" ) )
 					outputChatBox("#".. count ..": ".. dbid, thePlayer, 212, 156, 49)
 				end	
 			end
@@ -353,7 +332,7 @@ function transferAmount( amount, accountNo, accountID )
 			
 			if ( ownerTwo ~= ownerOne ) then
 				
-				local playerAccount = tonumber( getData( source, "accountid") )
+				local playerAccount = tonumber( getElementData( source, "accountid") )
 				local account = tonumber( result['account'] )
 					
 				if ( playerAccount == account ) then
@@ -423,9 +402,9 @@ function spawnATMOnStart( res )
 		setElementInterior(atm, tonumber(int))
 		setElementDimension(atm, tonumber(dim))
 		
-		setData(atm, "dbid", tonumber(dbid), true)
-		setData(atm, "deposit", tonumber(deposit), true)
-		setData(atm, "limit", tonumber(limit), true)
+		setElementData(atm, "dbid", tonumber(dbid), true)
+		setElementData(atm, "deposit", tonumber(deposit), true)
+		setElementData(atm, "limit", tonumber(limit), true)
 	end
 
 	sql:free_result(result)	

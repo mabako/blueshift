@@ -1,11 +1,5 @@
 <meta>
-	<info author="Dev" version="1.0" description="Anti Cheat"/>
+	<info author="mabako" version="2.0" description="Anti-Cheat"/>
 	
 	<script src="elementdata.lua" type="server"/>
-	<export function="assignData" type="server"/>
-	<export function="callData" type="server"/>
-	
-	<script src="c_elementdata.lua" type="client"/>
-	<export function="c_assignData" type="client"/>
-	<export function="c_callData" type="client"/>
 </meta>	

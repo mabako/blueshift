@@ -1,17 +1,6 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
+local function setElementData( theElement, key, value, sync )
 	local key = tostring(key)
 	local value = tonumber(value) or tostring(value)
 	if isElement(theElement) and (key) and (value) then
@@ -26,14 +15,14 @@ end
 local students = { }
 
 function enterTestVehicle( vehicle, seat )
-	if ( getData(vehicle, "job") == 10 ) then -- DMV vehicle
+	if ( getElementData(vehicle, "job") == 10 ) then -- DMV vehicle
 		if ( students[source] ) then
 	
 			if (seat == 0) then
 				
 				outputChatBox("Follow the checkpoints to complete your Driving Test.", source, 212, 156, 49)
 			
-				if (getData(vehicle, "engine") == 0) then
+				if (getElementData(vehicle, "engine") == 0) then
 					outputChatBox("Press J to start the vehicle's engine.", source, 231, 60, 128)
 				end
 				
@@ -48,7 +37,7 @@ end
 addEventHandler("onPlayerVehicleEnter", root, enterTestVehicle)
 
 function exitTestVehicle( vehicle, seat )
-	if ( getData(vehicle, "job") == 10 ) then -- DMV vehicle
+	if ( getElementData(vehicle, "job") == 10 ) then -- DMV vehicle
 		if (seat == 0) then
 			
 			setVehicleEngineState( vehicle, false )
@@ -69,7 +58,7 @@ function givePlayerDrivingLicense( )
 	if ( update ) then
 		
 		removePlayerStudent( source )
-		setData(source, "d:license", 1, true)
+		setElementData(source, "d:license", 1, true)
 	else
 		outputDebugString("MySQL Error: Unable to update license!")
 		outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())

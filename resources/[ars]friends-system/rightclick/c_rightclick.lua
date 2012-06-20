@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Friend System ] ---------
 local screenX, screenY = guiGetScreenSize( )
 
@@ -147,9 +136,9 @@ end
 function isPlayerAlreadyFriend( thePlayer )
 	if ( thePlayer ) then
 	
-		local accountid = tonumber( getData(thePlayer, "accountid") )
+		local accountid = tonumber( getElementData(thePlayer, "accountid") )
 		
-		local clientFriends = tostring( getData(localPlayer, "friends") )
+		local clientFriends = tostring( getElementData(localPlayer, "friends") )
 		if ( clientFriends == "none" ) then
 			return false
 		else	

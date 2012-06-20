@@ -1,16 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 function sendAdvertisement( advert )
 	local advert = tostring( advert )
 	
@@ -39,7 +28,7 @@ function giveMoneyToSan( amount )
 			outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 		else
 			takePlayerMoney(source, amount)
-			setData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
+			setElementData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
 		end	
 		
 		sql:free_result(update)

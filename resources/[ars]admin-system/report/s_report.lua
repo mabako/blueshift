@@ -1,27 +1,4 @@
 local sql = exports.sql
-
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Report System ] ---------
 local reports = { }
 
@@ -56,8 +33,8 @@ function sendPlayerReport( option, realOption, name, explaination )
 			
 			if getElementData(thePlayer, "loggedin") then
 			
-				local admin = tonumber(getData(thePlayer, "admin"))
-				local adminduty = tonumber(getData(thePlayer, "adminduty"))
+				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local adminduty = tonumber(getElementData(thePlayer, "adminduty"))
 				
 				if (admin > 0 and adminduty == 1) then
 					
@@ -106,8 +83,8 @@ function acceptReport( thePlayer, commandName, reportID )
 						
 						if getElementData(val, "loggedin") then
 							
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 							
 							if (admin > 0 and adminduty == 1) then
 								
@@ -119,8 +96,8 @@ function acceptReport( thePlayer, commandName, reportID )
 					outputChatBox("Your report (#".. reportID ..") has been accepted by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
 					outputChatBox("You accepted ".. getPlayerName(reporter):gsub("_", " ") .."'s report (#".. reportID ..")", thePlayer, 0, 255, 0)
 					
-					local reports = tonumber( getData( thePlayer, "adminreports" ) )
-					setData( thePlayer, "adminreports", reports + 1, true )
+					local reports = tonumber( getElementData( thePlayer, "adminreports" ) )
+					setElementData( thePlayer, "adminreports", reports + 1, true )
 					
 				else
 					outputChatBox("This report is already handled by ".. getPlayerName(reports[reportID][5]):gsub("_", " ") ..".", thePlayer, 255, 0, 0)
@@ -153,8 +130,8 @@ function closeReport( thePlayer, commandName, reportID )
 						
 						if getElementData(val, "loggedin") then
 							
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 						
 							if (admin > 0 and adminduty == 1) then
 								
@@ -199,8 +176,8 @@ function falseReport( thePlayer, commandName, reportID )
 						
 						if getElementData(val, "loggedin") then
 						
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 								
 							if (admin > 0 and adminduty == 1) then
 								
@@ -241,7 +218,7 @@ function transferReport( thePlayer, commandName, reportID, partialPlayerName )
 					
 					local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 					if foundPlayer then
-						if (tonumber(getData(foundPlayer, "admin")) > 0) then
+						if (tonumber(getElementData(foundPlayer, "admin")) > 0) then
 							
 							reports[reportID][5] = foundPlayer
 							
@@ -250,11 +227,11 @@ function transferReport( thePlayer, commandName, reportID, partialPlayerName )
 							
 							outputChatBox("Your report (#".. reportID ..") was transffered to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
 							
-							local reports = tonumber( getData( thePlayer, "adminreports" ) )
-							setData( thePlayer, "adminreports", reports - 1, true )
+							local reports = tonumber( getElementData( thePlayer, "adminreports" ) )
+							setElementData( thePlayer, "adminreports", reports - 1, true )
 							
-							local reports = tonumber( getData( foundPlayer, "adminreports") )
-							setData( foundPlayer, "adminreports", reports + 1, true )
+							local reports = tonumber( getElementData( foundPlayer, "adminreports") )
+							setElementData( foundPlayer, "adminreports", reports + 1, true )
 						else
 							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not an admin.", thePlayer, 255, 0, 0)
 						end

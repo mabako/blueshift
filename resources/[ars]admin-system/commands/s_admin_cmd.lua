@@ -42,27 +42,6 @@
 
 local sql = exports.sql
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- /freconnect
 function forceReconnect( thePlayer, commandName, partialPlayerName )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
@@ -280,7 +259,7 @@ function sendPlayerTo( thePlayer, commandName, partialPlayerNameFirst, theSpecia
 			
 			local x, y, z, dimension, interior, rotation
 			local title
-			if getData(thePlayer, "hiddenadmin") == 0 then
+			if getElementData(thePlayer, "hiddenadmin") == 0 then
 		
 				title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 			else
@@ -385,16 +364,16 @@ function mutePlayer(thePlayer, commandName, partialPlayerName )
 			if foundPlayer then
 				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "muted") == 0 then
+					if getElementData(foundPlayer, "muted") == 0 then
 						
-						setData(foundPlayer, "muted", 1, true)
+						setElementData(foundPlayer, "muted", 1, true)
 						outputChatBox("You were muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
 						outputChatBox("You muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
 						
 						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-					elseif getData(foundPlayer, "muted") == 1 then
+					elseif getElementData(foundPlayer, "muted") == 1 then
 						
-						setData(foundPlayer, "muted", 0, true)
+						setElementData(foundPlayer, "muted", 0, true)
 						outputChatBox("You were un-muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
 						outputChatBox("You un-muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
 						
@@ -601,7 +580,7 @@ function changePlayerName( thePlayer, commandName, partialPlayerName, ... )
 					if getElementData(foundPlayer, "loggedin") then
 						
 						local formerName = getPlayerName(foundPlayer):gsub("_", " ")
-						local dbid = getData(foundPlayer, "dbid")
+						local dbid = getElementData(foundPlayer, "dbid")
 						
 						local result = sql:query_fetch_assoc("SELECT `charactername` FROM `characters` WHERE `charactername`='" .. sql:escape_string(newName) .. "' AND id !=" .. sql:escape_string(dbid) .."")
 						if ( not result ) then
@@ -642,22 +621,22 @@ addCommandHandler("changename", changePlayerName, false, false)
 function hideAdmin( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
-		local state = tonumber( getData(thePlayer, "hiddenadmin") )
+		local state = tonumber( getElementData(thePlayer, "hiddenadmin") )
 		
 		if ( state == 0 ) then
 		
-			setData( thePlayer, "hiddenadmin", 1, true)
+			setElementData( thePlayer, "hiddenadmin", 1, true)
 			outputChatBox("You are now hidden.", thePlayer, 212, 156, 49)
 	
 		elseif ( state == 1 ) then
 				
-			setData( thePlayer, "hiddenadmin", 0, true)
+			setElementData( thePlayer, "hiddenadmin", 0, true)
 			outputChatBox("You are no longer hidden.", thePlayer, 212, 156, 49)
 		end
 			
 		exports['[ars]global']:updateNametagColor(thePlayer)
 		
-		local update = sql:query("UPDATE accounts SET hiddenadmin=" .. sql:escape_string(getData(thePlayer, "hiddenadmin")) .. " WHERE id =" .. sql:escape_string(getData(thePlayer, "accountid")) )
+		local update = sql:query("UPDATE accounts SET hiddenadmin=" .. sql:escape_string(getElementData(thePlayer, "hiddenadmin")) .. " WHERE id =" .. sql:escape_string(getElementData(thePlayer, "accountid")) )
 		sql:free_result(update)
 	end
 end
@@ -667,20 +646,20 @@ addCommandHandler("hideadmin", hideAdmin, false, false)
 function toggleDuty( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local duty = getData(thePlayer, "adminduty")
+		local duty = getElementData(thePlayer, "adminduty")
 		if duty == 1 then
 			
-			setData(thePlayer, "adminduty", 0, true)
+			setElementData(thePlayer, "adminduty", 0, true)
 			outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
 		elseif duty == 0 then
 			
-			setData(thePlayer, "adminduty", 1, true)
+			setElementData(thePlayer, "adminduty", 1, true)
 			outputChatBox("You are now on duty.", thePlayer, 212, 156, 49)
 		end	
 		
 		exports['[ars]global']:updateNametagColor(thePlayer)
 		
-		local update = sql:query("UPDATE accounts SET adminduty=" .. sql:escape_string(getData(thePlayer, "adminduty")) .. " WHERE id = " .. sql:escape_string(getData(thePlayer, "dbid")) )
+		local update = sql:query("UPDATE accounts SET adminduty=" .. sql:escape_string(getElementData(thePlayer, "adminduty")) .. " WHERE id = " .. sql:escape_string(getElementData(thePlayer, "dbid")) )
 		sql:free_result(update)
 	end	
 end	
@@ -753,21 +732,21 @@ function watchPlayer(thePlayer, commandName, partialPlayerName)
 					if foundPlayer ~= thePlayer then 
 						
 						setElementAlpha(thePlayer, 255)
-						setData( thePlayer, "invisible", 1, true)
+						setElementData( thePlayer, "invisible", 1, true)
 						
-						setData(thePlayer, "nametag", 0, true)
+						setElementData(thePlayer, "nametag", 0, true)
 					
 						local x, y, z = getElementPosition(thePlayer)
 						local rot = getPedRotation(thePlayer)
 						local dimension = getElementDimension(thePlayer)
 						local interior = getElementInterior(thePlayer)
 						
-						setData( thePlayer, "reconx", x, true)
-						setData( thePlayer, "recony", y, true)
-						setData( thePlayer, "reconz", z, true)
-						setData( thePlayer, "reconrot", rot, true)
-						setData( thePlayer, "recondimension", dimension, true)
-						setData( thePlayer, "reconinterior", interior, true)
+						setElementData( thePlayer, "reconx", x, true)
+						setElementData( thePlayer, "recony", y, true)
+						setElementData( thePlayer, "reconz", z, true)
+						setElementData( thePlayer, "reconrot", rot, true)
+						setElementData( thePlayer, "recondimension", dimension, true)
+						setElementData( thePlayer, "reconinterior", interior, true)
 							
 						setPedWeaponSlot(thePlayer, 0)
 						
@@ -807,12 +786,12 @@ function watchPlayer(thePlayer, commandName, partialPlayerName)
 			end
 		else	
 	
-			local rx = getData(thePlayer, "reconx")
-			local ry = getData(thePlayer, "recony")
-			local rz = getData(thePlayer, "reconz")
-			local reconrot = getData(thePlayer, "reconrot")
-			local recondimension = getData(thePlayer, "recondimension")
-			local reconinterior = getData(thePlayer, "reconinterior")
+			local rx = getElementData(thePlayer, "reconx")
+			local ry = getElementData(thePlayer, "recony")
+			local rz = getElementData(thePlayer, "reconz")
+			local reconrot = getElementData(thePlayer, "reconrot")
+			local recondimension = getElementData(thePlayer, "recondimension")
+			local reconinterior = getElementData(thePlayer, "reconinterior")
 			
 			if (rx) and (ry) and (rz) and (reconrot) and (recondimension) and (reconinterior) then
 				
@@ -827,9 +806,9 @@ function watchPlayer(thePlayer, commandName, partialPlayerName)
 				setCameraTarget(thePlayer, thePlayer)
 				
 				setElementAlpha(thePlayer, 255)
-				setData( thePlayer, "invisible", 0, true)
+				setElementData( thePlayer, "invisible", 0, true)
 				
-				setData(thePlayer, "nametag", 1, true)
+				setElementData(thePlayer, "nametag", 1, true)
 				
 				outputChatBox("You are no longer watching a player. ( Turned off )", thePlayer, 212, 156, 49)
 				watching[thePlayer] = nil
@@ -847,12 +826,12 @@ function removeWatch( )
 			
 			local thePlayer = k
 			
-			local rx = getData(thePlayer, "reconx")
-			local ry = getData(thePlayer, "recony")
-			local rz = getData(thePlayer, "reconz")
-			local reconrot = getData(thePlayer, "reconrot")
-			local recondimension = getData(thePlayer, "recondimension")
-			local reconinterior = getData(thePlayer, "reconinterior")
+			local rx = getElementData(thePlayer, "reconx")
+			local ry = getElementData(thePlayer, "recony")
+			local rz = getElementData(thePlayer, "reconz")
+			local reconrot = getElementData(thePlayer, "reconrot")
+			local recondimension = getElementData(thePlayer, "recondimension")
+			local reconinterior = getElementData(thePlayer, "reconinterior")
 		
 			if (rx) and (ry) and (rz) and (reconrot) and (recondimension) and (reconinterior) then
 			
@@ -867,9 +846,9 @@ function removeWatch( )
 				setCameraTarget(thePlayer, thePlayer)
 				
 				setElementAlpha(thePlayer, 255)
-				setData( thePlayer, "invisible", 0, true)
+				setElementData( thePlayer, "invisible", 0, true)
 				
-				setData(thePlayer, "nametag", 1, true)
+				setElementData(thePlayer, "nametag", 1, true)
 				
 				outputChatBox("You are no longer watching a player. ( Player Quit )", thePlayer, 212, 156, 49)
 				
@@ -895,11 +874,11 @@ function playerKick( thePlayer, commandName, partialPlayerName, ... )
 				
 				if (targetPlayerPower <= thePlayerPower) then
 						
-					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(tostring(getPlayerName(foundPlayer))) .."', admin='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='1', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(tostring(getPlayerName(foundPlayer))) .."', admin='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='1', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
 					if insert then
 					
 						local title
-						if getData(thePlayer, "hiddenadmin") == 0 then
+						if getElementData(thePlayer, "hiddenadmin") == 0 then
 								
 							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 						else
@@ -977,10 +956,10 @@ function playerBan( thePlayer, commandName, partialPlayerName, hours, ... )
 						reason = ""
 					end	
 					
-					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='2', duration=".. sql:escape_string(rhours) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
+					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='2', duration=".. sql:escape_string(rhours) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
 					if insert then
 						local title
-						if getData(thePlayer, "hiddenadmin") == 0 then
+						if getElementData(thePlayer, "hiddenadmin") == 0 then
 								
 							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 						else
@@ -996,7 +975,7 @@ function playerBan( thePlayer, commandName, partialPlayerName, hours, ... )
 						
 						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." banned ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. hours ..")")
 						
-						local update = sql:query("UPDATE accounts SET banned='1', banned_reason='" .. sql:escape_string(reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tonumber(getData(foundPlayer, "accountid"))) .. "'")
+						local update = sql:query("UPDATE accounts SET banned='1', banned_reason='" .. sql:escape_string(reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .. "'")
 						if update then
 							banPlayer(foundPlayer, true, false, false, getRootElement(), reason, seconds)
 						else
@@ -1106,11 +1085,11 @@ function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
 							
 						if (rrank == 0 or rrank == 1 or rrank == 2 or rrank == 3 or rrank == 4 or rrank == 5 or rrank == 6 or rrank == 7) then
 							
-							local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getData(foundPlayer, "accountid"))) .."")
+							local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .."")
 							if (update) then
 								
-								setData( foundPlayer, "admin", tonumber(rrank), true)
-								setData( foundPlayer, "adminduty", 1, true)
+								setElementData( foundPlayer, "admin", tonumber(rrank), true)
+								setElementData( foundPlayer, "adminduty", 1, true)
 								
 								exports['[ars]global']:updateNametagColor( foundPlayer )
 								
@@ -1173,11 +1152,11 @@ function jailPlayer( thePlayer, commandName, partialPlayerName, minutes, ... )
 				jails[foundPlayer]["jail_reason"] = tostring(reason)
 			
 				setElementInterior(foundPlayer, 3)
-				setElementDimension(foundPlayer, 65000 + getData(foundPlayer, "playerid"))
+				setElementDimension(foundPlayer, 65000 + getElementData(foundPlayer, "playerid"))
 				setElementPosition(foundPlayer, 193.5804, 175.1421, 1003.0234)
 			
 				local title = ""
-				if getData(thePlayer, "hiddenadmin") == 0 then
+				if getElementData(thePlayer, "hiddenadmin") == 0 then
 					title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 				else
 					title = "Hidden Admin"
@@ -1188,8 +1167,8 @@ function jailPlayer( thePlayer, commandName, partialPlayerName, minutes, ... )
 				
 				exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." jailed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for ".. tostring(minutes) .." minute(s). ( ".. reason .. " )")
 				
-				local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(minutes) ..", jail_reason='".. sql:escape_string(tostring(reason)) .."', jail_by='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE id=" .. sql:escape_string(getData(foundPlayer, "accountid")) .."")
-				local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='0', duration=".. sql:escape_string(minutes) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
+				local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(minutes) ..", jail_reason='".. sql:escape_string(tostring(reason)) .."', jail_by='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE id=" .. sql:escape_string(getElementData(foundPlayer, "accountid")) .."")
+				local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='0', duration=".. sql:escape_string(minutes) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
 				
 				sql:free_result(update)
 				sql:free_result(insert)
@@ -1217,7 +1196,7 @@ function forceUnjail( thePlayer, commandName, partialPlayerName)
 					
 					jails[foundPlayer] = nil
 					
-					local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(foundPlayer, "accountid")) .."")	
+					local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(foundPlayer, "accountid")) .."")	
 					sql:free_result(update)
 					
 					setElementDimension(foundPlayer, 0)
@@ -1225,7 +1204,7 @@ function forceUnjail( thePlayer, commandName, partialPlayerName)
 					setElementPosition(foundPlayer, 1521.4355, -1675.1318, 13.5468)
 					setElementRotation(foundPlayer, 270)
 					
-					if getData(thePlayer, "hiddenadmin") == 1 then
+					if getElementData(thePlayer, "hiddenadmin") == 1 then
 						outputChatBox("You were unjailed by an administrator.", foundPlayer, 0, 255, 0)
 					else
 						outputChatBox("You were unjailed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
@@ -1262,7 +1241,7 @@ function unjailPlayer( thePlayer )
 				
 				outputChatBox("You have served your admin jail sentence.", thePlayer, 0, 255, 0)
 				
-				local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")	
+				local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")	
 				sql:free_result(update)
 			else
 				
@@ -1270,7 +1249,7 @@ function unjailPlayer( thePlayer )
 					jails[thePlayer]["jailtime"] = timeLeft - 1
 					jails[thePlayer]["timer"] = setTimer(unjailPlayer, 60000, 1, thePlayer)
 					
-					local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(timeLeft-1) .." WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")
+					local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(timeLeft-1) .." WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")
 					sql:free_result(update)
 				end
 			end
@@ -1284,7 +1263,7 @@ function unjailPlayer( thePlayer )
 		
 			outputChatBox("You have served your admin jail sentence.", thePlayer, 0, 255, 0)
 			
-			local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")	
+			local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")	
 			sql:free_result(update)
 		end
 	end	
@@ -1356,7 +1335,7 @@ function remoteJail( jailtime, jailby, jailreason )
 	jails[source]["jail_reason"] = jailreason
 						
 	setElementInterior(source, 3)
-	setElementDimension(source, 65000 + getData(source, "playerid"))
+	setElementDimension(source, 65000 + getElementData(source, "playerid"))
 	setElementPosition(source, 193.5804, 175.1421, 1003.0234)
 	
 	outputChatBox("You were jailed by ".. jailby .." for ".. jailtime .." minute(s).", source, 200, 0, 0)
@@ -1445,7 +1424,7 @@ function playerFreeze( thePlayer, commandName, partialPlayerName )
 					end
 						
 					local title
-					if getData(thePlayer, "hiddenadmin") == 0 then
+					if getElementData(thePlayer, "hiddenadmin") == 0 then
 					
 						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 					else
@@ -1486,7 +1465,7 @@ function unplayerFreeze( thePlayer, commandName, partialPlayerName )
 					end
 						
 					local title
-					if getData(thePlayer, "hiddenadmin") == 0 then
+					if getElementData(thePlayer, "hiddenadmin") == 0 then
 										
 						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 					else
@@ -1532,10 +1511,10 @@ function makePlayerDonator( thePlayer, commandName, partialPlayerName, llevel )
 							
 						if (llevel >= 0 and llevel <= 3) then
 							
-							local update = sql:query("UPDATE `accounts` SET `donator`=".. sql:escape_string(llevel) .." WHERE `id`=".. sql:escape_string( tonumber( getData(foundPlayer, "accountid") ) ) .."")
+							local update = sql:query("UPDATE `accounts` SET `donator`=".. sql:escape_string(llevel) .." WHERE `id`=".. sql:escape_string( tonumber( getElementData(foundPlayer, "accountid") ) ) .."")
 							if ( update ) then
 								
-								setData( foundPlayer, "donator", tonumber(llevel), true)
+								setElementData( foundPlayer, "donator", tonumber(llevel), true)
 								exports['[ars]global']:updateNametagColor( foundPlayer )
 								
 								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s donator level was set to ".. level ..".", thePlayer, 212, 156, 49)
@@ -1620,13 +1599,13 @@ function warnPlayer( thePlayer, commandName, partialPlayerName, ... )
 			if foundPlayer then
 				local reason = table.concat({...}, " ")
 				local title
-				if getData(thePlayer, "hiddenadmin") == 0 then
+				if getElementData(thePlayer, "hiddenadmin") == 0 then
 					title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 				else
 					title = "Hidden Admin"
 				end	
 				
-				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
+				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
 				local row = sql:fetch_assoc(result)
 				if (row) then
 					local currentWarns = row['warns']
@@ -1636,16 +1615,16 @@ function warnPlayer( thePlayer, commandName, partialPlayerName, ... )
 						
 						local sql_reason = "AdmWrns"
 						
-						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
-						sql:query("UPDATE accounts SET warns='3', banned='1', banned_reason='" .. sql:escape_string(sql_reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .. "'")
+						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+						sql:query("UPDATE accounts SET warns='3', banned='1', banned_reason='" .. sql:escape_string(sql_reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .. "'")
 						
 						outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
 						outputChatBox("Ban: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was auto banned. ( ".. warnUpdate .."/3 Admin Warnings )", getRootElement(), 200, 0, 0)
 						local ban = banPlayer(foundPlayer, true, false, false, getRootElement(), reason, 0)
 					else
 					
-						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
-						sql:query("UPDATE accounts SET warns='".. sql:escape_string(warnUpdate) .."' WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .. "'")
+						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+						sql:query("UPDATE accounts SET warns='".. sql:escape_string(warnUpdate) .."' WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .. "'")
 						outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
 						
 						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." warned ".. getPlayerName(thePlayer):gsub("_", " ") ..". ( ".. reason .." ) (".. warnUpdate .."/3)")
@@ -1670,7 +1649,7 @@ function unWarnPlayer( thePlayer, commandName, partialPlayerName )
 		if (partialPlayerName) then
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			if foundPlayer then
-				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
+				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
 				local row = sql:fetch_assoc(result)
 				if (row) then
 					
@@ -1679,7 +1658,7 @@ function unWarnPlayer( thePlayer, commandName, partialPlayerName )
 						
 						local warnUpdate = currentWarns - 1
 						
-						local update = sql:query("UPDATE accounts SET warns=".. sql:escape_string(warnUpdate) .." WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
+						local update = sql:query("UPDATE accounts SET warns=".. sql:escape_string(warnUpdate) .." WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
 						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s warns have been reduced to ".. warnUpdate ..".", thePlayer, 212, 156, 49)
 						
 						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." un-warned ".. getPlayerName(thePlayer):gsub("_", " ") ..".")
@@ -1703,21 +1682,21 @@ addCommandHandler("unwarn", unWarnPlayer, false, false)
 function toggleDisappear( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local current = getData(thePlayer, "invisible")
+		local current = getElementData(thePlayer, "invisible")
 		if (current == 1) then
 			
 			setElementAlpha(thePlayer, 255)
-			setData( thePlayer, "invisible", 0, true)
+			setElementData( thePlayer, "invisible", 0, true)
 			
-			setData(thePlayer, "nametag", 0, true)
+			setElementData(thePlayer, "nametag", 0, true)
 			
 			outputChatBox("You are now visible.", thePlayer, 212, 156, 49)
 		elseif (current == 0) then
 			
 			setElementAlpha(thePlayer, 0)
-			setData( thePlayer, "invisible", 1, true)
+			setElementData( thePlayer, "invisible", 1, true)
 			
-			setData(thePlayer, "nametag", 1, true)
+			setElementData(thePlayer, "nametag", 1, true)
 			
 			outputChatBox("You are now invisible.", thePlayer, 212, 156, 49)
 		end
@@ -1729,14 +1708,14 @@ addCommandHandler("disappear", toggleDisappear, false, false)
 function toggleNametag( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local current = getData(thePlayer, "nametag")
+		local current = getElementData(thePlayer, "nametag")
 		if (current == 1) then
 			
-			setData(thePlayer, "nametag", 0, true)
+			setElementData(thePlayer, "nametag", 0, true)
 			outputChatBox("Your nametag is now invisible.", thePlayer, 212, 156, 49)
 		else
 			
-			setData(thePlayer, "nametag", 1, true)
+			setElementData(thePlayer, "nametag", 1, true)
 			outputChatBox("Your nametag is now visible.", thePlayer, 212, 156, 49)
 		end
 	end
@@ -1802,7 +1781,7 @@ addCommandHandler("takeitem", takePlayerItem, false, false)
 
 -- /checkinv
 function checkInventory( thePlayer, commandName, partialPlayerName )
-	if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
+	if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getElementData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
 	
 		if (partialPlayerName) then
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -1931,8 +1910,8 @@ function getAllCharacters( thePlayer, commandName, partialPlayerName )
 			if foundPlayer then
 				if getElementData( foundPlayer, "loggedin" ) then
 				
-					local accountid = tonumber( getData(foundPlayer, "accountid") )
-					local accountname = tostring( getData(foundPlayer, "accountname") )
+					local accountid = tonumber( getElementData(foundPlayer, "accountid") )
+					local accountname = tostring( getElementData(foundPlayer, "accountname") )
 					
 					outputChatBox("~-~-~-~-~-~-~ ".. accountname .." - ".. accountid .." ~-~-~-~-~-~-~", thePlayer, 212, 156, 49)
 					

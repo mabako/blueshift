@@ -1,31 +1,10 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Friend System ] ---------
 function getPlayerFriends( thePlayer )
 	local theFriends = { }
 	
-	local clientFriends = tostring( getData( thePlayer, "friends") )
+	local clientFriends = tostring( getElementData( thePlayer, "friends") )
 	if ( clientFriends ~= "none" ) then
 		
 		local country = tostring( exports['[ars]global']:getPlayerCountryByIP( getPlayerIP( thePlayer ), true ) )

@@ -11,17 +11,6 @@ local isGeneralEmpty = true
 local isKeyEmpty = true
 local isWeaponEmpty = true
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Get Items ] ---------
 function giveInventoryItems( s_items, s_values )
 	items = s_items
@@ -542,7 +531,7 @@ function dropItem( button, state )
 					
 					if (guiGetSelectedTab(itemsPanel) == wepTab) then -- Dropping a weapon
 						
-						local duty = tonumber( getData(localPlayer, "duty") )
+						local duty = tonumber( getElementData(localPlayer, "duty") )
 						if ( duty == 0 ) then	-- Offduty
 							
 							createWeaponDropUI( itemName, itemValue )
@@ -871,7 +860,7 @@ function renderItemInfo ( )
 			
 			if (pointingItem ~= nil) then
 			
-				local itemID = tonumber(getData(pointingItem, "itemid"))
+				local itemID = tonumber(getElementData(pointingItem, "itemid"))
 				if (itemID) then
 					
 					local itemModel, itemName = getItemDetails( itemID )
@@ -882,7 +871,7 @@ function renderItemInfo ( )
 						end	
 					end
 					
-					local itemValue = getData(pointingItem, "itemvalue")
+					local itemValue = getElementData(pointingItem, "itemvalue")
 					
 					local txtWidth = dxGetTextWidth(tostring(itemName) .." (".. tostring(itemValue):gsub(";", ",") ..")", 1, "default")
 					dxDrawRectangle(cx+2, cy+1.5, txtWidth+25, 25, tocolor(0, 0, 0, 200))

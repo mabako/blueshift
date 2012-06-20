@@ -1,26 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Paycheck System ] ---------
 
 local governmentAssets, stateBenefits, governmentTax, bankInterest = 0, 0, 0, 0
@@ -50,7 +29,7 @@ function payCheck( thePlayer )
 		for key, thePlayer in ipairs( getElementsByType("player") ) do
 			if getElementData( thePlayer, "loggedin" ) then
 				
-				local dbid = tonumber( getData( thePlayer, "dbid" ) )
+				local dbid = tonumber( getElementData( thePlayer, "dbid" ) )
 				if ( dbid ) then
 					
 					-- Check Bankaccount!
@@ -110,8 +89,8 @@ function payCheck( thePlayer )
 						
 						sql:free_result(resultRented)
 						
-						local factionID = tonumber( getData( thePlayer, "faction" ) )
-						local factionRank = tonumber( getData( thePlayer, "f:rank" ) )
+						local factionID = tonumber( getElementData( thePlayer, "faction" ) )
+						local factionRank = tonumber( getElementData( thePlayer, "f:rank" ) )
 						
 						local getBenefits = true
 						local playerWage = false
@@ -131,8 +110,8 @@ function payCheck( thePlayer )
 					end
 					
 					-- Playing Hours
-					local hoursplayed = tonumber( getData(thePlayer, "hoursplayed") )
-					setData(thePlayer, "hoursplayed", hoursplayed + 1, true)
+					local hoursplayed = tonumber( getElementData(thePlayer, "hoursplayed") )
+					setElementData(thePlayer, "hoursplayed", hoursplayed + 1, true)
 				end	
 			end
 		end
@@ -166,10 +145,10 @@ function tellClientPaycheck( playerWage, netIncome, factionID, count, bankBalanc
 			
 			for key, value in ipairs ( getElementsByType("team") ) do
 				
-				local dbid = tonumber( getData( value, "id" ) )
+				local dbid = tonumber( getElementData( value, "id" ) )
 				if ( dbid == factionID ) then
 				
-					setData( value, "balance", deduction * 100, true )
+					setElementData( value, "balance", deduction * 100, true )
 					break
 				end
 			end

@@ -1,5 +1,5 @@
 function isPlayerTrialModerator( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") >= 1 then
+	if getElementData( thePlayer, "admin") >= 1 then
 		
 		return true
 	else
@@ -8,7 +8,7 @@ function isPlayerTrialModerator( thePlayer )
 end	
 
 function isPlayerModerator( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") >= 2 then
+	if getElementData( thePlayer, "admin") >= 2 then
 		
 		return true
 	else
@@ -17,7 +17,7 @@ function isPlayerModerator( thePlayer )
 end	
 
 function isPlayerHighModerator( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") >= 3 then
+	if getElementData( thePlayer, "admin") >= 3 then
 		
 		return true
 	else
@@ -26,7 +26,7 @@ function isPlayerHighModerator( thePlayer )
 end	
 
 function isPlayerAdministrator( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") >= 4 then
+	if getElementData( thePlayer, "admin") >= 4 then
 		
 		return true
 	else
@@ -35,7 +35,7 @@ function isPlayerAdministrator( thePlayer )
 end	
 
 function isPlayerHighAdministrator( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") >= 5 then
+	if getElementData( thePlayer, "admin") >= 5 then
 		
 		return true
 	else
@@ -45,7 +45,7 @@ end
 
 local scripters = { ["Masta"] = true, ["Jamiez"] = true }
 function isPlayerScripter( thePlayer )
-	if scripters[ tostring( exports['[ars]anticheat-system']:callData( thePlayer, "accountname") ) ] then
+	if scripters[ tostring( getElementData( thePlayer, "accountname") ) ] then
 		return true
 	else
 		return false
@@ -53,25 +53,25 @@ function isPlayerScripter( thePlayer )
 end	
 
 function getPlayerAdminTitle( thePlayer )
-	if exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 1 then
+	if getElementData( thePlayer, "admin") == 1 then
 		
 		return "Trial Moderator"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 2 then
+	elseif getElementData( thePlayer, "admin") == 2 then
 		
 		return "Moderator"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 3 then
+	elseif getElementData( thePlayer, "admin") == 3 then
 		
 		return "High Moderator"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 4 then
+	elseif getElementData( thePlayer, "admin") == 4 then
 		
 		return "Administrator"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 5 then
+	elseif getElementData( thePlayer, "admin") == 5 then
 		
 		return "High Administrator"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 6 then
+	elseif getElementData( thePlayer, "admin") == 6 then
 		
 		return "Sub-Owner"
-	elseif exports['[ars]anticheat-system']:callData( thePlayer, "admin") == 7 then
+	elseif getElementData( thePlayer, "admin") == 7 then
 		
 		return "Server Owner"
 	else
@@ -80,7 +80,7 @@ function getPlayerAdminTitle( thePlayer )
 end
 
 function getPlayerAdminLevel( thePlayer )
-	return exports['[ars]anticheat-system']:callData( thePlayer, "admin")
+	return getElementData( thePlayer, "admin")
 end	
 
 function onlineAdmins( thePlayer, commandName )
@@ -96,7 +96,7 @@ function onlineAdmins( thePlayer, commandName )
 	
 	for k, player in ipairs ( getElementsByType("player") ) do
 		
-		local adminlevel = tonumber( exports['[ars]anticheat-system']:callData( player, "admin") )
+		local adminlevel = tonumber( getElementData( player, "admin") )
 		if ( adminlevel ~= nil and adminlevel > 0 ) and getElementData( player, "loggedin" ) then
 			
 			if adminlevel == 1 then
@@ -126,20 +126,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if ( exports['[ars]anticheat-system']:callData( Owner, "adminduty") == 1 ) then
+		if ( getElementData( Owner, "adminduty") == 1 ) then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( Owner, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( Owner, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( Owner, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( Owner, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then
 				hiddenShow = false
 			end
 		end
@@ -157,20 +157,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( SubOwner, "adminduty") == 1 then
+		if getElementData( SubOwner, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( SubOwner, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( SubOwner, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( SubOwner, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( SubOwner, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then 
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
 				hiddenShow = false
 			end
 		end
@@ -188,20 +188,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( HighAdmin, "adminduty") == 1 then
+		if getElementData( HighAdmin, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( HighAdmin, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( HighAdmin, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( HighAdmin, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( HighAdmin, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then
 				hiddenShow = false
 			end
 		end
@@ -219,20 +219,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( Administrator, "adminduty") == 1 then
+		if getElementData( Administrator, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( Administrator, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( Administrator, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( Administrator, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( Administrator, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then 
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
 				hiddenShow = false
 			end
 		end
@@ -250,20 +250,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( HighMod, "adminduty") == 1 then
+		if getElementData( HighMod, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( HighMod, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( HighMod, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( HighMod, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( HighMod, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then
 				hiddenShow = false
 			end
 		end
@@ -281,20 +281,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( Moderator, "adminduty") == 1 then
+		if getElementData( Moderator, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( Moderator, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( Moderator, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( Moderator, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( Moderator, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then
 				hiddenShow = false
 			end
 		end
@@ -312,20 +312,20 @@ function onlineAdmins( thePlayer, commandName )
 		
 		local r, g, b = nil, nil, nil
 		local duty = "(Off Duty)"
-		if exports['[ars]anticheat-system']:callData( TrialMod, "adminduty") == 1 then
+		if getElementData( TrialMod, "adminduty") == 1 then
 			r, g, b = 212, 156, 49
 			duty = "(On Duty)"
 		end	
 		
 		local username = ""
-		if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) > 0 ) then
-			username = "[".. tostring( exports['[ars]anticheat-system']:callData( TrialMod, "accountname" ) ) .."] "
+		if ( getElementData( thePlayer, "admin" ) > 0 ) then
+			username = "[".. tostring( getElementData( TrialMod, "accountname" ) ) .."] "
 		end
 		
 		local hiddenShow = true
-		if ( exports['[ars]anticheat-system']:callData( TrialMod, "hiddenadmin" ) == 1 ) then
+		if ( getElementData( TrialMod, "hiddenadmin" ) == 1 ) then
 			
-			if ( exports['[ars]anticheat-system']:callData( thePlayer, "admin" ) == 0 ) then 
+			if ( getElementData( thePlayer, "admin" ) == 0 ) then 
 				hiddenShow = false
 			end
 		end

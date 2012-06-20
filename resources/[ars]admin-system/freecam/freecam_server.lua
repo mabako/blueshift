@@ -1,16 +1,4 @@
-﻿-- ELEMENT DATA
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
--- FREECAM
+﻿-- FREECAM
 local thePlayers = { }
 
 function enableFreecam( thePlayer, theDimension )

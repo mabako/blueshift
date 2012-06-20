@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end
-
 --------- [ Photographer ] ---------
 local totalPictureMoney = 0
 function clickPicture( weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
@@ -18,7 +7,7 @@ function clickPicture( weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 		if ( hitElement ) then
 			if ( getElementType( hitElement ) == "player" ) then
 			
-				local faction = tonumber( getData( localPlayer, "faction" ) )
+				local faction = tonumber( getElementData( localPlayer, "faction" ) )
 				if ( faction == 3 ) then
 					
 					local pictureComment = ""
@@ -62,7 +51,7 @@ setElementDimension(employee, 37)
 
 addEventHandler("onClientClick", root, 
 	function( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
-		if ( getData(getLocalPlayer(), "loggedin") and not isElement(sellPhotoWindow) ) then
+		if ( getElementData(getLocalPlayer(), "loggedin") and not isElement(sellPhotoWindow) ) then
 			if (button == "right" and state == "up") then
 				
 				if (clickedElement) and (clickedElement == employee) then
@@ -82,7 +71,7 @@ function sellPhotographsUI( )
 	sellPhotoWindow = guiCreateWindow(x, y, width, height, "Sell Photographs", false)
 	
 	local isPhotographer = false
-	if ( getData( localPlayer, "faction" ) == 3 ) then
+	if ( getElementData( localPlayer, "faction" ) == 3 ) then
 		isPhotographer = true
 	end
 

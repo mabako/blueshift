@@ -9,28 +9,6 @@ local emergencyVehicle =
   [523] = true, [598] = true, [596] = true, [597] = true, [599] = true, [601] = true 
 }
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- Generate a number plate according to city name
 local regionCodes = { ["Los Santos"]="LS", ["Las Venturas"]="LV", ["San Fierro"]="SF" }
 function generateRandomPlate( thePlayer )
@@ -106,7 +84,7 @@ function makeVehicle( thePlayer, commandName, partialPlayerName, faction, tinted
 				local rot = getPedRotation(foundPlayer)
 				local dim = getElementDimension(foundPlayer)
 				local int = getElementInterior(foundPlayer)
-				local owner = getData(foundPlayer, "dbid")
+				local owner = getElementData(foundPlayer, "dbid")
 				local plate = generateRandomPlate(foundPlayer)
 				
 				x = x + ( ( math.cos ( math.rad ( rot ) ) ) * 3 )
@@ -125,22 +103,22 @@ function makeVehicle( thePlayer, commandName, partialPlayerName, faction, tinted
 							engineVal, engine = 1, true
 						end
 				
-						setData(vehicle, "faction", tonumber(faction), true)
-						setData(vehicle, "dbid", tonumber(insertid), true)
-						setData(vehicle, "owner", tonumber(owner), true)
-						setData(vehicle, "fuel", 151, true)
-						setData(vehicle, "plate", tostring(plate), true)
-						setData(vehicle, "tinted", tonumber(tinted), true)
-						setData(vehicle, "engine", engineVal, true)
-						setData(vehicle, "enginebroke", 0, true)
-						setData(vehicle, "impounded", 0, true)
-						setData(vehicle, "handbrake", 0, true)
-						setData(vehicle, "custom_color", 0, true)
-						setData(vehicle, "job", tonumber(job), true)
+						setElementData(vehicle, "faction", tonumber(faction), true)
+						setElementData(vehicle, "dbid", tonumber(insertid), true)
+						setElementData(vehicle, "owner", tonumber(owner), true)
+						setElementData(vehicle, "fuel", 151, true)
+						setElementData(vehicle, "plate", tostring(plate), true)
+						setElementData(vehicle, "tinted", tonumber(tinted), true)
+						setElementData(vehicle, "engine", engineVal, true)
+						setElementData(vehicle, "enginebroke", 0, true)
+						setElementData(vehicle, "impounded", 0, true)
+						setElementData(vehicle, "handbrake", 0, true)
+						setElementData(vehicle, "custom_color", 0, true)
+						setElementData(vehicle, "job", tonumber(job), true)
 						
 						-- Items
-						setData(vehicle, "items", "", true) 
-						setData(vehicle, "values", "", true) 
+						setElementData(vehicle, "items", "", true) 
+						setElementData(vehicle, "values", "", true) 
 						
 						setVehicleEngineState(vehicle, engine)
 						
@@ -227,22 +205,22 @@ function makeCivVehicle( thePlayer, commandName, job, ... )
 						engineVal, engine = 1, true
 					end
 
-					setData(vehicle, "faction", -1, true)
-					setData(vehicle, "dbid", tonumber(insertid), true)
-					setData(vehicle, "owner", -1, true)
-					setData(vehicle, "fuel", 151, true)
-					setData(vehicle, "plate", tostring(plate), true)
-					setData(vehicle, "tinted", 0, true)
-					setData(vehicle, "engine", engineVal, true)
-					setData(vehicle, "enginebroke", 0, true)
-					setData(vehicle, "impounded", 0, true)
-					setData(vehicle, "handbrake", 0, true)
-					setData(vehicle, "custom_color", 0, true)
-					setData(vehicle, "job", tonumber(job), true)
+					setElementData(vehicle, "faction", -1, true)
+					setElementData(vehicle, "dbid", tonumber(insertid), true)
+					setElementData(vehicle, "owner", -1, true)
+					setElementData(vehicle, "fuel", 151, true)
+					setElementData(vehicle, "plate", tostring(plate), true)
+					setElementData(vehicle, "tinted", 0, true)
+					setElementData(vehicle, "engine", engineVal, true)
+					setElementData(vehicle, "enginebroke", 0, true)
+					setElementData(vehicle, "impounded", 0, true)
+					setElementData(vehicle, "handbrake", 0, true)
+					setElementData(vehicle, "custom_color", 0, true)
+					setElementData(vehicle, "job", tonumber(job), true)
 					
 					-- Items
-					setData(vehicle, "items", "", true) 
-					setData(vehicle, "values", "", true) 
+					setElementData(vehicle, "items", "", true) 
+					setElementData(vehicle, "values", "", true) 
 					
 					setVehicleEngineState(vehicle, engine)
 					
@@ -317,18 +295,18 @@ function makeTemporaryVehicle( thePlayer, commandName, ... )
 					engineVal, engine = 1, true
 				end
 				
-				setData(vehicle, "faction", -1, true)
-				setData(vehicle, "dbid", -dbid, true)
-				setData(vehicle, "owner", -1, true)
-				setData(vehicle, "fuel", 151, true)
-				setData(vehicle, "plate", tostring(plate), true)
-				setData(vehicle, "tinted", 0, true)
-				setData(vehicle, "engine", engineVal, true)
-				setData(vehicle, "enginebroke", 0, true)
-				setData(vehicle, "impounded", 0, true)
-				setData(vehicle, "handbrake", 0, true)
-				setData(vehicle, "custom_color", 0, true)
-				setData(vehicle, "job", -1, true)
+				setElementData(vehicle, "faction", -1, true)
+				setElementData(vehicle, "dbid", -dbid, true)
+				setElementData(vehicle, "owner", -1, true)
+				setElementData(vehicle, "fuel", 151, true)
+				setElementData(vehicle, "plate", tostring(plate), true)
+				setElementData(vehicle, "tinted", 0, true)
+				setElementData(vehicle, "engine", engineVal, true)
+				setElementData(vehicle, "enginebroke", 0, true)
+				setElementData(vehicle, "impounded", 0, true)
+				setElementData(vehicle, "handbrake", 0, true)
+				setElementData(vehicle, "custom_color", 0, true)
+				setElementData(vehicle, "job", -1, true)
 				
 				setVehicleEngineState(vehicle, engine)
 				
@@ -396,7 +374,7 @@ function refuelVehicles( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
-			setData(theVehicle, "fuel", 151, true)
+			setElementData(theVehicle, "fuel", 151, true)
 		end
 
 		outputChatBox("~-~-~-~ All Vehicles Re-fueled by ".. getPlayerName(thePlayer):gsub("_", " ") .." ~-~-~-~", root, 212, 156, 49)
@@ -413,7 +391,7 @@ function refeulVehicle( thePlayer, commandName, partialPlayerName)
 				local vehicle = getPedOccupiedVehicle(foundPlayer)
 				if isElement(vehicle) then
 					
-					setData(vehicle, "fuel", 151, true)
+					setElementData(vehicle, "fuel", 151, true)
 					outputChatBox("You refueled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.", thePlayer, 212, 156, 49)
 					
 					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." refilled ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle.")
@@ -478,7 +456,7 @@ function nearbyVehicles( thePlayer, commandName )
 				
 				count = count + 1
 				
-				outputChatBox("#".. count .." - ID: ".. tostring( getData( theVehicle, "dbid") ) ..", Name: ".. getVehicleName( theVehicle ) ..", Owner: ".. getVehicleOwner( tostring( getData( theVehicle, "owner" ) ) ), thePlayer, 212, 156, 49)
+				outputChatBox("#".. count .." - ID: ".. tostring( getElementData( theVehicle, "dbid") ) ..", Name: ".. getVehicleName( theVehicle ) ..", Owner: ".. getVehicleOwner( tostring( getElementData( theVehicle, "owner" ) ) ), thePlayer, 212, 156, 49)
 			end
 		end
 			
@@ -491,7 +469,7 @@ addCommandHandler("nearbyvehs", nearbyVehicles, false, false)
 
 -- /unflip
 function unflipVehicle( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "faction") == 3 ) or ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if ( getElementData(thePlayer, "faction") == 3 ) or ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
 	
 		if (partialPlayerName) then
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -543,7 +521,7 @@ function teleportVehicle( thePlayer, commandName, id )
 			local theVehicle = false
 			for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
 				
-				local dbid = getData(vehicle, "dbid")
+				local dbid = getElementData(vehicle, "dbid")
 				if tonumber(dbid) == id then
 					
 					theVehicle = vehicle
@@ -587,7 +565,7 @@ function teleportToVehicle( thePlayer, commandName, id )
 			local theVehicle = false
 			for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
 				
-				local dbid = getData(vehicle, "dbid")
+				local dbid = getElementData(vehicle, "dbid")
 				if tonumber(dbid) == id then
 					
 					theVehicle = vehicle
@@ -651,7 +629,7 @@ addCommandHandler("addupgrade", addUpgrade, false, false)
 			
 -- /delveh
 function deleteVehicle( thePlayer, commandName, id )
-	local adminLevel = tonumber( getData( thePlayer, "admin" ) )
+	local adminLevel = tonumber( getElementData( thePlayer, "admin" ) )
 	if ( adminLevel == 0 ) then
 		
 		return
@@ -662,7 +640,7 @@ function deleteVehicle( thePlayer, commandName, id )
 			local theVehicle = false
 			for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
 				
-				local dbid = getData(vehicle, "dbid")
+				local dbid = getElementData(vehicle, "dbid")
 				if tonumber(dbid) == id then
 					
 					theVehicle = vehicle
@@ -685,7 +663,7 @@ function deleteVehicle( thePlayer, commandName, id )
 							-- Journey
 							if ( getElementModel(theVehicle) == 508 ) then
 								for key, value in ipairs ( getElementsByType("marker") ) do
-									if ( tonumber( getData(value, "dbid") ) == -id ) then
+									if ( tonumber( getElementData(value, "dbid") ) == -id ) then
 										
 										destroyElement(value)
 									end
@@ -728,7 +706,7 @@ function setVehColor( thePlayer, commandName, partialPlayerName, color1, color2 
 				
 				local vehicle = getPedOccupiedVehicle(foundPlayer)
 				if isElement(vehicle) then
-					local dbid = tonumber(getData(vehicle, "dbid"))
+					local dbid = tonumber(getElementData(vehicle, "dbid"))
 					
 					local success = setVehicleColor(vehicle, color1, color2, 0, 0)
 					if (success) then
@@ -736,7 +714,7 @@ function setVehColor( thePlayer, commandName, partialPlayerName, color1, color2 
 						local update = sql:query("UPDATE vehicles SET `color1`=".. sql:escape_string(color1) ..", `color2`=".. sql:escape_string(color2) ..", `custom_colors`='' WHERE `id`=".. sql:escape_string(dbid) .."")
 						if (update) then
 							
-							setData( vehicle, "custom_color", 0, true )
+							setElementData( vehicle, "custom_color", 0, true )
 							outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
 						end
 
@@ -771,7 +749,7 @@ function setVehicleCustomColor( thePlayer, commandName, partialPlayerName, red1,
 				
 				local vehicle = getPedOccupiedVehicle(foundPlayer)
 				if isElement(vehicle) then
-					local dbid = tonumber(getData(vehicle, "dbid"))
+					local dbid = tonumber(getElementData(vehicle, "dbid"))
 					
 					local success = setVehicleColor(vehicle, red1, green1, blue1, red2, green2, blue2 )
 					if (success) then
@@ -783,7 +761,7 @@ function setVehicleCustomColor( thePlayer, commandName, partialPlayerName, red1,
 							if (update) then
 							
 								outputChatBox("Updated ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s vehicle color.", thePlayer, 212, 156, 49)
-								setData( vehicle, "custom_color", 1, true )
+								setElementData( vehicle, "custom_color", 1, true )
 							else
 								outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 							end	
@@ -849,7 +827,7 @@ function respawnVehicles( thePlayer, commandName, timer )
 					
 					if (isOccupant == false) then
 						
-						local dbid = getData(vehicle, "dbid")
+						local dbid = getElementData(vehicle, "dbid")
 						if ( dbid > 0 ) then
 							
 							local isTrailerAttached = false
@@ -948,8 +926,8 @@ function respawnCivVehicles( thePlayer, commandName, timer )
 					
 					if (isOccupant == false) then
 						
-						local dbid = tonumber( getData(vehicle, "dbid") )
-						local owner = tonumber( getData(vehicle, "owner") )
+						local dbid = tonumber( getElementData(vehicle, "dbid") )
+						local owner = tonumber( getElementData(vehicle, "owner") )
 						
 						if ( owner == -1 ) then
 							
@@ -1013,7 +991,7 @@ function respawnVeh( thePlayer, commandName, id )
 			local theVehicle = false
 			for i, vehicle in ipairs ( getElementsByType("vehicle") ) do
 				
-				local dbid = getData(vehicle, "dbid")
+				local dbid = getElementData(vehicle, "dbid")
 				if tonumber(dbid) == id then
 					
 					theVehicle = vehicle
@@ -1063,7 +1041,7 @@ addCommandHandler("respawnveh", respawnVeh, false, false)
 function respawnRemoteVehicle( theVehicle )
 	if (theVehicle) then
 		
-		local id = tonumber( getData( theVehicle, "dbid" ) )
+		local id = tonumber( getElementData( theVehicle, "dbid" ) )
 		
 		local row = sql:query_fetch_assoc("SELECT x, y, z, rotx, roty, rotz, dimension, interior FROM vehicles WHERE id =".. sql:escape_string( id ) .."")
 		if (row) then
@@ -1095,14 +1073,14 @@ function parkVehicle( thePlayer, commandName )
 		local vehicle = getPedOccupiedVehicle(thePlayer)
 		if (vehicle) then
 			
-			local dbid = tonumber(getData(vehicle, "dbid"))
-			local job = tonumber(getData(vehicle, "job"))
-			local vehicleID = tonumber(getData(vehicle, "dbid"))
-			local adminduty = tonumber(getData(thePlayer, "adminduty"))
-			local admin = tonumber(getData(thePlayer, "admin"))
-			local playerFaction = tonumber(getData(thePlayer, "faction"))
-			local factionDuty = tonumber(getData(thePlayer, "duty"))
-			local vehicleFaction = tonumber(getData(vehicle, "faction"))
+			local dbid = tonumber(getElementData(vehicle, "dbid"))
+			local job = tonumber(getElementData(vehicle, "job"))
+			local vehicleID = tonumber(getElementData(vehicle, "dbid"))
+			local adminduty = tonumber(getElementData(thePlayer, "adminduty"))
+			local admin = tonumber(getElementData(thePlayer, "admin"))
+			local playerFaction = tonumber(getElementData(thePlayer, "faction"))
+			local factionDuty = tonumber(getElementData(thePlayer, "duty"))
+			local vehicleFaction = tonumber(getElementData(vehicle, "faction"))
 				
 			local found, hasVehicleKey = exports['[ars]inventory-system']:hasItem(thePlayer, 1, vehicleID) 
 					
@@ -1128,11 +1106,11 @@ addCommandHandler("park", parkVehicle, false, false)
 
 --------- [ Various Functions ] ---------
 function enterVehicle( thePlayer, seat )
-	local owner = tonumber( getData(source, "owner") )
-	local faction = tonumber( getData(source, "faction") )
-	local playerFaction = tonumber( getData(thePlayer, "faction") )
-	local factionDuty = tonumber( getData(thePlayer, "duty") )
-	local impounded = tonumber( getData(source, "impounded") )
+	local owner = tonumber( getElementData(source, "owner") )
+	local faction = tonumber( getElementData(source, "faction") )
+	local playerFaction = tonumber( getElementData(thePlayer, "faction") )
+	local factionDuty = tonumber( getElementData(thePlayer, "duty") )
+	local impounded = tonumber( getElementData(source, "impounded") )
 	
 	if ( impounded == 1 ) then
 		if ( playerFaction == 4 and factionDuty == 1 ) then
@@ -1155,8 +1133,8 @@ function enterVehicle( thePlayer, seat )
 		else
 			local update = sql:query("UPDATE vehicles SET faction='-1', owner='-1' WHERE id=".. sql:escape_string(faction) .."")
 			if (update) then
-				setData(source, "owner", -1, true)
-				setData(source, "faction", -1, true)
+				setElementData(source, "owner", -1, true)
+				setElementData(source, "faction", -1, true)
 			else
 				outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 			end	
@@ -1180,8 +1158,8 @@ function enterVehicle( thePlayer, seat )
 		else
 			local update = sql:query("UPDATE vehicles SET faction='-1', owner='-1' WHERE id=".. sql:escape_string(faction) .."")
 			if (update) then
-				setData(source, "owner", -1, true)
-				setData(source, "faction", -1, true)
+				setElementData(source, "owner", -1, true)
+				setElementData(source, "faction", -1, true)
 			else
 				outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 			end	
@@ -1190,10 +1168,10 @@ function enterVehicle( thePlayer, seat )
 		end
 	elseif ( owner > 0 and faction > 0 ) then -- Owned by both, we'll remove owner rights from the player,
 		
-		local update = sql:query("UPDATE vehicles SET owner='-1' WHERE id=".. sql:escape_string(tonumber(getData(source, "dbid"))) .."")
+		local update = sql:query("UPDATE vehicles SET owner='-1' WHERE id=".. sql:escape_string(tonumber(getElementData(source, "dbid"))) .."")
 		if (update) then
 			
-			setData(source, "owner", -1, true)
+			setElementData(source, "owner", -1, true)
 			
 			triggerEvent("playerEnterVehicle", source, thePlayer)
 		else
@@ -1203,7 +1181,7 @@ function enterVehicle( thePlayer, seat )
 		sql:free_result(update)
 	end
 	-- 
-	local customColors = tonumber( getData( source, "custom_color") )
+	local customColors = tonumber( getElementData( source, "custom_color") )
 	
 	local isVehicleCustomColored = false
 	if ( customColors == 1 ) then
@@ -1238,7 +1216,7 @@ end
 
 -- Respawn on explode
 function vehicleExplode( )
-	local dbid = getData(source, "dbid")
+	local dbid = getElementData(source, "dbid")
 	local theVehicle = source
 	
 	setTimer(function( )
@@ -1391,13 +1369,13 @@ function toggleEngine( thePlayer )
 				
 				if ( getPedOccupiedVehicleSeat( thePlayer ) == 0 ) then
 					
-					local dbid = tonumber( getData( veh, "dbid" ) )
-					local adminDuty = tonumber( getData( thePlayer, "adminduty" ) )
-					local admin = tonumber(getData(thePlayer, "admin"))
-					local playerFaction = tonumber( getData( thePlayer, "faction" ) )
-					local vehicleFaction = tonumber( getData( veh, "faction" ) )
-					local job = tonumber( getData( veh, "job") )
-					local fuel = tonumber( getData( veh, "fuel") )
+					local dbid = tonumber( getElementData( veh, "dbid" ) )
+					local adminDuty = tonumber( getElementData( thePlayer, "adminduty" ) )
+					local admin = tonumber(getElementData(thePlayer, "admin"))
+					local playerFaction = tonumber( getElementData( thePlayer, "faction" ) )
+					local vehicleFaction = tonumber( getElementData( veh, "faction" ) )
+					local job = tonumber( getElementData( veh, "job") )
+					local fuel = tonumber( getElementData( veh, "fuel") )
 					
 					local found, hasVehicleKey = exports['[ars]inventory-system']:hasItem(thePlayer, 1, dbid)
 					
@@ -1421,14 +1399,14 @@ function toggleEngine( thePlayer )
 					
 						if ( dbid < 0 ) or ( jobVehicle ) or ( hasVehicleKey ) or ( onAdminDuty ) or ( similarFaction ) then 
 					
-							local brokenState = getData(veh, "enginebroke")
+							local brokenState = getElementData(veh, "enginebroke")
 							if ( brokenState == 0 ) then
 								
 								if ( fuel > 0 ) then
 									
 									-- Turn it on
 									setVehicleEngineState( veh, true )
-									setData(veh, "engine", 1, true)
+									setElementData(veh, "engine", 1, true)
 									
 									triggerEvent("onVehicleTurnOn", root, veh)
 								else
@@ -1444,7 +1422,7 @@ function toggleEngine( thePlayer )
 						
 						-- Turn it off
 						setVehicleEngineState( veh, false )
-						setData(veh, "engine", 0, true)
+						setElementData(veh, "engine", 0, true)
 						
 						triggerEvent("onVehicleTurnOff", root, veh)
 					end	
@@ -1455,7 +1433,7 @@ function toggleEngine( thePlayer )
 end
 
 function checkEngine( thePlayer )
-	local engineState = getData(source, "engine")
+	local engineState = getElementData(source, "engine")
 	if engineState == 0 then
 		
 		setVehicleEngineState( source, false )
@@ -1472,15 +1450,15 @@ function toggleLock( thePlayer )
 			if ( bike[getVehicleName(veh)] ) then	-- Can't lock a bike
 				return
 			else	
-				if getPedOccupiedVehicleSeat(thePlayer) == 0 or tonumber(getData(veh, "owner")) == tonumber(getData(thePlayer, "dbid")) then
+				if getPedOccupiedVehicleSeat(thePlayer) == 0 or tonumber(getElementData(veh, "owner")) == tonumber(getElementData(thePlayer, "dbid")) then
 					if isVehicleLocked(veh) then
 						setVehicleLocked(veh, false)
-						lockUpdate("unlocked", tonumber(getData(veh, "dbid")))
+						lockUpdate("unlocked", tonumber(getElementData(veh, "dbid")))
 						
 						outputChatBox("You unlocked the vehicle doors.", thePlayer, 212, 156, 49)
 					else
 						setVehicleLocked(veh, true)
-						lockUpdate("locked", tonumber(getData(veh, "dbid")))
+						lockUpdate("locked", tonumber(getElementData(veh, "dbid")))
 						
 						outputChatBox("You locked the vehicle doors.", thePlayer, 212, 156, 49)
 					end
@@ -1512,11 +1490,11 @@ function toggleLock( thePlayer )
 			local ownedVehs = { }
 			for index, nearbyVeh in pairs ( nearbyVehicles ) do
 					
-				local vehicleID = tonumber(getData(nearbyVeh, "dbid"))
-				local adminDuty = tonumber(getData(thePlayer, "adminduty"))
-				local admin = tonumber(getData(thePlayer, "admin"))
-				local playerFaction = tonumber(getData(thePlayer, "faction"))
-				local vehicleFaction = tonumber(getData(nearbyVeh, "faction"))
+				local vehicleID = tonumber(getElementData(nearbyVeh, "dbid"))
+				local adminDuty = tonumber(getElementData(thePlayer, "adminduty"))
+				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local playerFaction = tonumber(getElementData(thePlayer, "faction"))
+				local vehicleFaction = tonumber(getElementData(nearbyVeh, "faction"))
 				
 				local found, hasVehicleKey = exports['[ars]inventory-system']:hasItem(thePlayer, 1, vehicleID) 
 				
@@ -1562,12 +1540,12 @@ function toggleLock( thePlayer )
 						
 					if isVehicleLocked(nearestVehicle) then
 						setVehicleLocked(nearestVehicle, false)
-						lockUpdate("unlocked", tonumber(getData(nearestVehicle, "dbid")))
+						lockUpdate("unlocked", tonumber(getElementData(nearestVehicle, "dbid")))
 						
 						playUnlockAlarm( nearestVehicle )
 					else
 						setVehicleLocked(nearestVehicle, true)
-						lockUpdate("locked", tonumber(getData(nearestVehicle, "dbid")))
+						lockUpdate("locked", tonumber(getElementData(nearestVehicle, "dbid")))
 						
 						playLockAlarm( nearestVehicle )
 					end
@@ -1580,12 +1558,12 @@ function toggleLock( thePlayer )
 					
 					if isVehicleLocked(foundVehicle) then
 						setVehicleLocked(foundVehicle, false)
-						lockUpdate("unlocked", tonumber(getData(foundVehicle, "dbid")))
+						lockUpdate("unlocked", tonumber(getElementData(foundVehicle, "dbid")))
 						
 						playUnlockAlarm( foundVehicle )
 					else
 						setVehicleLocked(foundVehicle, true)
-						lockUpdate("locked", tonumber(getData(foundVehicle, "dbid")))
+						lockUpdate("locked", tonumber(getElementData(foundVehicle, "dbid")))
 						
 						playLockAlarm( foundVehicle )
 					end
@@ -1694,7 +1672,7 @@ function buyVehicle( thePlayer, price, x, y, z, rot )
 	local id = getElementModel(source)
 
 	local dim, int = 0, 0
-	local owner = getData(thePlayer, "dbid")
+	local owner = getElementData(thePlayer, "dbid")
 	local plate = generateRandomPlate( thePlayer )
 	local color1, color2 = getVehicleColor(source)
 	local faction = -1
@@ -1716,23 +1694,23 @@ function buyVehicle( thePlayer, price, x, y, z, rot )
 				engineVal, engine = 1, true
 			end
 				
-			setData(vehicle, "faction", tonumber(faction), true)
-			setData(vehicle, "dbid", tonumber(insertid), true)
-			setData(vehicle, "owner", tonumber(owner), true)
-			setData(vehicle, "fuel", 151, true)
-			setData(vehicle, "plate", tostring(plate), true)
-			setData(vehicle, "tinted", tonumber(tinted), true)
-			setData(vehicle, "engine", engineVal, true)
-			setData(vehicle, "enginebroke", 0, true)
-			setData(vehicle, "impounded", 0, true)
-			setData(vehicle, "handbrake", 0, true)
-			setData(vehicle, "job", tonumber(job), true)
+			setElementData(vehicle, "faction", tonumber(faction), true)
+			setElementData(vehicle, "dbid", tonumber(insertid), true)
+			setElementData(vehicle, "owner", tonumber(owner), true)
+			setElementData(vehicle, "fuel", 151, true)
+			setElementData(vehicle, "plate", tostring(plate), true)
+			setElementData(vehicle, "tinted", tonumber(tinted), true)
+			setElementData(vehicle, "engine", engineVal, true)
+			setElementData(vehicle, "enginebroke", 0, true)
+			setElementData(vehicle, "impounded", 0, true)
+			setElementData(vehicle, "handbrake", 0, true)
+			setElementData(vehicle, "job", tonumber(job), true)
 			
 			setVehicleEngineState(vehicle, engine)
 			
 			-- Items
-			setData(vehicle, "items", "", true) 
-			setData(vehicle, "values", "", true) 
+			setElementData(vehicle, "items", "", true) 
+			setElementData(vehicle, "values", "", true) 
 			
 			setVehicleColor(vehicle, color1, color2, 0, 0)
 			
@@ -1881,12 +1859,12 @@ function loadOneVehicle(id, hasCoroutine)
 			if ( tostring(customColors) == "" or tostring(customColors) == "nil" ) then
 				
 				setVehicleColor(vehicle, tonumber(color1), tonumber(color2), 0, 0) -- color
-				setData(vehicle, "custom_color", 0, true)
+				setElementData(vehicle, "custom_color", 0, true)
 			else
 				local t = split(tostring(customColors), ",")
 		
 				setVehicleColor(vehicle, unpack(t))	-- color
-				setData(vehicle, "custom_color", 1, true)
+				setElementData(vehicle, "custom_color", 1, true)
 			end
 			
 			setVehiclePaintjob(vehicle, tonumber(paintjob)) -- paintjob
@@ -1903,21 +1881,21 @@ function loadOneVehicle(id, hasCoroutine)
 			end
 			
 			-- Items
-			setData(vehicle, "items", tostring(items), true) 
-			setData(vehicle, "values", tostring(itemvalues), true) 
+			setElementData(vehicle, "items", tostring(items), true) 
+			setElementData(vehicle, "values", tostring(itemvalues), true) 
 			
 			-- element data
-			setData(vehicle, "faction", tonumber(faction), true)
-			setData(vehicle, "dbid", tonumber(id), true)
-			setData(vehicle, "owner", tonumber(owner), true)
-			setData(vehicle, "fuel", tonumber(fuel), true)
-			setData(vehicle, "plate", tostring(plate), true)
-			setData(vehicle, "tinted", tonumber(tinted), true)
-			setData(vehicle, "engine", tonumber(engine), true)
-			setData(vehicle, "enginebroke", tonumber(enginebroke), true)
-			setData(vehicle, "impounded", tonumber(impounded), true)
-			setData(vehicle, "handbrake", tonumber(handbrake), true)
-			setData(vehicle, "job", tonumber(job), true)
+			setElementData(vehicle, "faction", tonumber(faction), true)
+			setElementData(vehicle, "dbid", tonumber(id), true)
+			setElementData(vehicle, "owner", tonumber(owner), true)
+			setElementData(vehicle, "fuel", tonumber(fuel), true)
+			setElementData(vehicle, "plate", tostring(plate), true)
+			setElementData(vehicle, "tinted", tonumber(tinted), true)
+			setElementData(vehicle, "engine", tonumber(engine), true)
+			setElementData(vehicle, "enginebroke", tonumber(enginebroke), true)
+			setElementData(vehicle, "impounded", tonumber(impounded), true)
+			setElementData(vehicle, "handbrake", tonumber(handbrake), true)
+			setElementData(vehicle, "job", tonumber(job), true)
 		end
 	else
 		outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())

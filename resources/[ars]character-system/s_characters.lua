@@ -1,26 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Login Player ] ---------
 function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, donator, togglepm, tutorial, friends, skinmods, weaponmods, vehiclemods, clean )
 	
@@ -29,19 +8,19 @@ function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, dona
 		friends = "none"
 	end
 	
-	setData(source, "accountname", tostring(username), true)
-	setData(source, "accountid", tonumber(id), true)
-	setData(source, "admin", tonumber(admin), true)
-	setData(source, "adminduty", tonumber(adminduty), true)
-	setData(source, "hiddenadmin", tonumber(hiddenadmin), true)
-	setData(source, "adminreports", tonumber(reports), true)
-	setData(source, "donator", tonumber(donator), true)
-	setData(source, "togglepm", tonumber(togglepm), true)
-	setData(source, "tutorial", tonumber(tutorial), true)
-	setData(source, "friends", tostring(friends), true)
-	setData(source, "skinmods", tonumber(skinmods), true)
-	setData(source, "weaponmods", tonumber(weaponmods), true)
-	setData(source, "vehiclemods", tonumber(vehiclemods), true)
+	setElementData(source, "accountname", tostring(username), true)
+	setElementData(source, "accountid", tonumber(id), true)
+	setElementData(source, "admin", tonumber(admin), true)
+	setElementData(source, "adminduty", tonumber(adminduty), true)
+	setElementData(source, "hiddenadmin", tonumber(hiddenadmin), true)
+	setElementData(source, "adminreports", tonumber(reports), true)
+	setElementData(source, "donator", tonumber(donator), true)
+	setElementData(source, "togglepm", tonumber(togglepm), true)
+	setElementData(source, "tutorial", tonumber(tutorial), true)
+	setElementData(source, "friends", tostring(friends), true)
+	setElementData(source, "skinmods", tonumber(skinmods), true)
+	setElementData(source, "weaponmods", tonumber(weaponmods), true)
+	setElementData(source, "vehiclemods", tonumber(vehiclemods), true)
 	
 	if (clean) then
 		triggerClientEvent(source, "cleanUpLogin", source)
@@ -89,7 +68,7 @@ function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, dona
 			-- Faction
 			for i, team in ipairs ( getElementsByType("team") ) do
 				if isElement(team) then
-					if tonumber(getData(team, "id")) == tonumber(faction) then
+					if tonumber(getElementData(team, "id")) == tonumber(faction) then
 						
 						characters[count][4] = getTeamName(team)
 						break
@@ -198,46 +177,46 @@ function spawnCharacter( name )
 		local drivinglicense = result['drivinglicense']
 		local hoursplayed = result['hoursplayed']
 		
-		setData(source, "dbid", tonumber(dbid), true)
+		setElementData(source, "dbid", tonumber(dbid), true)
 		
 		-- Others
 		setElementData(source, "loggedin", true, true)
-		setData(source, "invisible", 0, true)
-		setData(source, "muted", 0, true)
-		setData(source, "globalooc", 1, true)
+		setElementData(source, "invisible", 0, true)
+		setElementData(source, "muted", 0, true)
+		setElementData(source, "globalooc", 1, true)
 		
-		setTimer(function()
+		setTimer(function(source)
 			for badgeName in pairs(exports['[ars]inventory-system']:getBadges()) do
-				setData(source, badgeName, 0, true)
-			end end, 100, 1)
+				setElementData(source, badgeName, 0, true)
+			end end, 100, 1, source)
 		
-		setData(source, "duty", tonumber(duty), true)
+		setElementData(source, "duty", tonumber(duty), true)
 		
-		setData(source, "job", tonumber(job), true)
+		setElementData(source, "job", tonumber(job), true)
 		
-		setData(source, "pickedup", 0, true) 
-		setData(source, "ringing", 0, true)
-		setData(source, "calling", 0, true)
+		setElementData(source, "pickedup", 0, true) 
+		setElementData(source, "ringing", 0, true)
+		setElementData(source, "calling", 0, true)
 		
-		setData(source, "radio", tonumber(radio), true)
+		setElementData(source, "radio", tonumber(radio), true)
 		
 		setPlayerName(source, tostring(name):gsub(" ", "_"))
-		setData(source, "nametag", 1, true) 
+		setElementData(source, "nametag", 1, true) 
 		
 		-- Mask
 		if tonumber( mask ) == 0 then
-			setData(source, "mask", 0, true)
+			setElementData(source, "mask", 0, true)
 			setPlayerNametagText(source, getPlayerName(source):gsub("_", " "))
 		else
-			setData(source, "mask", 1, true)
+			setElementData(source, "mask", 1, true)
 			setPlayerNametagText(source, "Unknown Person (Mask)")
 		end
 		
 		-- Bandana
-		setData(source, "bandana", 0, true)
+		setElementData(source, "bandana", 0, true)
 		
 		-- Cuffs
-		setData(source, "cuffed", tonumber(cuffed), true)
+		setElementData(source, "cuffed", tonumber(cuffed), true)
 		if tonumber( cuffed ) == 1 then
 		
 			toggleControl(source, "sprint", false)
@@ -256,10 +235,10 @@ function spawnCharacter( name )
 			toggleControl(source, "previous_weapon", true)
 		end	
 		
-		setData(source, "d:license", tonumber(drivinglicense), true)
-		setData(source, "hoursplayed", tonumber(hoursplayed), true)
+		setElementData(source, "d:license", tonumber(drivinglicense), true)
+		setElementData(source, "hoursplayed", tonumber(hoursplayed), true)
 		
-		--setData(source, "bank:showing", 0, true)
+		--setElementData(source, "bank:showing", 0, true)
 		
 		spawnPlayer(source, x, y, z, rot)
 		setElementModel(source, tonumber(skin))
@@ -278,8 +257,8 @@ function spawnCharacter( name )
 		exports['[ars]global']:updateNametagColor(source)
 		
 		-- Faction
-		setData( source, "faction", tonumber(faction), true)
-		setData( source, "f:rank", tonumber(rank), true)
+		setElementData( source, "faction", tonumber(faction), true)
+		setElementData( source, "f:rank", tonumber(rank), true)
 		
 		setPlayerTeam( source, nil )
 		
@@ -288,7 +267,7 @@ function spawnCharacter( name )
 			local found = false
 			for i, team in ipairs ( factions ) do
 				if isElement(team) then
-					if tonumber(getData(team, "id")) == tonumber(faction) then
+					if tonumber(getElementData(team, "id")) == tonumber(faction) then
 						
 						setPlayerTeam(source, team)
 						found = true
@@ -320,12 +299,12 @@ function spawnCharacter( name )
 		local amotd = result['amotd']
 		
 		outputChatBox("MOTD: ".. motd, source, 244, 219, 11)
-		if tonumber(getData(source, "admin")) > 0 then
+		if tonumber(getElementData(source, "admin")) > 0 then
 			outputChatBox("Admin MOTD: ".. amotd, source, 89, 189, 59)
 		end	
 		
 		-- Admin Jail
-		local result = sql:query_fetch_assoc("SELECT jail_time, jail_reason, jail_by FROM accounts WHERE id=".. sql:escape_string(tonumber(getData(source, "accountid"))) .."")
+		local result = sql:query_fetch_assoc("SELECT jail_time, jail_reason, jail_by FROM accounts WHERE id=".. sql:escape_string(tonumber(getElementData(source, "accountid"))) .."")
 		if ( result ) then
 			local jailtime = tonumber( result['jail_time'] )
 			local jailby = tostring( result['jail_by'] )
@@ -337,7 +316,7 @@ function spawnCharacter( name )
 		end	
 		
 		-- Police Jail
-		local result = sql:query_fetch_assoc("SELECT arrest_time, arrest_reason, arrest_by FROM characters WHERE id=".. sql:escape_string(tonumber(getData(source, "dbid"))) .."")
+		local result = sql:query_fetch_assoc("SELECT arrest_time, arrest_reason, arrest_by FROM characters WHERE id=".. sql:escape_string(tonumber(getElementData(source, "dbid"))) .."")
 		if ( result ) then
 		
 			local arresttime = tonumber( result['arrest_time'] )
@@ -425,7 +404,7 @@ addCommandHandler("clearchat", clearChatBox)
 --------- [ Character Creation ] ---------
 function createCharacter( name, gender, ethnicity, skin, height, weight, age, description ) 
 	
-	local accountid = tonumber(getData(source, "accountid"))
+	local accountid = tonumber(getElementData(source, "accountid"))
 	
 	local name = tostring(name)
 	local gender = tonumber(gender)
@@ -457,23 +436,23 @@ addEventHandler("createCharacter", getRootElement(), createCharacter)
 
 --------- [ Change Character ] ---------
 function changeCharacter( thePlayer )
-	--if ( getData( thePlayer, "bank:showing" ) == 0 ) then
+	--if ( getElementData( thePlayer, "bank:showing" ) == 0 ) then
 	
 		triggerEvent("savePlayer", thePlayer, "Change Character")
 		
-		local username = getData(thePlayer, "accountname")
-		local id = getData(thePlayer, "accountid")
-		local admin = getData(thePlayer, "admin")
-		local adminduty = getData(thePlayer, "adminduty")
-		local hiddenadmin = getData(thePlayer, "hiddenadmin")
-		local reports = getData(thePlayer, "adminreports")
-		local donator = getData(thePlayer, "donator")
-		local togglepm = getData(thePlayer, "togglepm")
-		local tutorial = getData(thePlayer, "tutorial")
-		local friends = getData(thePlayer, "friends")
-		local skinmods = getData(thePlayer, "skinmods")
-		local weaponmods = getData(thePlayer, "weaponmods")
-		local vehiclemods = getData(thePlayer, "vehiclemods")
+		local username = getElementData(thePlayer, "accountname")
+		local id = getElementData(thePlayer, "accountid")
+		local admin = getElementData(thePlayer, "admin")
+		local adminduty = getElementData(thePlayer, "adminduty")
+		local hiddenadmin = getElementData(thePlayer, "hiddenadmin")
+		local reports = getElementData(thePlayer, "adminreports")
+		local donator = getElementData(thePlayer, "donator")
+		local togglepm = getElementData(thePlayer, "togglepm")
+		local tutorial = getElementData(thePlayer, "tutorial")
+		local friends = getElementData(thePlayer, "friends")
+		local skinmods = getElementData(thePlayer, "skinmods")
+		local weaponmods = getElementData(thePlayer, "weaponmods")
+		local vehiclemods = getElementData(thePlayer, "vehiclemods")
 		
 		triggerEvent("loginPlayer", thePlayer, username, id, admin, adminduty, hiddenadmin, reports, donator, togglepm, tutorial, friends, skinmods, weaponmods, vehiclemods, false)
 		
@@ -521,7 +500,7 @@ addEventHandler("onResourceStart", root,
 				bindKey(value, "end", "down", changeCharacter)
 			else
 				
-				if ( getData( value, "username" ) ~= false ) then
+				if ( getElementData( value, "username" ) ~= false ) then
 					
 					bindKey(value, "end", "down", changeAccount)
 				end	
@@ -555,7 +534,7 @@ end
 addCommandHandler("look", lookAtPlayer, false, false)
 
 function getPlayerAppearance( thePlayer )
-	local result = sql:query_fetch_assoc("SELECT `age`, `weight`, `height`, `description` FROM `characters` WHERE `id`=".. sql:escape_string( tonumber( getData( thePlayer, "dbid" ) ) ) .."")
+	local result = sql:query_fetch_assoc("SELECT `age`, `weight`, `height`, `description` FROM `characters` WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "dbid" ) ) ) .."")
 	if ( result ) then
 		
 		local age = tonumber( result['age'] )

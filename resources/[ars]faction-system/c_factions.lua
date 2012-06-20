@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize()
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Admin Commands ] ---------
 function showCreateGovFaction( )
 	local width, height = 400, 500
@@ -305,7 +294,7 @@ local isWageColumnPresent = false
 
 local totalMembers = 0
 function createFactionUI( playerRank, factionID, factionType, leaderRank, factionBalance )
-	if (getData(getLocalPlayer(), "faction") > 0) and (loadedFactionData) then
+	if (getElementData(getLocalPlayer(), "faction") > 0) and (loadedFactionData) then
 		
 		local factionID = tonumber(factionID)
 		local factionType = tonumber(factionType)
@@ -553,7 +542,7 @@ function promoteFactionPlayer( button, state )
 			if (memberName) and (rankName) then
 				
 				local nextRank = false
-				local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+				local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 				
 				for key, value in pairs ( factionData["ranks"][factionID] ) do
 					if tostring(value) == tostring(rankName) then
@@ -601,7 +590,7 @@ function demoteFactionPlayer( button, state )
 			if (memberName) and (rankName) then
 				
 				local nextRank = false
-				local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+				local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 				
 				for key, value in pairs ( factionData["ranks"][factionID] ) do
 					if tostring(value) == tostring(rankName) then
@@ -653,7 +642,7 @@ function changeRanks( button, state )
 			setElementParent(rankChangeWin, factionWin)
 			
 			-- Edits
-			local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+			local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 			
 			local ranks = { }
 			local editY = 65
@@ -675,7 +664,7 @@ function changeRanks( button, state )
 			function( button, state )
 				if ( button == "left" and state == "up" and source == rankChangeSave ) then
 					
-					local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+					local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 					
 					local editTxts = { }
 					for i = 1, 15 do
@@ -733,7 +722,7 @@ function changeWages( button, state )
 			setElementParent(wageChangeWin, factionWin)
 			
 			-- Edits
-			local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+			local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 			
 			local wages = { }
 			local editY = 65
@@ -752,7 +741,7 @@ function changeWages( button, state )
 			function( button, state )
 				if ( button == "left" and state == "up" and source == wageChangeSave ) then
 					
-					local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+					local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 					
 					local editTxts = { }
 					for i = 1, 15 do
@@ -802,7 +791,7 @@ function changeMOTD( button, state )
 			local x = (screenX/2) - (width/2)
 			local y = (screenY/2) - (height/2)
 		
-			local factionID = tonumber(getData(getLocalPlayer(), "faction"))
+			local factionID = tonumber(getElementData(getLocalPlayer(), "faction"))
 			
 			motdWin = guiCreateWindow(x, y, width, height, "Change MOTD", false)
 			guiWindowSetSizable (motdWin, false)

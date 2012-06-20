@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Vehicle Repairing ] ---------
 function repairVehicle( theVehicle )
 	if ( isElement( theVehicle ) ) then
@@ -38,7 +16,7 @@ addEventHandler("repairVehicle", root, repairVehicle)
 function refuelVehicle( theVehicle )
 	if ( isElement( theVehicle ) ) then
 		
-		setData( theVehicle, "fuel", 151, true)
+		setElementData( theVehicle, "fuel", 151, true)
 		takeMoneyFromVs( 100 )
 		
 		outputChatBox("Vehicle refuelled for $100", source, 212, 156, 49)
@@ -52,10 +30,10 @@ function repaintVehicle( theVehicle, color1, color2 )
 		
 		if ( not color2 ) then
 			setVehicleColor(theVehicle, unpack( color1 ))
-			setData( theVehicle, "custom_color", 1, true)
+			setElementData( theVehicle, "custom_color", 1, true)
 		else
 			setVehicleColor(theVehicle, color1, color2, 0, 0)
-			setData( theVehicle, "custom_color", 0, true)
+			setElementData( theVehicle, "custom_color", 0, true)
 		end
 		
 		takeMoneyFromVs( 300 )
@@ -84,7 +62,7 @@ function addVehicleModification( theVehicle, upgradeID, upgradeName, upgradePric
 				end
 			end	
 			
-			local update = sql:query("UPDATE `vehicles` SET `upgrades`='".. sql:escape_string( tostring( upgrades ) ) .."' WHERE `id`=".. sql:escape_string( tonumber( getData( theVehicle, "dbid" ) ) ) .."")
+			local update = sql:query("UPDATE `vehicles` SET `upgrades`='".. sql:escape_string( tostring( upgrades ) ) .."' WHERE `id`=".. sql:escape_string( tonumber( getElementData( theVehicle, "dbid" ) ) ) .."")
 			sql:free_result(update)
 			
 			triggerClientEvent(source, "updateVehicleUpgrades", source, t )
@@ -112,7 +90,7 @@ function takeMoneyFromVs( amount )
 				outputDebugString("MySQL Error: Unable to update LSVS money!", 1)
 				outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 			else
-				setData( getTeamFromName("Bone County Vehicle Services"), "balance", totalLoss, true)
+				setElementData( getTeamFromName("Bone County Vehicle Services"), "balance", totalLoss, true)
 			end
 			
 			sql:free_result(update)

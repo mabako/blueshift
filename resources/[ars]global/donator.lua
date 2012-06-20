@@ -1,5 +1,5 @@
 function isPlayerLevelOneDonator( thePlayer )
-	if exports['[ars]anticheat-system']:callData(thePlayer, "donator") >= 1 then
+	if getElementData(thePlayer, "donator") >= 1 then
 		return true
 	else
 		return false
@@ -7,7 +7,7 @@ function isPlayerLevelOneDonator( thePlayer )
 end
 
 function isPlayerLevelTwoDonator( thePlayer )
-	if exports['[ars]anticheat-system']:callData(thePlayer, "donator") >= 2 then
+	if getElementData(thePlayer, "donator") >= 2 then
 		return true
 	else
 		return false
@@ -15,7 +15,7 @@ function isPlayerLevelTwoDonator( thePlayer )
 end
 
 function isPlayerLevelThreeDonator( thePlayer )
-	if exports['[ars]anticheat-system']:callData(thePlayer, "donator") >= 3 then
+	if getElementData(thePlayer, "donator") >= 3 then
 		return true
 	else
 		return false
@@ -23,13 +23,13 @@ function isPlayerLevelThreeDonator( thePlayer )
 end	
 
 function getPlayerDonatorTitle( thePlayer )
-	if exports['[ars]anticheat-system']:callData(thePlayer, "donator") == 1 then
+	if getElementData(thePlayer, "donator") == 1 then
 		
 		return "Level One Donator"
-	elseif exports['[ars]anticheat-system']:callData(thePlayer, "donator") == 2 then
+	elseif getElementData(thePlayer, "donator") == 2 then
 		
 		return "Level Two Donator"
-	elseif exports['[ars]anticheat-system']:callData(thePlayer, "donator") == 3 then	
+	elseif getElementData(thePlayer, "donator") == 3 then	
 	
 		return "Level Three Donator"
 	else

@@ -2,28 +2,6 @@ local sql = exports.sql
 local items = { }
 local values = { }
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Data Fetching ] ---------
 function callInventoryData( )
 	
@@ -38,7 +16,7 @@ function callInventoryData( )
 	local itemData = ""
 	local valueData = ""
 	
-	local result = sql:query_fetch_assoc("SELECT items, itemvalues FROM characters WHERE id=".. sql:escape_string(getData(source, "dbid")) .."")
+	local result = sql:query_fetch_assoc("SELECT items, itemvalues FROM characters WHERE id=".. sql:escape_string(getElementData(source, "dbid")) .."")
 	if (result) then
 		itemData = result['items']
 		valueData = result['itemvalues']
@@ -339,7 +317,7 @@ function dropItemOnGround( itemName, itemValue, dropPosition )
 		takeItem(source, itemID, tostring(itemValue):gsub(",", ";"))
 	end
 	
-	local insert = sql:query("INSERT INTO `worlditems` SET x=".. sql:escape_string(x) ..", y=".. sql:escape_string(y) ..", z=".. sql:escape_string(z) ..", `interior`=".. sql:escape_string(interior) ..", `dimension`=".. sql:escape_string(dimension) ..", rx=".. sql:escape_string(rx) ..", ry=".. sql:escape_string(ry) ..", rz=".. sql:escape_string(rz) ..", elevation=".. sql:escape_string(elevation) ..", itemmodel=".. sql:escape_string(itemModel) ..", itemid=".. sql:escape_string(itemID) ..", itemvalue='".. sql:escape_string(itemValue:gsub(",", ";")) .."', droper=".. sql:escape_string(getData(source, "dbid")) .."")		
+	local insert = sql:query("INSERT INTO `worlditems` SET x=".. sql:escape_string(x) ..", y=".. sql:escape_string(y) ..", z=".. sql:escape_string(z) ..", `interior`=".. sql:escape_string(interior) ..", `dimension`=".. sql:escape_string(dimension) ..", rx=".. sql:escape_string(rx) ..", ry=".. sql:escape_string(ry) ..", rz=".. sql:escape_string(rz) ..", elevation=".. sql:escape_string(elevation) ..", itemmodel=".. sql:escape_string(itemModel) ..", itemid=".. sql:escape_string(itemID) ..", itemvalue='".. sql:escape_string(itemValue:gsub(",", ";")) .."', droper=".. sql:escape_string(getElementData(source, "dbid")) .."")		
 	if (insert) then
 		local insertid = sql:insert_id()
 		
@@ -347,14 +325,14 @@ function dropItemOnGround( itemName, itemValue, dropPosition )
 		setElementInterior(item, interior)
 		setElementDimension(item, dimension)
 		
-		setData(item, "dbid", tonumber(insertid), true)
-		setData(item, "droper", tonumber(getData(source, "dbid")), true)
-		setData(item, "itemid", tonumber(itemID), true) 
-		setData(item, "itemvalue", tostring(itemValue):gsub(",", ";"), true) 
+		setElementData(item, "dbid", tonumber(insertid), true)
+		setElementData(item, "droper", tonumber(getElementData(source, "dbid")), true)
+		setElementData(item, "itemid", tonumber(itemID), true) 
+		setElementData(item, "itemvalue", tostring(itemValue):gsub(",", ";"), true) 
 		
 		if ( tonumber(itemModel) == 2332 or tonumber(itemModel) == 3761 ) then
-			setData(item, "items", "", true)
-			setData(item, "values", "", true)
+			setElementData(item, "items", "", true)
+			setElementData(item, "values", "", true)
 		end
 	
 		outputChatBox("You dropped a ".. tostring(itemName) ..".", source, 212, 156, 49)
@@ -373,9 +351,9 @@ addEventHandler("dropItemOnGround", getRootElement(), dropItemOnGround)
 	
 -- Pickup Item	
 function pickItemFromGround( item )
-	local dbid = tonumber(getData(item, "dbid"))
-	local itemID = tonumber(getData(item, "itemid"))
-	local itemValue = tostring(getData(item, "itemvalue"))
+	local dbid = tonumber(getElementData(item, "dbid"))
+	local itemID = tonumber(getElementData(item, "itemid"))
+	local itemValue = tostring(getElementData(item, "itemvalue"))
 	
 	if ( itemID ) then
 		
@@ -425,7 +403,7 @@ function moveItemOnGround( theObject, worldX, worldY, worldZ )
 	if ( theObject ) then
 		moveObject( theObject, 200, worldX, worldY, worldZ )
 		
-		local dbid = tonumber( getData( theObject, "dbid") )
+		local dbid = tonumber( getElementData( theObject, "dbid") )
 		local update = sql:query("UPDATE `worlditems` SET `x`=".. sql:escape_string( worldX ) ..", `y`=".. sql:escape_string( worldY ) ..", `z`=".. sql:escape_string( worldZ ) .." WHERE `id`=".. sql:escape_string( dbid ) .."")
 		if ( not update ) then
 			
@@ -498,11 +476,11 @@ function useInventoryItem( itemName, itemValue )
 		outputChatBox("A Radio. ( /tuneradio & /r )", source, 212, 156, 49)
 	elseif (itemID == 5) then -- Mask
 		
-		local mask = tonumber(getData(source, "mask"))
+		local mask = tonumber(getElementData(source, "mask"))
 		if (mask == 0) then
 			
 			setPlayerNametagText(source, "Unknown Person(Mask)")
-			setData(source, "mask", 1, true)
+			setElementData(source, "mask", 1, true)
 			
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." slips on a mask.")
 		elseif (mask == 1) then
@@ -510,7 +488,7 @@ function useInventoryItem( itemName, itemValue )
 			local name = getPlayerName(source):gsub("_", " ")
 			
 			setPlayerNametagText(source, name)
-			setData(source, "mask", 0, true)
+			setElementData(source, "mask", 0, true)
 			
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." takes off a mask.")
 		end
@@ -536,20 +514,20 @@ function useInventoryItem( itemName, itemValue )
 	elseif item.badge then -- random badge	
 		local elementData = item.badge
 		
-		local equipped = tonumber( getData( source, elementData ) ) == 1
+		local equipped = tonumber( getElementData( source, elementData ) ) == 1
 		if not equipped then
 			-- unequip all other badges first
 			for badgeName, data in pairs( getBadges() ) do
-				if tonumber( getData( source, badgeName) ) == 1 then
-					setData( source, badgeName, 0, true )
+				if tonumber( getElementData( source, badgeName) ) == 1 then
+					setElementData( source, badgeName, 0, true )
 					sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." removes a ".. g_items[data.itemID][1] ..".")
 				end
 			end
 			
-			setData( source, elementData, 1, true )
+			setElementData( source, elementData, 1, true )
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." puts on a ".. itemName ..".")
 		else
-			setData( source, elementData, 0, true )
+			setElementData( source, elementData, 0, true )
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." removes a ".. itemName ..".")
 		end
 		
@@ -562,11 +540,11 @@ function useInventoryItem( itemName, itemValue )
 		sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." takes some ".. itemName ..".")
 	elseif (itemID >= 42 and itemID <= 47) then -- Bandanas	
 		
-		local bandana = tonumber(getData(source, "bandana"))
+		local bandana = tonumber(getElementData(source, "bandana"))
 		if (bandana == 0) then
 			
 			setPlayerNametagText(source, "Unknown Person(Band)")
-			setData(source, "bandana", 1, true)
+			setElementData(source, "bandana", 1, true)
 			
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." wraps a ".. itemName .." around his face.")
 		elseif (bandana == 1) then
@@ -574,7 +552,7 @@ function useInventoryItem( itemName, itemValue )
 			local name = getPlayerName(source):gsub("_", " ")
 			
 			setPlayerNametagText(source, name)
-			setData(source, "bandana", 0, true)
+			setElementData(source, "bandana", 0, true)
 			
 			sendActionToNearbyPlayers(source, " ** ".. getPlayerName(source):gsub("_", " ") .." unwraps a ".. itemName .." from his face.")
 		end
@@ -636,7 +614,7 @@ function moveSafe( thePlayer, commandName, safeID )
 				
 				if ( getElementDimension( value ) == getElementDimension( thePlayer ) and getElementInterior( value ) == getElementInterior( thePlayer ) ) then
 					
-					local dbid = tonumber( getData( value, "dbid" ) )
+					local dbid = tonumber( getElementData( value, "dbid" ) )
 					if ( dbid == safeID ) then
 						
 						safe = value
@@ -658,7 +636,7 @@ function moveSafe( thePlayer, commandName, safeID )
 			
 			outputChatBox("Safe moved!", thePlayer, 0, 255, 0)
 			
-			local update = sql:query("UPDATE `worlditems` SET `x`=".. sql:escape_string( x ) ..", `y`=".. sql:escape_string( y ) ..", `z`=".. sql:escape_string( z - 1 ) ..", `rz`=".. sql:escape_string( rotZ - 180 ) .." WHERE `id`=".. sql:escape_string( tonumber( getData( safe, "dbid" ) ) ) .."")
+			local update = sql:query("UPDATE `worlditems` SET `x`=".. sql:escape_string( x ) ..", `y`=".. sql:escape_string( y ) ..", `z`=".. sql:escape_string( z - 1 ) ..", `rz`=".. sql:escape_string( rotZ - 180 ) .." WHERE `id`=".. sql:escape_string( tonumber( getElementData( safe, "dbid" ) ) ) .."")
 			if ( not update ) then
 				outputDebugString("Unable to save safe position!")
 			end	
@@ -687,7 +665,7 @@ function nearbySafes( thePlayer )
 
 					count = count + 1
 					
-					local dbid = tostring( getData( value, "dbid" ) )
+					local dbid = tostring( getElementData( value, "dbid" ) )
 					outputChatBox("#".. count .." - ID: ".. dbid ..".", thePlayer, 212, 156, 49)
 				end
 			end
@@ -729,14 +707,14 @@ function spawnWorldItems( res )
 		setElementInterior(item, tonumber(interior))
 		setElementDimension(item, tonumber(dimension))
 		
-		setData(item, "dbid", tonumber(id), true)
-		setData(item, "droper", tonumber(droper), true)
-		setData(item, "itemid", tonumber(itemID), true) 
-		setData(item, "itemvalue", tonumber(itemValue), true) 
+		setElementData(item, "dbid", tonumber(id), true)
+		setElementData(item, "droper", tonumber(droper), true)
+		setElementData(item, "itemid", tonumber(itemID), true) 
+		setElementData(item, "itemvalue", tonumber(itemValue), true) 
 		
 		if ( tonumber(itemModel) == 2332 or tonumber(itemModel) == 3761 ) then
-			setData(item, "items", tostring(items), true)
-			setData(item, "values", tostring(values), true)
+			setElementData(item, "items", tostring(items), true)
+			setElementData(item, "values", tostring(values), true)
 		end
 	end	
 	

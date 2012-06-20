@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Storage System ] ---------
 local items = { }
 local values = { }
@@ -50,7 +39,7 @@ addEventHandler("onClientClick", root,
 					theObject = clickedElement
 					
 					if ( isVehicle ) then
-						if ( getData( theObject, "dbid" ) < 0 ) then
+						if ( getElementData( theObject, "dbid" ) < 0 ) then
 						
 							outputChatBox("You cannot store items in that vehicle.", 255, 0, 0)
 							return
@@ -65,7 +54,7 @@ addEventHandler("onClientClick", root,
 					triggerEvent("getClientItems", localPlayer)
 	
 					while received do
-						local adminduty = tonumber( getData( localPlayer, "adminduty") )
+						local adminduty = tonumber( getElementData( localPlayer, "adminduty") )
 						local dbid = getElementDimension( clickedElement )
 						
 						if ( isObject ) then
@@ -186,8 +175,8 @@ function populateStorageGridLists( refresh, sourceObject )
 				items, values = exports['[ars]inventory-system']:getPlayerInventory( )
 			end
 			
-			local objectItems = tostring( getData( theObject, "items") )
-			local objectValues = tostring( getData( theObject, "values") )
+			local objectItems = tostring( getElementData( theObject, "items") )
+			local objectValues = tostring( getElementData( theObject, "values") )
 			
 			local storageItems = { }
 			local storageValues = { }
@@ -255,8 +244,8 @@ function transferItem( button, state )
 			
 			local itemValue = guiGridListGetItemText( source, row, 2 )
 			
-			local objectItems = tostring( getData( theObject, "items") )
-			local objectValues = tostring( getData( theObject, "values") )
+			local objectItems = tostring( getElementData( theObject, "items") )
+			local objectValues = tostring( getElementData( theObject, "values") )
 			
 			if ( source == inventoryItemsList ) then
 				

@@ -6,34 +6,13 @@ local policeVehicle = { [427]= true, [490]= true, [528]= true, [523]= true, [598
 
 local ready = false
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
 
 --------- [ Mobile Data Computer ] ---------
 
 -- /mdc
 addCommandHandler("mdc", 
 function( thePlayer, commandName )
-	local playerFaction = tonumber( getData(thePlayer, "faction") )
+	local playerFaction = tonumber( getElementData(thePlayer, "faction") )
 	if ( playerFaction == 1 ) then
 		
 		local vehicle = false
@@ -59,8 +38,8 @@ function( thePlayer, commandName )
 			
 		local faction = getTeamFromName("Los Santos Police Department")
 			
-		local rank = tonumber( getData(thePlayer, "f:rank") )
-		local leaderRank = tonumber( getData(faction, "leader") )
+		local rank = tonumber( getElementData(thePlayer, "f:rank") )
+		local leaderRank = tonumber( getElementData(faction, "leader") )
 		
 		triggerClientEvent(thePlayer, "showMobileDataTerminal", thePlayer, rank, leaderRank)
 	end

@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Commerce System ] ---------
 
 -- /sell
@@ -31,21 +9,21 @@ function sell( thePlayer, commandName, partialPlayerName )
 		if foundPlayer then
 			if ( foundPlayer ~= thePlayer ) then
 				
-				local sellerID = tonumber( getData( thePlayer, "dbid" ) )
-				local buyerID = tonumber( getData( foundPlayer, "dbid" ) )	
+				local sellerID = tonumber( getElementData( thePlayer, "dbid" ) )
+				local buyerID = tonumber( getElementData( foundPlayer, "dbid" ) )	
 			
 				local vehicle = getPedOccupiedVehicle( thePlayer )
 				if ( isElement( vehicle ) ) then
 					
-					local vehicleID = tonumber( getData( vehicle, "dbid" ) )
-					local vehicleOwner = tonumber( getData( vehicle, "owner" ) )
+					local vehicleID = tonumber( getElementData( vehicle, "dbid" ) )
+					local vehicleOwner = tonumber( getElementData( vehicle, "owner" ) )
 					
 					if ( sellerID == vehicleOwner ) or ( exports['[ars]global']:isPlayerAdministrator( thePlayer ) ) then
 						
 						local update = sql:query("UPDATE `vehicles` SET `owner`=".. sql:escape_string( buyerID ) .." WHERE `id`=".. sql:escape_string( vehicleID ))
 						if ( update ) then
 							
-							setData( vehicle, "owner", buyerID, true)
+							setElementData( vehicle, "owner", buyerID, true)
 							
 							-- Journey
 							if ( getElementModel( vehicle ) == 508 ) then
@@ -62,8 +40,8 @@ function sell( thePlayer, commandName, partialPlayerName )
 										
 										local child = getElementChild( trailer, 0 )
 										outputDebugString("setting..")
-										setData( trailer, "owner", buyerID, true)
-										setData( child, "owner", buyerID, true)
+										setElementData( trailer, "owner", buyerID, true)
+										setElementData( child, "owner", buyerID, true)
 									end	
 								end
 							end	
@@ -92,7 +70,7 @@ function sell( thePlayer, commandName, partialPlayerName )
 					for key, value in ipairs (getElementsByType("marker")) do
 						if ( getElementDimension( value ) == dbid and isElement( getElementParent(value) ) ) then
 							
-							local elevator = tonumber(getData(value, "elevator"))
+							local elevator = tonumber(getElementData(value, "elevator"))
 							if ( elevator == 0 ) then
 								
 								interior = value
@@ -101,25 +79,25 @@ function sell( thePlayer, commandName, partialPlayerName )
 						end
 					end	
 		
-					local type = tonumber( getData(interior, "type") )
+					local type = tonumber( getElementData(interior, "type") )
 					if ( type ~= 3 ) then
 		
-						local propertyOwner = tonumber( getData(interior, "owner") )
+						local propertyOwner = tonumber( getElementData(interior, "owner") )
 						if ( propertyOwner == sellerID ) or ( exports['[ars]global']:isPlayerAdministrator( thePlayer ) ) then
 							
 							local update = sql:query("UPDATE `interiors` SET `owner`=".. sql:escape_string( buyerID ) .." WHERE `id`=".. sql:escape_string( dbid ) .."")
 							if (update) then
 							
-								setData(interior, "owner", buyerID, true)
+								setElementData(interior, "owner", buyerID, true)
 								
 								local parent = getElementParent( interior )
-								setData(parent, "owner", buyerID, true)
+								setElementData(parent, "owner", buyerID, true)
 								
 								-- Journey
 								local journey = getElementAttachedTo( parent )
 								if ( journey ) and ( getElementType( journey ) == "vehicle" ) then
 									
-									setData( journey, "owner", buyerID, true)
+									setElementData( journey, "owner", buyerID, true)
 								end
 								
 								exports['[ars]inventory-system']:giveItem( foundPlayer, 2, tostring( dbid ) )
@@ -174,8 +152,8 @@ function pay( thePlayer, commandName, partialPlayerName, amount )
 						
 						if ( amount <= money ) then
 							
-							local faction = tonumber( getData( foundPlayer, "faction" ) )
-							local duty = tonumber( getData( foundPlayer, "duty" ) )
+							local faction = tonumber( getElementData( foundPlayer, "faction" ) )
+							local duty = tonumber( getElementData( foundPlayer, "duty" ) )
 							if ( faction == 4 and duty == 1 ) then
 								
 								takePlayerMoney(thePlayer, amount*100)

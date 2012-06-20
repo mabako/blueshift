@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Fuel Meter ] ---------
 local bikes = { ["Bike"] = true, ["BMX"] = true, ["Mountain Bike"] = true }
 
@@ -44,7 +33,7 @@ function getVehicleFuel( )
 		
 		local vehicle = getPedOccupiedVehicle( localPlayer )
 		
-		local fuel = tonumber( getData(vehicle, "fuel") )
+		local fuel = tonumber( getElementData(vehicle, "fuel") )
 		if ( fuel ~= false ) then
 			
 			return fuel

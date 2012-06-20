@@ -19,7 +19,6 @@
 	<export function="smokeCigarette" type="server"/>
 	
 	<script src="infopoints/s_infopoints.lua" type="server"/>
-	<script src="infopoints/c_infopoints.lua" type="client"/>
 	
 	<script src="s_time.lua" type="server"/>
 </meta>	

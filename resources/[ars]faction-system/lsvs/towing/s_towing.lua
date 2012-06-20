@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Vehicle Towing ] ---------
 local garageGate = nil
 
@@ -40,16 +18,16 @@ function enterTowingGarage( hitElement, matchingDimension )
 				local towedVehicle = getVehicleTowedByVehicle( hitElement )
 				if ( towedVehicle ) then
 					
-					local update = sql:query("UPDATE `vehicles` SET `engine`='0', `locked`='0', `enginebroke`='1', `Impounded`='1' WHERE `id`=".. sql:escape_string( tonumber( getData( towedVehicle, "dbid" ) ) ) .."")
+					local update = sql:query("UPDATE `vehicles` SET `engine`='0', `locked`='0', `enginebroke`='1', `Impounded`='1' WHERE `id`=".. sql:escape_string( tonumber( getElementData( towedVehicle, "dbid" ) ) ) .."")
 					if ( update ) then
 						
 						setVehicleLocked( towedVehicle, false )
 						setVehicleEngineState( towedVehicle, false )
 						
-						setData( towedVehicle, "engine", 0, true )
-						setData( towedVehicle, "locked", 0, true )
-						setData( towedVehicle, "enginebroke", 1, true )
-						setData( towedVehicle, "impounded", 1, true )
+						setElementData( towedVehicle, "engine", 0, true )
+						setElementData( towedVehicle, "locked", 0, true )
+						setElementData( towedVehicle, "enginebroke", 1, true )
+						setElementData( towedVehicle, "impounded", 1, true )
 						
 						outputChatBox("Remember to /park the vehicle, prevent clustering of vehicles as it may cause lag.", getVehicleController( hitElement ), 212, 156, 49)
 					end	
@@ -76,7 +54,7 @@ function releaseVehicle( vehicleID )
 		
 		for key, theVehicle in ipairs ( getElementsByType("vehicle" ) ) do
 			
-			if ( tonumber( getData( theVehicle, "dbid") ) == vehicleID ) then
+			if ( tonumber( getElementData( theVehicle, "dbid") ) == vehicleID ) then
 				
 				local update = sql:query("UPDATE `vehicles` SET `enginebroke`='0', `Impounded`='0' WHERE `id`=".. sql:escape_string( vehicleID ) .."")
 				if ( update ) then
@@ -84,9 +62,9 @@ function releaseVehicle( vehicleID )
 					setVehicleEngineState( theVehicle, false )
 					setVehicleLocked( theVehicle, false )
 					
-					setData( theVehicle, "engine", 0, true )
-					setData( theVehicle, "enginebroke", 0, true )
-					setData( theVehicle, "impounded", 0, true )
+					setElementData( theVehicle, "engine", 0, true )
+					setElementData( theVehicle, "enginebroke", 0, true )
+					setElementData( theVehicle, "impounded", 0, true )
 					
 					fixVehicle( theVehicle )
 					
@@ -158,7 +136,7 @@ function giveMoneyToVs( amount )
 			outputDebugString("MySQL Error: Unable to update LSVS money!", 1)
 			outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 		else
-			setData( getTeamFromName("San Fierro Vehicle Services"), "balance", totalGain, true)
+			setElementData( getTeamFromName("San Fierro Vehicle Services"), "balance", totalGain, true)
 		end	
 		
 		sql:free_result(update)

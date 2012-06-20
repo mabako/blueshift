@@ -1,23 +1,10 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
------------------------------------------------------------------------------------------------------------
-
 local rb = { }
 
 function createRoadblock(thePlayer, commandName, rbType)
 	if (rbType) then
 	
 		local rbType = tonumber(rbType)
-		local faction = tonumber( getData(thePlayer, "faction") )
+		local faction = tonumber( getElementData(thePlayer, "faction") )
 		if ( faction == 1 ) or ( faction == 2 ) then -- LSPD/LSFD
 	
 			if (rbType == 1) then -- Traffic Block

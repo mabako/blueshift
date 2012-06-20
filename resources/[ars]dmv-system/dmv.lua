@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize()
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 local questions = { }
 questions[1] = { }
 questions[1][1] = { "If you plan to pass another vehicle, you should:", nil }
@@ -140,7 +129,7 @@ function createMotorVehicleUI(  )
 	guiGridListAddColumn( licensesList, "Type", 0.5 )
 	guiGridListAddColumn( licensesList, "Price", 0.4 )
 	
-	local drivingLicense = tonumber( getData( localPlayer, "d:license") )
+	local drivingLicense = tonumber( getElementData( localPlayer, "d:license") )
 	if ( drivingLicense == 0 ) then
 		local row = guiGridListAddRow( licensesList )
 		

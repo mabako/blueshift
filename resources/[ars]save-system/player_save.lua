@@ -1,31 +1,8 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-		
-	end	
-end
-
 --------- [ Saving ] ---------
 function savePlayer( quitType )
-	if getData(source, "loggedin") and getData(source, "dbid") then
+	if getElementData(source, "loggedin") and getElementData(source, "dbid") then
 	
 		local x, y, z = getElementPosition(source)
 		local rot = getPedRotation(source)
@@ -48,11 +25,11 @@ function savePlayer( quitType )
 		local int = getElementInterior(source)
 		local dim = getElementDimension(source)
 			
-		local reports = getData(source, "adminreports")
-		local hoursPlayed = getData(source, "hoursplayed")
+		local reports = getElementData(source, "adminreports")
+		local hoursPlayed = getElementData(source, "hoursplayed")
 		
-		local update1 = sql:query("UPDATE characters SET x=".. sql:escape_string(x) ..", y=".. sql:escape_string(y) ..", z=".. sql:escape_string(z) ..", rot=".. sql:escape_string(rot) ..", skin=".. sql:escape_string(skin) ..", health=".. sql:escape_string(health) ..", armor=".. sql:escape_string(armor) ..", weapons='".. sql:escape_string(tostring(weapons)) .."', ammo='".. sql:escape_string(tostring(ammo)) .."', fightstyle=".. sql:escape_string(fightstyle) ..", money=".. sql:escape_string(money) ..", interior=".. sql:escape_string(int) ..", dimension=".. sql:escape_string(dim) ..", lastarea='".. sql:escape_string(lastarea) .."', `hoursplayed`=".. sql:escape_string(hoursPlayed) .." WHERE id=".. sql:escape_string(getData(source, "dbid")) .."") 
-		local update2 = sql:query("UPDATE accounts SET reports=".. sql:escape_string(reports) .." WHERE id=".. sql:escape_string(getData(source, "accountid")) .."")
+		local update1 = sql:query("UPDATE characters SET x=".. sql:escape_string(x) ..", y=".. sql:escape_string(y) ..", z=".. sql:escape_string(z) ..", rot=".. sql:escape_string(rot) ..", skin=".. sql:escape_string(skin) ..", health=".. sql:escape_string(health) ..", armor=".. sql:escape_string(armor) ..", weapons='".. sql:escape_string(tostring(weapons)) .."', ammo='".. sql:escape_string(tostring(ammo)) .."', fightstyle=".. sql:escape_string(fightstyle) ..", money=".. sql:escape_string(money) ..", interior=".. sql:escape_string(int) ..", dimension=".. sql:escape_string(dim) ..", lastarea='".. sql:escape_string(lastarea) .."', `hoursplayed`=".. sql:escape_string(hoursPlayed) .." WHERE id=".. sql:escape_string(getElementData(source, "dbid")) .."") 
+		local update2 = sql:query("UPDATE accounts SET reports=".. sql:escape_string(reports) .." WHERE id=".. sql:escape_string(getElementData(source, "accountid")) .."")
 		
 		if ( not update1 ) then
 			
@@ -67,7 +44,7 @@ function savePlayer( quitType )
 		sql:free_result(update1)
 		sql:free_result(update2)
 		
-		triggerEvent("savePlayerInventory", source, getData(source, "dbid"))
+		triggerEvent("savePlayerInventory", source, getElementData(source, "dbid"))
 		
 		if (quitType ~= "Change Character") then
 			triggerEvent("emptyIndex", source)

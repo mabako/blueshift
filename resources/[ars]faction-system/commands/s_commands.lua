@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Faction Commands ] ---------
 local lsvsColSphere = createColSphere( 254.7402, 75.9248, 1003.6406, 2 )
 setElementInterior( lsvsColSphere, 6 )
@@ -43,12 +21,12 @@ setElementDimension( lsfdColSphere, 0 )
 
 -- /duty
 function factionDuty( thePlayer, commandName )
-	local faction = tonumber( getData(thePlayer, "faction") )
+	local faction = tonumber( getElementData(thePlayer, "faction") )
 	if ( faction == 1 ) or ( faction == 2 ) then -- LSPD/LSFD
 	
 		if ( ( getElementDimension( thePlayer ) == 66 or getElementDimension( thePlayer ) == 0 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) or isElementWithinColShape( thePlayer, lsfdColSphere ) ) ) then		
 		
-			if ( getData(thePlayer, "duty") == 0 ) then
+			if ( getElementData(thePlayer, "duty") == 0 ) then
 				triggerClientEvent(thePlayer, "showUniformUI", thePlayer, faction)
 			else
 				local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
@@ -80,7 +58,7 @@ function factionDuty( thePlayer, commandName )
 						end	
 					end
 					
-					setData(thePlayer, "duty", 0, true)
+					setElementData(thePlayer, "duty", 0, true)
 					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
 					
 					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
@@ -91,7 +69,7 @@ function factionDuty( thePlayer, commandName )
 		
 		if ( getElementDimension( thePlayer ) == 62 and isElementWithinColShape( thePlayer, lsvsColSphere ) ) then		
 			
-			if ( getData(thePlayer, "duty") == 0 ) then
+			if ( getElementData(thePlayer, "duty") == 0 ) then
 			
 				local dutySkin = getElementModel(thePlayer)
 	
@@ -108,7 +86,7 @@ function factionDuty( thePlayer, commandName )
 					takeAllWeapons( thePlayer )
 					setElementModel(thePlayer, 50)
 					
-					setData(thePlayer, "duty", 1, true)
+					setElementData(thePlayer, "duty", 1, true)
 					updateDatabase("UPDATE `characters` SET `duty`='1' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
 					
 					outputChatBox("You are now on duty.", thePlayer, 212, 156, 49)
@@ -138,7 +116,7 @@ function factionDuty( thePlayer, commandName )
 						end	
 					end
 					
-					setData(thePlayer, "duty", 0, true)
+					setElementData(thePlayer, "duty", 0, true)
 					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
 					
 					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
@@ -151,12 +129,12 @@ addCommandHandler("duty", factionDuty, false, false)
 
 -- /detective
 function detectiveDuty( thePlayer, commandName )
-	local faction = tonumber( getData(thePlayer, "faction") )
+	local faction = tonumber( getElementData(thePlayer, "faction") )
 	if ( faction == 1 ) then
 	
 		if ( getElementDimension( thePlayer ) == 311 ) and ( isElementWithinColShape( thePlayer, lspdColSphere ) ) then
 		
-			if ( getData(thePlayer, "duty") == 0 ) then
+			if ( getElementData(thePlayer, "duty") == 0 ) then
 				triggerClientEvent(thePlayer, "showDetectiveUI", thePlayer, faction)
 			else
 				local result = sql:query_fetch_assoc("SELECT `dutyskin`, `dutyweps`, `dutyammo` FROM `characters` WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
@@ -184,7 +162,7 @@ function detectiveDuty( thePlayer, commandName )
 						end	
 					end
 					
-					setData(thePlayer, "duty", 0, true)
+					setElementData(thePlayer, "duty", 0, true)
 					updateDatabase("UPDATE `characters` SET `duty`='0' WHERE `charactername`='".. sql:escape_string(getPlayerName(thePlayer):gsub("_", " ")) .."'")
 					
 					outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
@@ -249,7 +227,7 @@ function setFactionDuty( faction, skin )
 		
 		setElementModel(source, skin)
 		
-		setData(source, "duty", 1, true)
+		setElementData(source, "duty", 1, true)
 		updateDatabase("UPDATE `characters` SET `duty`='1' WHERE `charactername`='".. sql:escape_string(getPlayerName(source):gsub("_", " ")) .."'")
 		
 		outputChatBox("You are now on duty.", source, 212, 156, 49)
@@ -289,7 +267,7 @@ function setDetectiveDuty( faction, skin )
 		
 		setElementModel(source, skin)
 		
-		setData(source, "duty", 1, true)
+		setElementData(source, "duty", 1, true)
 		updateDatabase("UPDATE `characters` SET `duty`='1' WHERE `charactername`='".. sql:escape_string(getPlayerName(source):gsub("_", " ")) .."'")
 		
 		outputChatBox("You are now on duty.", source, 212, 156, 49)
@@ -304,7 +282,7 @@ addEventHandler("setDetectiveDuty", root, setDetectiveDuty)
 
 -- /doorram
 function doorRam( thePlayer, commandName )
-	local faction = tonumber( getData( thePlayer, "faction" ) )
+	local faction = tonumber( getElementData( thePlayer, "faction" ) )
 	if ( faction == 2 ) then
 		
 		for key, door in ipairs ( getElementsByType("marker") )  do
@@ -316,26 +294,26 @@ function doorRam( thePlayer, commandName )
 					local child = getElementChild(door, 0)	
 					if ( child ) then								
 						
-						local type = tonumber( getData( door, "type" ) )
-						local owner = tonumber( getData( door, "owner" ) )
+						local type = tonumber( getElementData( door, "type" ) )
+						local owner = tonumber( getElementData( door, "owner" ) )
 					
 						if ( type == 1 and owner == -1 ) then -- Unowned house
 						
 							outputChatBox("You cannot ram this door.", thePlayer, 255, 0, 0)
 						else	
 							
-							local locked = tonumber( getData( door, "locked" ) )
+							local locked = tonumber( getElementData( door, "locked" ) )
 							if ( locked == 1 ) then
 								
 								local chance = math.random(0, 2)
 								if ( chance == 1 ) then
 									
-									local dbid = tonumber( getData(door, "dbid") )
+									local dbid = tonumber( getElementData(door, "dbid") )
 								
 									local update = sql:query("UPDATE `interiors` SET `locked`='0' WHERE `id`=".. sql:escape_string(dbid) .."")
 									if (update) then
 										
-										setData(door, "locked", 0)
+										setElementData(door, "locked", 0)
 										triggerEvent("doAction", thePlayer, thePlayer, "do", "The door bursts open!")
 										
 										break
@@ -362,7 +340,7 @@ addCommandHandler("doorram", doorRam, false, false)
 
 ------------ /// LSPD \\\ ------------
 function togglePlayerDetain( thePlayer, commandName, partialPlayerName )
-	local faction = tonumber( getData( thePlayer, "faction" ) )
+	local faction = tonumber( getElementData( thePlayer, "faction" ) )
 	if ( faction == 1 ) then
 		
 		if (partialPlayerName) then
@@ -377,7 +355,7 @@ function togglePlayerDetain( thePlayer, commandName, partialPlayerName )
 					
 					if ( commandName == "cuff" ) then
 					
-						setData(foundPlayer, "cuffed", 1, true)
+						setElementData(foundPlayer, "cuffed", 1, true)
 					
 						toggleControl(foundPlayer, "sprint", false)
 						toggleControl(foundPlayer, "jump", false)
@@ -393,7 +371,7 @@ function togglePlayerDetain( thePlayer, commandName, partialPlayerName )
 						
 					elseif ( commandName == "uncuff" ) then
 						
-						setData(foundPlayer, "cuffed", 0, true)
+						setElementData(foundPlayer, "cuffed", 0, true)
 					
 						toggleControl(foundPlayer, "sprint", true)
 						toggleControl(foundPlayer, "jump", true)
@@ -428,8 +406,8 @@ addCommandHandler("uncuff", togglePlayerDetain, false, false)
 
 -- /ticket
 function ticketPlayer( thePlayer, commandName, partialPlayerName, ticketPrice, ... )
-	local faction = tonumber( getData( thePlayer, "faction" ) )
-	if ( faction == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
+	local faction = tonumber( getElementData( thePlayer, "faction" ) )
+	if ( faction == 1 ) and ( getElementData(thePlayer, "duty") == 1 ) then
 		
 		if (ticketPrice) and (partialPlayerName) and (...) then
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -490,7 +468,7 @@ local arrests = { }
 
 -- /arrest
 function policeArrest( thePlayer, commandName, partialPlayerName, minutes, finePrice, ... )
-	local faction = tonumber( getData( thePlayer, "faction" ) )
+	local faction = tonumber( getElementData( thePlayer, "faction" ) )
 	if ( faction == 1 ) then
 		
 		if (partialPlayerName) and (minutes) and (finePrice) and (...) then
@@ -560,7 +538,7 @@ function policeArrest( thePlayer, commandName, partialPlayerName, minutes, fineP
 										outputChatBox("Took away ".. count .." narcotic(s) from ".. getPlayerName( foundPlayer ):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
 									end
 									
-									updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(minutes) ..", `arrest_reason`='".. sql:escape_string(tostring(reason)) .."', `arrest_by`='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")
+									updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(minutes) ..", `arrest_reason`='".. sql:escape_string(tostring(reason)) .."', `arrest_by`='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE `id`=" .. sql:escape_string(getElementData(foundPlayer, "dbid")) .."")
 								else
 									outputChatBox("You and the suspect must be infront of the cell.", thePlayer, 255, 0, 0)
 								end
@@ -604,7 +582,7 @@ end
 
 -- /release
 function releasePlayer( thePlayer, commandName, partialPlayerName )
-	if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+	if ( getElementData( thePlayer, "faction" ) == 1 ) or ( getElementData( thePlayer, "adminduty" ) == 1 ) then
 		
 		if (partialPlayerName) then
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
@@ -626,7 +604,7 @@ function releasePlayer( thePlayer, commandName, partialPlayerName )
 					outputChatBox("You released ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
 					outputChatBox("You have been released by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
 	
-					updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getData(foundPlayer, "dbid")) .."")	
+					updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getElementData(foundPlayer, "dbid")) .."")	
 				end
 			end
 		else
@@ -638,7 +616,7 @@ addCommandHandler("release", releasePlayer, false, false)
 
 -- /arrested
 function arrestedPlayers( thePlayer, commandName )
-	if ( getData( thePlayer, "faction" ) == 1 ) or ( getData( thePlayer, "adminduty" ) == 1 ) then
+	if ( getElementData( thePlayer, "faction" ) == 1 ) or ( getElementData( thePlayer, "adminduty" ) == 1 ) then
 		
 		outputChatBox("============== Arrested ==============", thePlayer, 212, 156, 49)
 		
@@ -710,13 +688,13 @@ function updateArrestTimer( thePlayer )
 				
 				outputChatBox("You have served your jail sentence.", thePlayer, 0, 255, 0)
 				
-				updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getData(thePlayer, "dbid")) .."")	
+				updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getElementData(thePlayer, "dbid")) .."")	
 			else
 				
 				arrests[thePlayer]["arrestTime"] = timeLeft - 1
 				arrests[thePlayer]["arrestTimer"] = setTimer(updateArrestTimer, 60000, 1, thePlayer)
 				
-				updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(timeLeft - 1) .." WHERE `id`=" .. sql:escape_string(getData(thePlayer, "dbid")) .."")
+				updateDatabase("UPDATE `characters` SET `arrest_time`=".. sql:escape_string(timeLeft - 1) .." WHERE `id`=" .. sql:escape_string(getElementData(thePlayer, "dbid")) .."")
 			end
 		else
 			
@@ -729,7 +707,7 @@ function updateArrestTimer( thePlayer )
 			
 			outputChatBox("You have served your jail sentence.", thePlayer, 0, 255, 0)
 			
-			updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getData(thePlayer, "dbid")) .."")	
+			updateDatabase("UPDATE `characters` SET `arrest_time`='0', `arrest_reason`=NULL, `arrest_by`=NULL WHERE `id`=" .. sql:escape_string(getElementData(thePlayer, "dbid")) .."")	
 		end
 	end	
 end
@@ -759,7 +737,7 @@ function showPlayerLicenses( thePlayer, commandName, partialPlayerName )
 		
 			if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) <= 10 ) then 
 				
-				local license = tonumber( getData( thePlayer, "d:license" ) )
+				local license = tonumber( getElementData( thePlayer, "d:license" ) )
 				
 				local text = "#FF0000Unavailable"
 				if ( license == 1 ) then
@@ -816,7 +794,7 @@ function giveMoneyToPolice( amount )
 			outputDebugString("MySQL Error: Unable to update SAN money!", 1)
 			outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 		else
-			setData( getTeamFromName("San Fierro Police Department"), "balance", totalEarned, true)
+			setElementData( getTeamFromName("San Fierro Police Department"), "balance", totalEarned, true)
 		end
 		
 		sql:free_result(update)
@@ -825,7 +803,7 @@ end
 
 -- /taser
 function changetoTaser( thePlayer, commandName )
-	if ( getData( thePlayer, "faction" ) == 1 ) and ( getData(thePlayer, "duty") == 1 ) then
+	if ( getElementData( thePlayer, "faction" ) == 1 ) and ( getElementData(thePlayer, "duty") == 1 ) then
 		local weapon = getPedWeapon (thePlayer)
 		if weapon == 24 then
 		
@@ -896,7 +874,7 @@ setTimer(
 				else
 					triggerEvent("takeMoneyFromGovernment", root, moneyEarned/100)
 					
-					setData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
+					setElementData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
 					totalLines = 0
 				end
 				
@@ -966,16 +944,16 @@ function toggleVehicleImpound( thePlayer, commandName )
 				
 				if ( commandName == "impound" ) then
 					
-					local update = sql:query("UPDATE `vehicles` SET `engine`='0', `locked`='0', `enginebroke`='1', `Impounded`='1' WHERE `id`=".. sql:escape_string( tonumber( getData( vehicle, "dbid" ) ) ) .."")
+					local update = sql:query("UPDATE `vehicles` SET `engine`='0', `locked`='0', `enginebroke`='1', `Impounded`='1' WHERE `id`=".. sql:escape_string( tonumber( getElementData( vehicle, "dbid" ) ) ) .."")
 					if ( update ) then
 						
 						setVehicleLocked( vehicle, false )
 						setVehicleEngineState( vehicle, false )
 						
-						setData( vehicle, "engine", 0, true )
-						setData( vehicle, "locked", 0, true )
-						setData( vehicle, "enginebroke", 1, true )
-						setData( vehicle, "impounded", 1, true )
+						setElementData( vehicle, "engine", 0, true )
+						setElementData( vehicle, "locked", 0, true )
+						setElementData( vehicle, "enginebroke", 1, true )
+						setElementData( vehicle, "impounded", 1, true )
 						
 						outputChatBox("You impounded this ".. getVehicleName( vehicle )..".", thePlayer, 212, 156, 49)
 					end
@@ -983,11 +961,11 @@ function toggleVehicleImpound( thePlayer, commandName )
 					sql:free_result(update)
 				elseif ( commandName == "unimpound" ) then
 					
-					local update = sql:query("UPDATE `vehicles` SET `enginebroke`='0', `Impounded`='0' WHERE `id`=".. sql:escape_string( tonumber( getData( vehicle, "dbid" ) ) ) .."")
+					local update = sql:query("UPDATE `vehicles` SET `enginebroke`='0', `Impounded`='0' WHERE `id`=".. sql:escape_string( tonumber( getElementData( vehicle, "dbid" ) ) ) .."")
 					if ( update ) then
 						
-						setData( vehicle, "enginebroke", 0, true )
-						setData( vehicle, "impounded", 0, true )
+						setElementData( vehicle, "enginebroke", 0, true )
+						setElementData( vehicle, "impounded", 0, true )
 						
 						outputChatBox("You un-impounded this ".. getVehicleName( vehicle )..".", thePlayer, 212, 156, 49)
 					end

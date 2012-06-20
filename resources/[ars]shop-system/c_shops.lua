@@ -1,17 +1,6 @@
 local screenX, screenY = guiGetScreenSize()
 local skins = nil
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Shop System ] ---------
 local shops =
 {
@@ -108,7 +97,7 @@ function onShopKeeperClick(button, state, absoluteX, absoluteY, worldX, worldY, 
 							if not isElement(shopWin) then	
 								
 								local shopKeeper = clickedElement
-								local shopType = tonumber(getData(shopKeeper, "type"))
+								local shopType = tonumber(getElementData(shopKeeper, "type"))
 								
 								local width, height = 400, 280
 								local x, y = (screenX/2) - (width/2), (screenY/2) - (height/2)

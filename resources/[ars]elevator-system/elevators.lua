@@ -1,28 +1,6 @@
 local sql = exports.sql
 local elevators = { }
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Admin Commands] ---------
 
 -- /makeelevator
@@ -57,11 +35,11 @@ function makeElevator( thePlayer, commandName, x, y, z, int, dim, vehicle )
 					
 					local interior = getParentInterior( dim )
 		
-					local name = tostring( getData( interior, "name" ) )
-					local owner = tonumber( getData( interior, "owner" ) )
-					local type = tonumber( getData( interior, "type" ) )
-					local price = tonumber( getData( interior, "price" ) )
-					local rented = tonumber( getData( interior, "rented" ) )
+					local name = tostring( getElementData( interior, "name" ) )
+					local owner = tonumber( getElementData( interior, "owner" ) )
+					local type = tonumber( getElementData( interior, "type" ) )
+					local price = tonumber( getElementData( interior, "price" ) )
+					local rented = tonumber( getElementData( interior, "rented" ) )
 					
 					local r, g, b = 255, 255, 255
 					
@@ -75,28 +53,28 @@ function makeElevator( thePlayer, commandName, x, y, z, int, dim, vehicle )
 					setElementDimension(entranceElevator, entDim)
 					setElementInterior(entranceElevator, entInt)
 					
-					setData(entranceElevator, "name", tostring(name), true)
-					setData(entranceElevator, "owner", tonumber(owner), true)
-					setData(entranceElevator, "dbid", tonumber(dbid), true)
-					setData(entranceElevator, "type", tonumber(type), true)
-					setData(entranceElevator, "locked", 0, true)
-					setData(entranceElevator, "price", tonumber(price), true)
-					setData(entranceElevator, "rented", tonumber(rented), true)
-					setData(entranceElevator, "elevator", 1, true)
+					setElementData(entranceElevator, "name", tostring(name), true)
+					setElementData(entranceElevator, "owner", tonumber(owner), true)
+					setElementData(entranceElevator, "dbid", tonumber(dbid), true)
+					setElementData(entranceElevator, "type", tonumber(type), true)
+					setElementData(entranceElevator, "locked", 0, true)
+					setElementData(entranceElevator, "price", tonumber(price), true)
+					setElementData(entranceElevator, "rented", tonumber(rented), true)
+					setElementData(entranceElevator, "elevator", 1, true)
 					
 					-- Create inside elevator
 					local exitElevator = createMarker(x, y, z-1, "cylinder", size, r, g, b, 50)
 					setElementDimension(exitElevator, dim)
 					setElementInterior(exitElevator, int)
 					
-					setData(exitElevator, "name", tostring(name), true)
-					setData(exitElevator, "owner", tonumber(owner), true)
-					setData(exitElevator, "dbid", tonumber(dbid), true)
-					setData(exitElevator, "type", tonumber(type), true)
-					setData(exitElevator, "locked", 0, true)
-					setData(exitElevator, "price", tonumber(price), true)
-					setData(exitElevator, "rented", tonumber(rented), true)
-					setData(exitElevator, "elevator", 1, true)
+					setElementData(exitElevator, "name", tostring(name), true)
+					setElementData(exitElevator, "owner", tonumber(owner), true)
+					setElementData(exitElevator, "dbid", tonumber(dbid), true)
+					setElementData(exitElevator, "type", tonumber(type), true)
+					setElementData(exitElevator, "locked", 0, true)
+					setElementData(exitElevator, "price", tonumber(price), true)
+					setElementData(exitElevator, "rented", tonumber(rented), true)
+					setElementData(exitElevator, "elevator", 1, true)
 					
 					setElementParent(exitElevator, entranceElevator)
 				else
@@ -124,8 +102,8 @@ function deleteElevator( thePlayer, commandName, elevatorID )
 			
 			local found = false
 			for key, value in ipairs( getElementsByType("marker") ) do
-				local elevator = tonumber( getData(value, "elevator") )
-				local dbid = tonumber( getData(value, "dbid") )
+				local elevator = tonumber( getElementData(value, "elevator") )
+				local dbid = tonumber( getElementData(value, "dbid") )
 				
 				if ( elevator == 1 and dbid == elevatorID and getElementChild( value, 0 ) ) then
 					
@@ -161,7 +139,7 @@ function nearbyElevators( thePlayer, commandName )
 		
 		for key, value in ipairs (getElementsByType("marker")) do
 			
-			local elevator = tonumber( getData( value, "elevator") )
+			local elevator = tonumber( getElementData( value, "elevator") )
 			if ( elevator == 1 ) then
 				
 				local x, y, z = getElementPosition(value)
@@ -173,7 +151,7 @@ function nearbyElevators( thePlayer, commandName )
 				if ( playerInt == interior )and ( playerDim == dimension ) and ( getDistanceBetweenPoints3D( x, y, z, playerX, playerY, playerZ ) <= 10 ) then
 					
 					count = count + 1
-					outputChatBox("#".. tostring(count) .." - ID: ".. tostring(getData(value, "dbid")) ..", Name: ".. tostring(getData(value, "name")) ..", Owner: ".. tostring(getInteriorOwnerName(tonumber(getData(value, "owner")))), thePlayer, 212, 156, 49)
+					outputChatBox("#".. tostring(count) .." - ID: ".. tostring(getElementData(value, "dbid")) ..", Name: ".. tostring(getElementData(value, "name")) ..", Owner: ".. tostring(getInteriorOwnerName(tonumber(getElementData(value, "owner")))), thePlayer, 212, 156, 49)
 				end
 			end	
 		end
@@ -197,10 +175,10 @@ function setElevatorEntrance( thePlayer, commandName, elevatorID )
 			local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
 
 			for key, value in ipairs (getElementsByType("marker")) do
-				if ( tonumber( getData( value, "dbid" ) ) == elevatorID ) then  -- Look for an interior in the given dimension
+				if ( tonumber( getElementData( value, "dbid" ) ) == elevatorID ) then  -- Look for an interior in the given dimension
 					
 					local parent = getElementParent( value )			-- Find its parent
-					local elevator = tonumber( getData( parent, "elevator" ) )
+					local elevator = tonumber( getElementData( parent, "elevator" ) )
 					if ( parent and elevator == 1 ) then
 						
 						local child = getElementChild( parent, 0 )
@@ -253,10 +231,10 @@ function setElevatorExit( thePlayer, commandName, elevatorID )
 			local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
 
 			for key, value in ipairs (getElementsByType("marker")) do
-				if ( tonumber( getData( value, "dbid" ) ) == elevatorID ) then  -- Look for an interior in the given dimension
+				if ( tonumber( getElementData( value, "dbid" ) ) == elevatorID ) then  -- Look for an interior in the given dimension
 					
 					local parent = getElementParent( value )					-- Find its parent
-					local elevator = tonumber( getData( parent, "elevator" ) )
+					local elevator = tonumber( getElementData( parent, "elevator" ) )
 					if ( parent and elevator == 1 ) then
 						
 						setElementPosition(value, x, y, z - 1)
@@ -304,7 +282,7 @@ end
 addEvent("reloadElevator", true)
 addEventHandler("reloadElevator", root,
 	function( elevator )
-		local dbid = tonumber(getData(elevator, "dbid"))
+		local dbid = tonumber(getElementData(elevator, "dbid"))
 		
 		destroyElement(elevator)
 		
@@ -325,11 +303,11 @@ addEventHandler("reloadElevator", root,
 		
 		local interior = getParentInterior( parentID )
 		
-		local name = tostring( getData( interior, "name" ) )
-		local owner = tonumber( getData( interior, "owner" ) )
-		local type = tonumber( getData( interior, "type" ) )
-		local price = tonumber( getData( interior, "price" ) )
-		local rented = tonumber( getData( interior, "rented" ) )
+		local name = tostring( getElementData( interior, "name" ) )
+		local owner = tonumber( getElementData( interior, "owner" ) )
+		local type = tonumber( getElementData( interior, "type" ) )
+		local price = tonumber( getElementData( interior, "price" ) )
+		local rented = tonumber( getElementData( interior, "rented" ) )
 		
 		local r, g, b = 255, 255, 255
 		
@@ -343,28 +321,28 @@ addEventHandler("reloadElevator", root,
 		setElementDimension(entranceElevator, entDim)
 		setElementInterior(entranceElevator, entInt)
 		
-		setData(entranceElevator, "name", tostring(name), true)
-		setData(entranceElevator, "owner", tonumber(owner), true)
-		setData(entranceElevator, "dbid", tonumber(dbid), true)
-		setData(entranceElevator, "type", tonumber(type), true)
-		setData(entranceElevator, "locked", tonumber(locked), true)
-		setData(entranceElevator, "price", tonumber(price), true)
-		setData(entranceElevator, "rented", tonumber(rented), true)
-		setData(entranceElevator, "elevator", 1, true)
+		setElementData(entranceElevator, "name", tostring(name), true)
+		setElementData(entranceElevator, "owner", tonumber(owner), true)
+		setElementData(entranceElevator, "dbid", tonumber(dbid), true)
+		setElementData(entranceElevator, "type", tonumber(type), true)
+		setElementData(entranceElevator, "locked", tonumber(locked), true)
+		setElementData(entranceElevator, "price", tonumber(price), true)
+		setElementData(entranceElevator, "rented", tonumber(rented), true)
+		setElementData(entranceElevator, "elevator", 1, true)
 		
 		-- Create inside elevator
 		local exitElevator = createMarker(x, y, z-1, "cylinder", size, r, g, b, 50)
 		setElementDimension(exitElevator, parentID)
 		setElementInterior(exitElevator, int)
 		
-		setData(exitElevator, "name", tostring(name), true)
-		setData(exitElevator, "owner", tonumber(owner), true)
-		setData(exitElevator, "dbid", tonumber(dbid), true)
-		setData(exitElevator, "type", tonumber(type), true)
-		setData(exitElevator, "locked", tonumber(locked), true)
-		setData(exitElevator, "price", tonumber(price), true)
-		setData(exitElevator, "rented", tonumber(rented), true)
-		setData(exitElevator, "elevator", 1, true)
+		setElementData(exitElevator, "name", tostring(name), true)
+		setElementData(exitElevator, "owner", tonumber(owner), true)
+		setElementData(exitElevator, "dbid", tonumber(dbid), true)
+		setElementData(exitElevator, "type", tonumber(type), true)
+		setElementData(exitElevator, "locked", tonumber(locked), true)
+		setElementData(exitElevator, "price", tonumber(price), true)
+		setElementData(exitElevator, "rented", tonumber(rented), true)
+		setElementData(exitElevator, "elevator", 1, true)
 		
 		setElementParent(exitElevator, entranceElevator)
 	end
@@ -398,11 +376,11 @@ function loadElevators( )
 			
 			local interior = getParentInterior( parentID )
 			
-			local name = tostring( getData( interior, "name" ) )
-			local owner = tonumber( getData( interior, "owner" ) )
-			local type = tonumber( getData( interior, "type" ) )
-			local price = tonumber( getData( interior, "price" ) )
-			local rented = tonumber( getData( interior, "rented" ) )
+			local name = tostring( getElementData( interior, "name" ) )
+			local owner = tonumber( getElementData( interior, "owner" ) )
+			local type = tonumber( getElementData( interior, "type" ) )
+			local price = tonumber( getElementData( interior, "price" ) )
+			local rented = tonumber( getElementData( interior, "rented" ) )
 			
 			local r, g, b = 255, 255, 255
 			
@@ -416,28 +394,28 @@ function loadElevators( )
 			setElementDimension(entranceElevator, entDim)
 			setElementInterior(entranceElevator, entInt)
 			
-			setData(entranceElevator, "name", tostring(name), true)
-			setData(entranceElevator, "owner", tonumber(owner), true)
-			setData(entranceElevator, "dbid", tonumber(dbid), true)
-			setData(entranceElevator, "type", tonumber(type), true)
-			setData(entranceElevator, "locked", tonumber(locked), true)
-			setData(entranceElevator, "price", tonumber(price), true)
-			setData(entranceElevator, "rented", tonumber(rented), true)
-			setData(entranceElevator, "elevator", 1, true)
+			setElementData(entranceElevator, "name", tostring(name), true)
+			setElementData(entranceElevator, "owner", tonumber(owner), true)
+			setElementData(entranceElevator, "dbid", tonumber(dbid), true)
+			setElementData(entranceElevator, "type", tonumber(type), true)
+			setElementData(entranceElevator, "locked", tonumber(locked), true)
+			setElementData(entranceElevator, "price", tonumber(price), true)
+			setElementData(entranceElevator, "rented", tonumber(rented), true)
+			setElementData(entranceElevator, "elevator", 1, true)
 			
 			-- Create inside elevator
 			local exitElevator = createMarker(x, y, z-1, "cylinder", size, r, g, b, 100)
 			setElementDimension(exitElevator, parentID)
 			setElementInterior(exitElevator, int)
 			
-			setData(exitElevator, "name", tostring(name), true)
-			setData(exitElevator, "owner", tonumber(owner), true)
-			setData(exitElevator, "dbid", tonumber(dbid), true)
-			setData(exitElevator, "type", tonumber(type), true)
-			setData(exitElevator, "locked", tonumber(locked), true)
-			setData(exitElevator, "price", tonumber(price), true)
-			setData(exitElevator, "rented", tonumber(rented), true)
-			setData(exitElevator, "elevator", 1, true)
+			setElementData(exitElevator, "name", tostring(name), true)
+			setElementData(exitElevator, "owner", tonumber(owner), true)
+			setElementData(exitElevator, "dbid", tonumber(dbid), true)
+			setElementData(exitElevator, "type", tonumber(type), true)
+			setElementData(exitElevator, "locked", tonumber(locked), true)
+			setElementData(exitElevator, "price", tonumber(price), true)
+			setElementData(exitElevator, "rented", tonumber(rented), true)
+			setElementData(exitElevator, "elevator", 1, true)
 			
 			setElementParent(exitElevator, entranceElevator)
 		end
@@ -469,7 +447,7 @@ addEventHandler("onResourceStart", resourceRoot,
 	
 function getParentInterior( parentID )
 	for key, value in ipairs ( getElementsByType("marker") ) do
-		if ( tonumber( getData( value, "dbid" ) ) == parentID and isElement( getElementChild( value, 0 ) ) ) then
+		if ( tonumber( getElementData( value, "dbid" ) ) == parentID and isElement( getElementChild( value, 0 ) ) ) then
 			
 			return value
 		end	

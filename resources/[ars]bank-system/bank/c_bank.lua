@@ -3,19 +3,6 @@ local selectedRow = nil
 
 local allowInteract = true
 
---------- [ Element Data returns ] ---------
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Player's Bank Accounts ] ---------
 local playerAccounts = nil
 local receive = false
