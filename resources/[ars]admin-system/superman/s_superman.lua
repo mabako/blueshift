@@ -47,11 +47,19 @@ end
 addEventHandler("onResourceStart", getResourceRootElement(thisResource), Superman.Start, false)
 
 function Superman.clientStart()
-  setElementData(client, "superman:flying", true)
-  setElementData(client, "forcedanimation", true)
+  if exports['[ars]global']:isPlayerModerator(client) then
+    setElementData(client, "superman:flying", true)
+    setElementData(client, "forcedanimation", true)
+  else
+    kickPlayer(client, "Superman")
+  end
 end
 
 function Superman.clientStop()
-  removeElementData(client, "superman:flying")
-  removeElementData(client, "forcedanimation")
+  if exports['[ars]global']:isPlayerModerator(client) then
+    removeElementData(client, "superman:flying")
+    removeElementData(client, "forcedanimation")
+  else
+    kickPlayer(client, "Superman")
+  end
 end

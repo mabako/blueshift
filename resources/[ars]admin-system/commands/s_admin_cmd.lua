@@ -1052,76 +1052,43 @@ addCommandHandler("unban", playerUnban, false, false)
 -- /makeadmin		
 function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
 	if exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
-		
+		local rrank = tonumber(rrank)
 		if (partialPlayerName) and (rrank) then
 			
 			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
 			if foundPlayer then
 				if getElementData(foundPlayer, "loggedin") then
-					
-					local rrank = tonumber(rrank)
-					if (rrank) then
-					
-						local rank
-						if rrank == 0 then
-							rank = "Player"
-						elseif rrank == 1 then
-							rank = "Trial Moderator"
-						elseif rrank == 2 then
-							rank = "Moderator"
-						elseif rrank == 3 then
-							rank = "High Moderator"
-						elseif rrank == 4 then
-							rank = "Administrator"
-						elseif rrank == 5 then
-							rank = "High Administrator"
-						elseif rrank == 6 then
-							rank = "Sub Owner"
-						elseif rrank == 7 then
-							rank = "Server Owner"
-						elseif (rrank > 7) or (rrank < 0) then
-							rank = "Invalid rank"
-						end
+					local rank = exports['[ars]global']:getPlayerAdminTitle(rrank)
+					if rrank == 0 or rank ~= "Player" then
+						local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .."")
+						if (update) then
 							
-						if (rrank == 0 or rrank == 1 or rrank == 2 or rrank == 3 or rrank == 4 or rrank == 5 or rrank == 6 or rrank == 7) then
+							setElementData( foundPlayer, "admin", rrank, false)
+							triggerClientEvent(foundPlayer, "elementdata", foundPlayer, "admin", rrank > 0 and rrank or false)
+							setElementData( foundPlayer, "adminduty", 1, true)
 							
-							local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .."")
-							if (update) then
-								
-								setElementData( foundPlayer, "admin", tonumber(rrank), true)
-								setElementData( foundPlayer, "adminduty", 1, true)
-								
-								exports['[ars]global']:updateNametagColor( foundPlayer )
-								
-								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank was set to ".. rank ..".", thePlayer, 212, 156, 49)
-								
-								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank to ".. rank ..".")
-							else
-								outputDebugString("Unable to update admin rank!")
-							end	
+							exports['[ars]global']:updateNametagColor( foundPlayer )
 							
-							sql:free_result(update)
+							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank was set to ".. rank ..".", thePlayer, 212, 156, 49)
+							
+							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank to ".. rank ..".")
 						else
-							outputChatBox("Invalid rank ID.", thePlayer, 255, 200, 0)
-							outputChatBox("#0 Player", thePlayer, 212, 156, 49)
-							outputChatBox("#1 Trial Moderator", thePlayer, 212, 156, 49)
-							outputChatBox("#2 Moderator", thePlayer, 212, 156, 49)
-							outputChatBox("#3 High Moderator", thePlayer, 212, 156, 49)
-							outputChatBox("#4 Administrator", thePlayer, 212, 156, 49)
-							outputChatBox("#5 High Administrator", thePlayer, 212, 156, 49)
-							outputChatBox("#6 Sub Owner", thePlayer, 212, 156, 49)
-							outputChatBox("#7 Server Owner", thePlayer, 212, 156, 49)
-						end
+							outputDebugString("Unable to update admin rank!")
+						end	
+						
+						sql:free_result(update)
+						return
 					else
 						outputChatBox("Invalid rank ID.", thePlayer, 255, 200, 0)
-						outputChatBox("#0 Player", thePlayer, 212, 156, 49)
-						outputChatBox("#1 Trial Moderator", thePlayer, 212, 156, 49)
-						outputChatBox("#2 Moderator", thePlayer, 212, 156, 49)
-						outputChatBox("#3 High Moderator", thePlayer, 212, 156, 49)
-						outputChatBox("#4 Administrator", thePlayer, 212, 156, 49)
-						outputChatBox("#5 High Administrator", thePlayer, 212, 156, 49)
-						outputChatBox("#6 Sub Owner", thePlayer, 212, 156, 49)
-						outputChatBox("#7 Server Owner", thePlayer, 212, 156, 49)
+						local i = 0
+						while true do
+							local rank = exports['[ars]global']:getPlayerAdminTitle(i)
+							if i > 0 and rank == "Player" then
+								break
+							end
+							outputChatBox("#" .. i .. " " .. rank, thePlayer, 212, 156, 49)
+							i = i + 1
+						end
 					end		
 				else
 					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)

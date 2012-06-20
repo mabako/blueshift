@@ -282,10 +282,7 @@ end
 --
 function Superman.onJump(key, keyState)
   local self = Superman
-
-  local admin = getElementData(localPlayer, "admin")
- 
-  if (tonumber(admin) > 1) then
+  if exports['[ars]global']:c_isPlayerModerator() then
 	  local task = getPedSimplestTask(localPlayer)
 	  if not isPlayerFlying(localPlayer) then
 		if task == "TASK_SIMPLE_IN_AIR" then
@@ -302,9 +299,7 @@ end
 function Superman.cmdSuperman()
   local self = Superman
 
-  local admin = getElementData(localPlayer, "admin")
-  
-  if (tonumber(admin) > 1) then
+  if exports['[ars]global']:c_isPlayerModerator() then
 	  if isPedInVehicle(localPlayer) or isPlayerFlying(localPlayer) then return end
 	  setElementVelocity(localPlayer, 0, 0, TAKEOFF_VELOCITY)
 	  setTimer(Superman.startFlight, TAKEOFF_FLIGHT_DELAY, 1)
@@ -312,9 +307,7 @@ function Superman.cmdSuperman()
 end
 
 function Superman.startFlight()
-  local admin = getElementData(localPlayer, "admin")
-  
-  if (tonumber(admin) > 1) then
+  if exports['[ars]global']:c_isPlayerModerator() then
 	  local self = Superman
 
 	  if isPlayerFlying(localPlayer) then return end

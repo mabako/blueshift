@@ -629,11 +629,7 @@ addCommandHandler("addupgrade", addUpgrade, false, false)
 			
 -- /delveh
 function deleteVehicle( thePlayer, commandName, id )
-	local adminLevel = tonumber( getElementData( thePlayer, "admin" ) )
-	if ( adminLevel == 0 ) then
-		
-		return
-	else	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if (id) then
 			local id = tonumber(id)
 			
@@ -655,7 +651,7 @@ function deleteVehicle( thePlayer, commandName, id )
 					destroyElement(theVehicle)
 					theVehicle = nil
 				elseif (id > 0) then
-					if ( adminLevel >= 4 ) then
+					if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 					
 						local delete = sql:query("DELETE FROM vehicles WHERE id=".. sql:escape_string(id) .."")
 						if (delete) then
@@ -1077,14 +1073,14 @@ function parkVehicle( thePlayer, commandName )
 			local job = tonumber(getElementData(vehicle, "job"))
 			local vehicleID = tonumber(getElementData(vehicle, "dbid"))
 			local adminduty = tonumber(getElementData(thePlayer, "adminduty"))
-			local admin = tonumber(getElementData(thePlayer, "admin"))
+			local admin = exports['[ars]global']:isPlayerTrialModerator(thePlayer)
 			local playerFaction = tonumber(getElementData(thePlayer, "faction"))
 			local factionDuty = tonumber(getElementData(thePlayer, "duty"))
 			local vehicleFaction = tonumber(getElementData(vehicle, "faction"))
 				
 			local found, hasVehicleKey = exports['[ars]inventory-system']:hasItem(thePlayer, 1, vehicleID) 
 					
-			if ( job > 0 and adminduty == 1 ) and ( admin > 0 ) or ( hasVehicleKey ) or ( adminduty == 1 ) or ( playerFaction == 4 and factionDuty == 1 ) or ( ( playerFaction > 0 and vehicleFaction > 0 ) and ( playerFaction == vehicleFaction ) ) then
+			if ( job > 0 and adminduty == 1 ) and admin or ( hasVehicleKey ) or ( adminduty == 1 ) or ( playerFaction == 4 and factionDuty == 1 ) or ( ( playerFaction > 0 and vehicleFaction > 0 ) and ( playerFaction == vehicleFaction ) ) then
 				
 				local x, y, z = getElementPosition(vehicle)
 				local rotx, roty, rotz = getElementRotation(vehicle)
@@ -1371,7 +1367,7 @@ function toggleEngine( thePlayer )
 					
 					local dbid = tonumber( getElementData( veh, "dbid" ) )
 					local adminDuty = tonumber( getElementData( thePlayer, "adminduty" ) )
-					local admin = tonumber(getElementData(thePlayer, "admin"))
+					local admin = exports['[ars]global']:isPlayerTrialModerator(thePlayer)
 					local playerFaction = tonumber( getElementData( thePlayer, "faction" ) )
 					local vehicleFaction = tonumber( getElementData( veh, "faction" ) )
 					local job = tonumber( getElementData( veh, "job") )
@@ -1385,7 +1381,7 @@ function toggleEngine( thePlayer )
 					end
 					
 					local onAdminDuty = false
-					if ( adminDuty == 1 ) and ( admin > 0 ) then
+					if ( adminDuty == 1 ) and admin then
 						onAdminDuty = true
 					end	
 					
@@ -1492,7 +1488,7 @@ function toggleLock( thePlayer )
 					
 				local vehicleID = tonumber(getElementData(nearbyVeh, "dbid"))
 				local adminDuty = tonumber(getElementData(thePlayer, "adminduty"))
-				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local admin = exports['[ars]global']:isPlayerTrialModerator(thePlayer)
 				local playerFaction = tonumber(getElementData(thePlayer, "faction"))
 				local vehicleFaction = tonumber(getElementData(nearbyVeh, "faction"))
 				
@@ -1504,7 +1500,7 @@ function toggleLock( thePlayer )
 				end
 				
 				local onAdminDuty = false
-				if ( adminDuty == 1 ) and ( admin > 0 ) then
+				if ( adminDuty == 1 ) and admin then
 					onAdminDuty = true
 				end	
 			

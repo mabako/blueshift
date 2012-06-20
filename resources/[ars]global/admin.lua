@@ -1,46 +1,25 @@
+function getPlayerAdminLevel( thePlayer )
+	return getElementData( thePlayer, "admin" ) or 0
+end
+
 function isPlayerTrialModerator( thePlayer )
-	if getElementData( thePlayer, "admin") >= 1 then
-		
-		return true
-	else
-		return false
-	end	
+	return getPlayerAdminLevel( thePlayer ) >= 1
 end	
 
 function isPlayerModerator( thePlayer )
-	if getElementData( thePlayer, "admin") >= 2 then
-		
-		return true
-	else
-		return false
-	end	
+	return getPlayerAdminLevel( thePlayer ) >= 2
 end	
 
 function isPlayerHighModerator( thePlayer )
-	if getElementData( thePlayer, "admin") >= 3 then
-		
-		return true
-	else
-		return false
-	end	
+	return getPlayerAdminLevel( thePlayer ) >= 3
 end	
 
 function isPlayerAdministrator( thePlayer )
-	if getElementData( thePlayer, "admin") >= 4 then
-		
-		return true
-	else
-		return false
-	end	
+	return getPlayerAdminLevel( thePlayer ) >= 4
 end	
 
 function isPlayerHighAdministrator( thePlayer )
-	if getElementData( thePlayer, "admin") >= 5 then
-		
-		return true
-	else
-		return false
-	end	
+	return getPlayerAdminLevel( thePlayer ) >= 5
 end
 
 local scripters = { ["Masta"] = true, ["Jamiez"] = true }
@@ -52,36 +31,10 @@ function isPlayerScripter( thePlayer )
 	end	
 end	
 
+local ranks = {"Trial Moderator", "Moderator", "High Moderator", "Administrator", "High Administrator", "Sub-Owner", "Server Owner"}
 function getPlayerAdminTitle( thePlayer )
-	if getElementData( thePlayer, "admin") == 1 then
-		
-		return "Trial Moderator"
-	elseif getElementData( thePlayer, "admin") == 2 then
-		
-		return "Moderator"
-	elseif getElementData( thePlayer, "admin") == 3 then
-		
-		return "High Moderator"
-	elseif getElementData( thePlayer, "admin") == 4 then
-		
-		return "Administrator"
-	elseif getElementData( thePlayer, "admin") == 5 then
-		
-		return "High Administrator"
-	elseif getElementData( thePlayer, "admin") == 6 then
-		
-		return "Sub-Owner"
-	elseif getElementData( thePlayer, "admin") == 7 then
-		
-		return "Server Owner"
-	else
-		return "Player"
-	end
+	return ranks[thePlayer] or ranks[getPlayerAdminLevel(thePlayer)] or "Player"
 end
-
-function getPlayerAdminLevel( thePlayer )
-	return getElementData( thePlayer, "admin")
-end	
 
 function onlineAdmins( thePlayer, commandName )
 	local admins = { }
@@ -90,7 +43,7 @@ function onlineAdmins( thePlayer, commandName )
 		if getElementData( player, "loggedin" ) and isPlayerTrialModerator( player ) then
 			-- can we even see that guy?
 			if getElementData( player, "hiddenadmin" ) == 0 or isPlayerTrialModerator( thePlayer ) then
-				table.insert(admins, {player, getElementData( player, "admin"), getPlayerName(player):gsub("_", " ")})
+				table.insert(admins, {player, getPlayerAdminLevel( player ), getPlayerName(player):gsub("_", " ")})
 			end
 		end
 	end

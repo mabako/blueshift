@@ -285,8 +285,8 @@ function privateMessage( thePlayer, commandName, partialPlayerName, ... )
 		if foundPlayer then
 			if getElementData(foundPlayer, "loggedin") then
 				
-				local thePlayerAdminlevel = tonumber( getElementData( thePlayer, "admin" ) )
-				local targetPlayerAdminLevel = tonumber( getElementData( foundPlayer, "admin" ) )
+				local thePlayerAdminlevel = exports['[ars]global']:getPlayerAdminLevel( thePlayer )
+				local targetPlayerAdminLevel = exports['[ars]global']:getPlayerAdminLevel( foundPlayer )
 				
 				if ( isPlayerPrivateMessagingDisabled( foundPlayer ) ) and ( targetPlayerAdminLevel >= thePlayerAdminlevel ) then
 					
@@ -316,7 +316,7 @@ function togglePrivateMessages( thePlayer )
 			local update = sql:query("UPDATE `accounts` SET `togpm`='0' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "accountid") ) ) .."")
 			if ( update ) then
 				
-				setElementData( thePlayer, "togglepm", 0, true )
+				setElementData( thePlayer, "togglepm", false, false )
 				outputChatBox("You are no longer ignoring Private Messages.", thePlayer, 212, 156, 49)
 			end
 		elseif ( not isPlayerPrivateMessagingDisabled( thePlayer ) ) then
@@ -324,7 +324,7 @@ function togglePrivateMessages( thePlayer )
 			local update = sql:query("UPDATE `accounts` SET `togpm`='1' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "accountid") ) ) .."")
 			if ( update ) then
 				
-				setElementData( thePlayer, "togglepm", 1, true )
+				setElementData( thePlayer, "togglepm", true, false )
 				outputChatBox("You are now ignoring Private Messages.", thePlayer, 212, 156, 49)
 			end	
 		end	
@@ -333,11 +333,7 @@ end
 addCommandHandler("togpm", togglePrivateMessages, false, false)
 	
 function isPlayerPrivateMessagingDisabled( thePlayer )
-	if ( getElementData( thePlayer, "togglepm" ) == 1 ) then
-		return true
-	else
-		return false
-	end
+	return getElementData( thePlayer, "togglepm" )
 end
 	
 -- ////// ADMIN CHAT \\\\\\

@@ -1,32 +1,12 @@
 local sql = exports.sql
 
 --------- [ Login Player ] ---------
-function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, donator, togglepm, tutorial, friends, skinmods, weaponmods, vehiclemods, clean )
-	
-	local friends = tostring( friends )
-	if ( friends == "nil" ) or ( string.find( friends, "userdata" ) ) or ( string.len( friends ) == 0 ) then
-		friends = "none"
-	end
-	
-	setElementData(source, "accountname", tostring(username), true)
-	setElementData(source, "accountid", tonumber(id), true)
-	setElementData(source, "admin", tonumber(admin), true)
-	setElementData(source, "adminduty", tonumber(adminduty), true)
-	setElementData(source, "hiddenadmin", tonumber(hiddenadmin), true)
-	setElementData(source, "adminreports", tonumber(reports), true)
-	setElementData(source, "donator", tonumber(donator), true)
-	setElementData(source, "togglepm", tonumber(togglepm), true)
-	setElementData(source, "tutorial", tonumber(tutorial), true)
-	setElementData(source, "friends", tostring(friends), true)
-	setElementData(source, "skinmods", tonumber(skinmods), true)
-	setElementData(source, "weaponmods", tonumber(weaponmods), true)
-	setElementData(source, "vehiclemods", tonumber(vehiclemods), true)
-	
+function loginPlayer( clean )
 	if (clean) then
 		triggerClientEvent(source, "cleanUpLogin", source)
 	end
 	
-	if ( tonumber( tutorial ) == 0 ) then -- Tutorial
+	if not getElementData( source, "tutorial" ) then -- Tutorial
 		
 		fadeCamera(source, false )
 		
@@ -42,6 +22,7 @@ function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, dona
 		-- CHARACTERS
 		local characters = { }
 		local count = 0
+		local id = getElementData( source, "accountid" )
 		local result = sql:query("SELECT id, charactername, skin, faction, rank, lastarea, age, gender, lastlogin, DATEDIFF(NOW(), lastlogin) AS llastlogin FROM characters WHERE account=".. sql:escape_string(id) .." ORDER BY lastlogin DESC")
 		while true do
 			local row = sql:fetch_assoc( result )
@@ -100,7 +81,7 @@ function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, dona
 		
 		-- FRIENDS
 		local theFriends = { }
-		
+		local friends = getElementData(source, "friends")
 		if ( friends ~= "none" ) then -- No Friends
 		
 			-- Their country
@@ -131,7 +112,7 @@ function loginPlayer( username, id, admin, adminduty, hiddenadmin, reports, dona
 			end	
 		end
 		
-		triggerClientEvent(source, "showCharactersUI", source, characters, theFriends, skinmods, weaponmods, vehiclemods)
+		triggerClientEvent(source, "showCharactersUI", source, characters, theFriends, getElementData( source, "skinmods" ), getElementData( source, "weaponmods" ), getElementData( source, "vehiclemods"))
 		
 		if isKeyBound(source, "end", "down", changeCharacter) then
 			unbindKey(source, "end", "down", changeCharacter)
@@ -299,7 +280,7 @@ function spawnCharacter( name )
 		local amotd = result['amotd']
 		
 		outputChatBox("MOTD: ".. motd, source, 244, 219, 11)
-		if tonumber(getElementData(source, "admin")) > 0 then
+		if exports['[ars]global']:isPlayerTrialModerator(source) then
 			outputChatBox("Admin MOTD: ".. amotd, source, 89, 189, 59)
 		end	
 		
@@ -440,21 +421,7 @@ function changeCharacter( thePlayer )
 	
 		triggerEvent("savePlayer", thePlayer, "Change Character")
 		
-		local username = getElementData(thePlayer, "accountname")
-		local id = getElementData(thePlayer, "accountid")
-		local admin = getElementData(thePlayer, "admin")
-		local adminduty = getElementData(thePlayer, "adminduty")
-		local hiddenadmin = getElementData(thePlayer, "hiddenadmin")
-		local reports = getElementData(thePlayer, "adminreports")
-		local donator = getElementData(thePlayer, "donator")
-		local togglepm = getElementData(thePlayer, "togglepm")
-		local tutorial = getElementData(thePlayer, "tutorial")
-		local friends = getElementData(thePlayer, "friends")
-		local skinmods = getElementData(thePlayer, "skinmods")
-		local weaponmods = getElementData(thePlayer, "weaponmods")
-		local vehiclemods = getElementData(thePlayer, "vehiclemods")
-		
-		triggerEvent("loginPlayer", thePlayer, username, id, admin, adminduty, hiddenadmin, reports, donator, togglepm, tutorial, friends, skinmods, weaponmods, vehiclemods, false)
+		triggerEvent("loginPlayer", thePlayer, false)
 		
 		removeElementData(thePlayer, "loggedin")
 		

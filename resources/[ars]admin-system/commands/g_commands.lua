@@ -176,12 +176,9 @@ local interiorCmds =
 
 local screenX, screenY = guiGetScreenSize( )
 function createCommandList(	)
-	if ( exports['[ars]global']:c_isPlayerTrialModerator( localPlayer ) ) then
+	if exports['[ars]global']:c_isPlayerTrialModerator( ) then
 		
-		local adminLevel = tonumber( getElementData( localPlayer, "admin") ) or 0
-		if ( adminLevel > 5 ) then
-			adminLevel = 5
-		end
+		local adminLevel = math.min( 5, exports['[ars]global']:c_getPlayerAdminLevel() )
 		
 		local width, height = 440, 340
 		local x = (screenX/2) - (width/2)

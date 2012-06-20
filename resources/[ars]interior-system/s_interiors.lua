@@ -511,11 +511,11 @@ function sellProperty( thePlayer, commandName )
 			local type = tonumber(getElementData(interior, "type"))
 			if (type ~= 3) then
 				
-				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local admin = exports['[ars]global']:isPlayerAdministrator(thePlayer)
 				local adminduty = tonumber(getElementData(thePlayer, "adminduty")) 
 			
 				local owner = tonumber(getElementData(interior, "owner"))
-				if ( (owner == tonumber(getElementData(thePlayer, "dbid"))) or (admin >= 4 and adminduty == 1) ) then
+				if ( (owner == tonumber(getElementData(thePlayer, "dbid"))) or (admin and adminduty == 1) ) then
 					
 					local update = sql:query("UPDATE `interiors` SET `owner`='-1' WHERE `id`=".. sql:escape_string(dbid) .."")
 					if (update) then
@@ -538,7 +538,7 @@ function sellProperty( thePlayer, commandName )
 						local price = tonumber(getElementData(interior, "price"))
 						local moneyBack = nil
 						
-						if (admin >= 4 and adminduty == 1) then
+						if (admin and adminduty == 1) then
 							moneyBack = price
 						else	
 							moneyBack = 1*price

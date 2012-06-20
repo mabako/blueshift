@@ -952,16 +952,8 @@ function endCharacterCreation( )
 	if isElement(windowRules) then
 		destroyElement(windowRules)
 	end
-		
-	local username = getElementData(getLocalPlayer(), "accountname")
-	local id = getElementData(getLocalPlayer(), "accountid")
-	local admin = getElementData(getLocalPlayer(), "admin")
-	local adminduty = getElementData(getLocalPlayer(), "adminduty")
-	local hiddenadmin = getElementData(getLocalPlayer(), "hiddenadmin")
-	local reports = getElementData(getLocalPlayer(), "adminreports")
-	local donator = getElementData(getLocalPlayer(), "donator")
 	
-	triggerServerEvent("loginPlayer", getLocalPlayer(), username, id, admin, adminduty, hiddenadmin, reports, donator, false)
+	triggerServerEvent("loginPlayer", getLocalPlayer(), false)
 			
 	-- Reset Globals
 	creationStep = 0

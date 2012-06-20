@@ -19,7 +19,6 @@
 	<export function="c_isPlayerAdministrator" type="client"/>
 	<export function="c_isPlayerHighAdministrator" type="client"/>
 	<export function="c_isPlayerScripter" type="client"/>
-	<export function="c_getPlayerAdminTitle" type="client"/>
 	<export function="c_getPlayerAdminLevel" type="client"/>
 	
 	<script src="player.lua" type="server"/>

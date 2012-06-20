@@ -80,8 +80,40 @@ function attemptLogin( username, password, remember )
 			
 			local update = sql:query("UPDATE `accounts` SET `lastlogin`=NOW(), logintoken = " .. newToken .. passwordUpdate .. " WHERE `username`='".. sql:escape_string(tostring(username)) .."'")
 			if (update) then
+				-- raaah. we store account things here.
+				setElementData(source, "accountname", tostring(result.username), true)
+				setElementData(source, "accountid", tonumber(result.id), true)
+				setElementData(source, "adminreports", tonumber(result.reports), true)
+				setElementData(source, "donator", tonumber(result.donator), true)
+				setElementData(source, "togglepm", tonumber(result.togpm) == 1, false)
+				setElementData(source, "tutorial", tonumber(result.tutorial) == 1, false)
 				
-				triggerEvent("loginPlayer", source, result['username'], result['id'], result['admin'], result['adminduty'], result['hiddenadmin'], result['reports'], result['donator'], result['togpm'], result['tutorial'], result['friends'], result['skinmods'], result['weaponmods'], result['vehiclemods'], true)
+				local friends = tostring(result.friends)
+				if ( friends == "nil" ) or ( string.find( friends, "userdata" ) ) or ( string.len( friends ) == 0 ) then
+					friends = "none"
+				end
+				setElementData(source, "friends", friends, true)
+				setElementData(source, "skinmods", tonumber(result.skinmods), false)
+				setElementData(source, "weaponmods", tonumber(result.weaponmods), false)
+				setElementData(source, "vehiclemods", tonumber(result.vehiclemods), false)
+				
+				if tonumber(result.admin) > 0 then
+					setElementData(source, "admin", tonumber(result.admin), false)
+					triggerClientEvent(source, "elementdata", source, "admin", tonumber(result.admin))
+					setElementData(source, "adminduty", tonumber(result.adminduty), true)
+					setElementData(source, "hiddenadmin", tonumber(result.hiddenadmin), true)
+				else
+					if getElementData(source, "admin") then
+						removeElementData(source, "admin")
+						triggerClientEvent(source, "elementdata", source, "admin", false)
+					end
+					
+					if getElementData(source, "adminduty") then
+						removeElementData(source, "adminduty")
+					end
+				end
+				
+				triggerEvent("loginPlayer", source, true)
 			else
 				triggerClientEvent(source, "showSignInMessage", source, "Unknown login error.", 150)
 			end
@@ -141,7 +173,9 @@ end
 addEventHandler("onResourceStart", resourceRoot, onRestart)	
 
 function onJoin( )
-	removeElementData(source, "loggedin")
+	for key, value in pairs(getAllElementData(source)) do
+		removeElementData(source, key)
+	end
 	exports['[ars]global']:updateNametagColor( source )
 	setPlayerNametagShowing( source, false )
 end
