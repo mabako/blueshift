@@ -1,27 +1,4 @@
 local sql = exports.sql
-
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Report System ] ---------
 local reports = { }
 
@@ -54,11 +31,10 @@ function sendPlayerReport( option, realOption, name, explaination )
 		
 		for key, thePlayer in ipairs(getElementsByType("player")) do
 			
-			local loggedin = tonumber(getData(thePlayer, "loggedin"))
-			if (loggedin == 1) then
+			if getElementData(thePlayer, "loggedin") then
 			
-				local admin = tonumber(getData(thePlayer, "admin"))
-				local adminduty = tonumber(getData(thePlayer, "adminduty"))
+				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local adminduty = tonumber(getElementData(thePlayer, "adminduty"))
 				
 				if (admin > 0 and adminduty == 1) then
 					
@@ -90,7 +66,7 @@ addEventHandler("sendPlayerReport", root, sendPlayerReport)
 
 -- /ar
 function acceptReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -105,11 +81,10 @@ function acceptReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 							
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 							
 							if (admin > 0 and adminduty == 1) then
 								
@@ -121,8 +96,8 @@ function acceptReport( thePlayer, commandName, reportID )
 					outputChatBox("Your report (#".. reportID ..") has been accepted by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
 					outputChatBox("You accepted ".. getPlayerName(reporter):gsub("_", " ") .."'s report (#".. reportID ..")", thePlayer, 0, 255, 0)
 					
-					local reports = tonumber( getData( thePlayer, "adminreports" ) )
-					setData( thePlayer, "adminreports", reports + 1, true )
+					local reports = tonumber( getElementData( thePlayer, "adminreports" ) )
+					setElementData( thePlayer, "adminreports", reports + 1, true )
 					
 				else
 					outputChatBox("This report is already handled by ".. getPlayerName(reports[reportID][5]):gsub("_", " ") ..".", thePlayer, 255, 0, 0)
@@ -139,7 +114,7 @@ addCommandHandler("ar", acceptReport, false, false)
 	
 -- /cr
 function closeReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -153,11 +128,10 @@ function closeReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 							
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 						
 							if (admin > 0 and adminduty == 1) then
 								
@@ -186,7 +160,7 @@ addCommandHandler("cr", closeReport, false, false)
 
 -- /fr
 function falseReport( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -200,11 +174,10 @@ function falseReport( thePlayer, commandName, reportID )
 					
 					for key, val in ipairs(getElementsByType("player")) do
 						
-						local loggedin = tonumber(getData(val, "loggedin"))
-						if (loggedin == 1) then
+						if getElementData(val, "loggedin") then
 						
-							local admin = tonumber(getData(val, "admin"))
-							local adminduty = tonumber(getData(val, "adminduty"))
+							local admin = tonumber(getElementData(val, "admin"))
+							local adminduty = tonumber(getElementData(val, "adminduty"))
 								
 							if (admin > 0 and adminduty == 1) then
 								
@@ -232,7 +205,7 @@ addCommandHandler("fr", falseReport, false, false)
 
 -- /tr
 function transferReport( thePlayer, commandName, reportID, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (reportID) then
 			
@@ -243,39 +216,24 @@ function transferReport( thePlayer, commandName, reportID, partialPlayerName )
 				
 					local reporter = reports[reportID][4]
 					
-					local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-					
-					if #players == 0 then
-						outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-					elseif #players > 1 then
-						outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-						
-						local count = 0
-						for k, foundPlayer in ipairs (players) do
+					local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+					if foundPlayer then
+						if (tonumber(getElementData(foundPlayer, "admin")) > 0) then
 							
-							count = count + 1
-							outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-						end		
-					else
-						for k, foundPlayer in ipairs (players) do
+							reports[reportID][5] = foundPlayer
 							
-							if (tonumber(getData(foundPlayer, "admin")) > 0) then
-								
-								reports[reportID][5] = foundPlayer
-								
-								outputChatBox("You transferred your report (#".. reportID ..") to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
-								outputChatBox(getPlayerName(thePlayer):gsub("_", " ") .." transffered his report (#".. reportID ..") to you.", foundPlayer, 0, 255, 0)
-								
-								outputChatBox("Your report (#".. reportID ..") was transffered to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
-								
-								local reports = tonumber( getData( thePlayer, "adminreports" ) )
-								setData( thePlayer, "adminreports", reports - 1, true )
-								
-								local reports = tonumber( getData( foundPlayer, "adminreports") )
-								setData( foundPlayer, "adminreports", reports + 1, true )
-							else
-								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not an admin.", thePlayer, 255, 0, 0)
-							end
+							outputChatBox("You transferred your report (#".. reportID ..") to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 0, 255, 0)
+							outputChatBox(getPlayerName(thePlayer):gsub("_", " ") .." transffered his report (#".. reportID ..") to you.", foundPlayer, 0, 255, 0)
+							
+							outputChatBox("Your report (#".. reportID ..") was transffered to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", reporter, 0, 255, 0)
+							
+							local reports = tonumber( getElementData( thePlayer, "adminreports" ) )
+							setElementData( thePlayer, "adminreports", reports - 1, true )
+							
+							local reports = tonumber( getElementData( foundPlayer, "adminreports") )
+							setElementData( foundPlayer, "adminreports", reports + 1, true )
+						else
+							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not an admin.", thePlayer, 255, 0, 0)
 						end
 					end
 				else
@@ -293,7 +251,7 @@ addCommandHandler("tr", transferReport, false, false)
 	
 -- /rd
 function reportDetails( thePlayer, commandName, reportID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (reportID) then 
 			
@@ -348,7 +306,7 @@ addCommandHandler("rd", reportDetails, false, false)
 	
 -- /reports
 function listReports( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		outputChatBox("========= Current Reports =========", thePlayer, 0, 100, 212)
 		

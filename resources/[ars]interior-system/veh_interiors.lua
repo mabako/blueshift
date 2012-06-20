@@ -1,25 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Interior Spawn ] ---------
 function startVehicleInteriors( )
 	for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
@@ -34,14 +12,14 @@ addEventHandler("onResourceStart", resourceRoot, startVehicleInteriors)
 function createVehicleInterior( theVehicle )
 	if ( theVehicle ) then
 		
-		local interiorID = tonumber( getData( theVehicle, "dbid" ) )
-		local vehicleFaction = tonumber( getData( theVehicle, "faction" ) )
-		local vehicleOwner = tonumber( getData( theVehicle, "owner" ) )
+		local interiorID = tonumber( getElementData( theVehicle, "dbid" ) )
+		local vehicleFaction = tonumber( getElementData( theVehicle, "faction" ) )
+		local vehicleOwner = tonumber( getElementData( theVehicle, "owner" ) )
 		if ( interiorID < 0 ) or ( vehicleOwner <= 0 ) or ( vehicleFaction > 0 ) then
 			
 			return
 		else	
-			local interiorOwner = getData( theVehicle, "owner" )
+			local interiorOwner = getElementData( theVehicle, "owner" )
 			
 			local interiorLocked = 0
 			if isVehicleLocked( theVehicle ) then
@@ -67,28 +45,28 @@ function createVehicleInterior( theVehicle )
 			setElementDimension( entranceMarker, entranceDimension )
 			setElementInterior( entranceMarker, entranceInterior )
 			
-			setData( entranceMarker, "name", tostring( interiorName ), true )
-			setData( entranceMarker, "owner", tonumber( interiorOwner ), true )
-			setData( entranceMarker, "dbid", tonumber( -interiorID ), true )
-			setData( entranceMarker, "type", tonumber( interiorType ), true )
-			setData( entranceMarker, "locked", tonumber( interiorLocked ), true )
-			setData( entranceMarker, "price", tonumber( interiorPrice ), true )
-			setData( entranceMarker, "rented", tonumber( interiorRented ), true )
-			setData( entranceMarker, "elevator", 0, true )
+			setElementData( entranceMarker, "name", tostring( interiorName ), true )
+			setElementData( entranceMarker, "owner", tonumber( interiorOwner ), true )
+			setElementData( entranceMarker, "dbid", tonumber( -interiorID ), true )
+			setElementData( entranceMarker, "type", tonumber( interiorType ), true )
+			setElementData( entranceMarker, "locked", tonumber( interiorLocked ), true )
+			setElementData( entranceMarker, "price", tonumber( interiorPrice ), true )
+			setElementData( entranceMarker, "rented", tonumber( interiorRented ), true )
+			setElementData( entranceMarker, "elevator", 0, true )
 			
 			-- Exit
 			local exitMarker = createMarker( 1930.1464, -2379.3242, 12.7187, "cylinder", 2, 255, 255, 255, 50)
 			setElementDimension( exitMarker, exitDimension )
 			setElementInterior( exitMarker, exitInterior )
 			
-			setData( exitMarker, "name", tostring( interiorName ), true )
-			setData( exitMarker, "owner", tonumber( interiorOwner ), true )
-			setData( exitMarker, "dbid", tonumber( -interiorID ), true )
-			setData( exitMarker, "type", tonumber( interiorType ), true )
-			setData( exitMarker, "locked", tonumber( interiorLocked ), true )
-			setData( exitMarker, "price", tonumber( interiorPrice ), true )
-			setData( exitMarker, "rented", tonumber( interiorRented ), true )
-			setData( exitMarker, "elevator", 0, true )
+			setElementData( exitMarker, "name", tostring( interiorName ), true )
+			setElementData( exitMarker, "owner", tonumber( interiorOwner ), true )
+			setElementData( exitMarker, "dbid", tonumber( -interiorID ), true )
+			setElementData( exitMarker, "type", tonumber( interiorType ), true )
+			setElementData( exitMarker, "locked", tonumber( interiorLocked ), true )
+			setElementData( exitMarker, "price", tonumber( interiorPrice ), true )
+			setElementData( exitMarker, "rented", tonumber( interiorRented ), true )
+			setElementData( exitMarker, "elevator", 0, true )
 		
 			setElementParent( exitMarker, entranceMarker )
 			

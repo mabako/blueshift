@@ -1,31 +1,10 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 function sendAdvertisement( advert )
 	local advert = tostring( advert )
 	
 	for key, value in ipairs ( getElementsByType("player") ) do
-		if ( getData( value, "loggedin" ) == 1 ) then
+		if getElementData( value, "loggedin" ) then
 			
 			outputChatBox("[ADVERT] ".. advert .." (( ".. getPlayerName(source):gsub("_", " ") .." ))", value, 177, 120, 29) 
 		end
@@ -49,7 +28,7 @@ function giveMoneyToSan( amount )
 			outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 		else
 			takePlayerMoney(source, amount)
-			setData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
+			setElementData( getTeamFromName("San Andreas Network and Entertainment"), "balance", totalEarned, true)
 		end	
 		
 		sql:free_result(update)

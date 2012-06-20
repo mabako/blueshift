@@ -1,35 +1,13 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Smoking System ] ---------	
 
 function renderCigarette( )
 	
 	for key, thePlayer in ipairs( getElementsByType("player") ) do
 		
-		if ( getData( thePlayer, "smoking_true") == 1 ) then
+		if ( getElementData( thePlayer, "smoking_true") == 1 ) then
 			
 			local color = nil
-			local thing = tonumber( getData(thePlayer, "smoking_thing") )
+			local thing = tonumber( getElementData(thePlayer, "smoking_thing") )
 			
 			if ( thing == 1 ) then -- Cigarette
 				color = tocolor(254, 232, 214)
@@ -38,7 +16,7 @@ function renderCigarette( )
 			end
 			
 			local bypass = 0
-			if ( getData( thePlayer, "smoking_lefthand") == 1 ) then -- Left hand
+			if ( getElementData( thePlayer, "smoking_lefthand") == 1 ) then -- Left hand
 				
 				bypass = 10
 			end

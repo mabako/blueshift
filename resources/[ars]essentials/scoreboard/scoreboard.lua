@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 -------------- [ Scoreboard ] ---------------
 local screenX, screenY = guiGetScreenSize()
 
@@ -31,7 +20,7 @@ function assemblePlayersByID( )
 	for i = 1, 50 do
 		for key, thePlayer in ipairs( getElementsByType("player") ) do
 			
-			local playerID = tonumber( getData(thePlayer, "playerid") )
+			local playerID = tonumber( getElementData(thePlayer, "playerid") )
 			if ( playerID == i ) then
 
 				players[playerID] = thePlayer
@@ -43,7 +32,7 @@ function assemblePlayersByID( )
 end	
 	
 function removePlayerFromList( )
-	local playerID = tonumber( getData(source, "playerid") )
+	local playerID = tonumber( getElementData(source, "playerid") )
 	players[playerID] = nil
 end
 addEventHandler("onClientPlayerQuit", getRootElement(), removePlayerFromList)
@@ -74,7 +63,7 @@ function renderPlayerList( )
 		if isElement(v) then
 			
 			local name = tostring( getPlayerName(v):gsub("_", " ") )
-			local id = tostring( getData(v, "playerid") )
+			local id = tostring( getElementData(v, "playerid") )
 			local ping = tostring( getPlayerPing(v) )
 			local r, g, b = getPlayerNametagColor(v)
 			
@@ -293,7 +282,7 @@ function scrollUp( )
 end
 
 function drawPlayerList( )
-	if (getData(getLocalPlayer(), "loggedin") == 1) then
+	if getElementData(localPlayer, "loggedin") then
 		if not (isEventHandled) then
 			
 			isEventHandled = true

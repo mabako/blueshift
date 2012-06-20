@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Resource System ] ---------
 local function output( console, text, baseElement )
 	if ( console == true ) then

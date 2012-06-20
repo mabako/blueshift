@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- /setfaction 
 -- /makefaction 
 -- /delfaction 
@@ -36,53 +14,37 @@ end
 
 -- /setfaction
 function setPlayerFaction( thePlayer, commandName, partialPlayerName, factionID, rankID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		if (partialPlayerName) and (factionID) and (rankID) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multiple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local factionID = tonumber(factionID)
+				local rankID = tonumber(rankID)
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do 
-				
-					local factionID = tonumber(factionID)
-					local rankID = tonumber(rankID)
-					
-					local found = false
-					for k, team in ipairs ( getElementsByType("team") ) do
-						if tonumber(getData(team, "id")) == factionID then
+				local found = false
+				for k, team in ipairs ( getElementsByType("team") ) do
+					if tonumber(getElementData(team, "id")) == factionID then
+						
+						found = true
+						
+						local update = sql:query("UPDATE characters SET faction=".. factionID ..", rank=".. rankID .." WHERE id=".. sql:escape_string(getElementData(foundPlayer, "dbid")) .."")
+						if (update) then
+							setPlayerTeam(foundPlayer, team)
+							setElementData(foundPlayer, "faction", factionID, true)
+							setElementData(foundPlayer, "f:rank", rankID, true)
 							
-							found = true
-							
-							local update = sql:query("UPDATE characters SET faction=".. factionID ..", rank=".. rankID .." WHERE id=".. sql:escape_string(getData(foundPlayer, "dbid")) .."")
-							if (update) then
-								setPlayerTeam(foundPlayer, team)
-								setData(foundPlayer, "faction", factionID, true)
-								setData(foundPlayer, "f:rank", rankID, true)
-								
-								outputChatBox("You were set to the faction '".. getTeamName(team) ..".", foundPlayer, 212, 156, 49)
-								outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .." to the faction '".. getTeamName(team) ..".", thePlayer, 212, 156, 49)
-								break
-							end	
-							
-							sql:free_result(update)
-						end
+							outputChatBox("You were set to the faction '".. getTeamName(team) ..".", foundPlayer, 212, 156, 49)
+							outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .." to the faction '".. getTeamName(team) ..".", thePlayer, 212, 156, 49)
+							break
+						end	
+						
+						sql:free_result(update)
 					end
-					
-					if not (found) then
-						outputChatBox("Invalid faction ID.", thePlayer, 255, 0, 0)
-					end	
+				end
+				
+				if not (found) then
+					outputChatBox("Invalid faction ID.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -94,7 +56,7 @@ addCommandHandler("setfaction", setPlayerFaction, false, false)
 
 -- /makefaction
 function makeFaction( thePlayer, commandName, factionType )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionType) then
 			
@@ -118,7 +80,7 @@ addCommandHandler("makefaction", makeFaction, false, false)
 
 -- /delfaction
 function deleteFaction( thePlayer, commandName, factionID )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) then
 			
@@ -126,7 +88,7 @@ function deleteFaction( thePlayer, commandName, factionID )
 			
 			local found = false
 			for key, faction in ipairs ( getElementsByType("team") ) do
-				if tonumber(getData(faction, "id")) == factionID then
+				if tonumber(getElementData(faction, "id")) == factionID then
 					
 					outputChatBox("Destroyed faction '".. getTeamName(faction) .."' ( ID: ".. tostring(factionID) .." )", thePlayer, 212, 156, 49) 
 					destroyElement(faction)
@@ -156,7 +118,7 @@ addCommandHandler("delfaction", deleteFaction, false, false)
 	
 -- /setfactionleaderank
 function setFactionLeaderRank( thePlayer, commandName, factionID, leaderRank )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (leaderRank) then
 			
@@ -165,10 +127,10 @@ function setFactionLeaderRank( thePlayer, commandName, factionID, leaderRank )
 			
 			local found = false
 			for key, faction in ipairs ( getElementsByType("team") ) do
-				if tonumber(getData(faction, "id")) == factionID then
+				if tonumber(getElementData(faction, "id")) == factionID then
 					
 					outputChatBox("Updated '".. getTeamName(faction) .."' leader rank to ".. sql:escape_string(leaderRank) ..".", thePlayer, 212, 156, 49) 
-					setData(faction, "leader", tonumber(leaderRank), true)
+					setElementData(faction, "leader", tonumber(leaderRank), true)
 					found = true
 					break
 				end	
@@ -194,7 +156,7 @@ addCommandHandler("setfactionleaderrank", setFactionLeaderRank, false, false)
 	
 -- /setfactionid
 function setFactionID( thePlayer, commandName, factionID, newFactionID )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (newFactionID) then
 			
@@ -203,13 +165,13 @@ function setFactionID( thePlayer, commandName, factionID, newFactionID )
 			
 			local found = false
 			for key, faction in ipairs ( getElementsByType("team") ) do
-				if tonumber(getData(faction, "id")) == factionID then
+				if tonumber(getElementData(faction, "id")) == factionID then
 					
 					outputChatBox("Updated '".. getTeamName(faction) .."' faction ID to ".. tostring(newFactionID) ..".", thePlayer, 212, 156, 49) 
-					setData(faction, "id", tonumber(newFactionID), true)
+					setElementData(faction, "id", tonumber(newFactionID), true)
 					
 					for key, factionMember in ipairs (getPlayersInTeam(faction)) do
-						setData(factionMember, "faction", tonumber(newFactionID), true)
+						setElementData(factionMember, "faction", tonumber(newFactionID), true)
 					end
 					
 					found = true
@@ -243,7 +205,7 @@ addCommandHandler("setfactionid", setFactionID, false, false)
 
 -- /setfactionname
 function setFactionName( thePlayer, commandName, factionID, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (factionID) and (...) then
 			
@@ -252,7 +214,7 @@ function setFactionName( thePlayer, commandName, factionID, ... )
 			
 			local found = false
 			for key, faction in ipairs ( getElementsByType("team") ) do
-				if tonumber(getData(faction, "id")) == factionID then
+				if tonumber(getElementData(faction, "id")) == factionID then
 					
 					outputChatBox("Updated '".. getTeamName(faction) .."' name to ".. tostring(newFactionName) ..".", thePlayer, 212, 156, 49) 
 					setTeamName(faction, tostring(newFactionName))
@@ -288,7 +250,7 @@ addCommandHandler("setfactionname", setFactionName, false, false)
 
 -- /showfactions
 function showFactions( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
 		local factions = { }
 		factions["id"] = { }
@@ -313,24 +275,24 @@ addCommandHandler("showfactions", showFactions, false, false)
 	
 -- /setvehfaction	
 function setVehicleFaction( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighModerator(thePlayer) then
 		
-		local faction = tonumber(getData(thePlayer, "faction"))
+		local faction = tonumber(getElementData(thePlayer, "faction"))
 		if (faction > 0) then
 			
-			local factionRank = tonumber(getData(thePlayer, "f:rank"))
-			local leaderRank = tonumber(getData(getPlayerTeam(thePlayer), "leader"))
+			local factionRank = tonumber(getElementData(thePlayer, "f:rank"))
+			local leaderRank = tonumber(getElementData(getPlayerTeam(thePlayer), "leader"))
 			
 			if (factionRank >= leaderRank) or (exports['[ars]global']:isPlayerHighModerator(thePlayer)) then
 				
 				local vehicle = getPedOccupiedVehicle(thePlayer)
 				if (vehicle) then
 					
-					local dbid = tonumber(getData(vehicle, "dbid"))
+					local dbid = tonumber(getElementData(vehicle, "dbid"))
 					local update = sql:query("UPDATE vehicles SET faction=".. sql:escape_string(faction) ..", owner='-1' WHERE id=".. sql:escape_string(dbid) .."")
 					if (update) then
-						setData(vehicle, "faction", tonumber(faction), true)
-						setData(vehicle, "owner", -1, true)
+						setElementData(vehicle, "faction", tonumber(faction), true)
+						setElementData(vehicle, "owner", -1, true)
 						
 						outputChatBox("This vehicle is now owned by your faction.", thePlayer, 0, 255, 0)
 					else
@@ -358,11 +320,11 @@ addCommandHandler("setvehfaction", setVehicleFaction, false, false)
 function callFactionUI( thePlayer )
 	
 	if isElement(getPlayerTeam(thePlayer)) then -- If his faction exists..
-		local factionID = tonumber(getData(getPlayerTeam(thePlayer), "id"))
-		local factionType = tonumber(getData(getPlayerTeam(thePlayer), "type"))
-		local leaderRank = tonumber(getData(getPlayerTeam(thePlayer), "leader"))
-		local playerRank = tonumber(getData(thePlayer, "f:rank"))
-		local factionBalance = tonumber(getData(getPlayerTeam(thePlayer), "balance"))
+		local factionID = tonumber(getElementData(getPlayerTeam(thePlayer), "id"))
+		local factionType = tonumber(getElementData(getPlayerTeam(thePlayer), "type"))
+		local leaderRank = tonumber(getElementData(getPlayerTeam(thePlayer), "leader"))
+		local playerRank = tonumber(getElementData(thePlayer, "f:rank"))
+		local factionBalance = tonumber(getElementData(getPlayerTeam(thePlayer), "balance"))
 		
 		triggerClientEvent(thePlayer, "createFactionUI", thePlayer, playerRank, factionID, factionType, leaderRank, factionBalance)
 	end	
@@ -370,8 +332,8 @@ end
 
 function getFactionInfo( )
 	
-	local dbid = tonumber(getData(getPlayerTeam(source), "id"))
-	local factionType = tonumber(getData(getPlayerTeam(source), "type"))
+	local dbid = tonumber(getElementData(getPlayerTeam(source), "id"))
+	local factionType = tonumber(getElementData(getPlayerTeam(source), "type"))
 	
 	local members = { }
 	members["name"] = { }
@@ -411,12 +373,12 @@ addEventHandler("getFactionInfo", getRootElement(), getFactionInfo)
 
 -- Quit Faction
 function quitFaction( )
-	local update = sql:query("UPDATE characters SET faction='-1', rank='-1' WHERE id=".. sql:escape_string(getData(source, "dbid")) .."")
+	local update = sql:query("UPDATE characters SET faction='-1', rank='-1' WHERE id=".. sql:escape_string(getElementData(source, "dbid")) .."")
 	if (update) then
 		
 		setPlayerTeam(source, nil)
-		setData(source, "faction", -1, true)
-		setData(source, "f:rank", -1, true)
+		setElementData(source, "faction", -1, true)
+		setElementData(source, "f:rank", -1, true)
 		
 		outputChatBox("You have quit your faction.", source, 0, 255, 0)
 	else
@@ -440,8 +402,8 @@ function removePlayerFromFaction( playerName )
 		if isElement(thePlayer) then
 			
 			setPlayerTeam(thePlayer, nil)
-			setData(thePlayer, "faction", -1, true)
-			setData(thePlayer, "f:rank", -1, true)
+			setElementData(thePlayer, "faction", -1, true)
+			setElementData(thePlayer, "f:rank", -1, true)
 			
 			outputChatBox("You were kicked from your faction.", thePlayer, 255, 0, 0)
 		end
@@ -459,15 +421,15 @@ addEventHandler("removePlayerFromFaction", getRootElement(), removePlayerFromFac
 
 -- Invite Player
 function invitePlayerToFaction( thePlayer )
-	local invitingFaction = tonumber(getData(source, "faction"))
+	local invitingFaction = tonumber(getElementData(source, "faction"))
 	local playerName = tostring(getPlayerName(thePlayer):gsub("_", " "))
 	
 	local update = sql:query("UPDATE characters SET faction=".. sql:escape_string(invitingFaction) ..", rank='1' WHERE charactername='".. sql:escape_string(tostring(playerName)) .."'")
 	if (update) then
 		
 		setPlayerTeam(thePlayer, getPlayerTeam(source))
-		setData(thePlayer, "faction", invitingFaction, true)
-		setData(thePlayer, "f:rank", 1, true)
+		setElementData(thePlayer, "faction", invitingFaction, true)
+		setElementData(thePlayer, "f:rank", 1, true)
 	
 		outputChatBox("You were set to a faction.", thePlayer, 0, 255, 0)
 		outputChatBox("You set ".. playerName .." to your faction.", source, 212, 156, 14)
@@ -492,7 +454,7 @@ function promoteFactionMember( playerName, rankID, rankName )
 		
 		local thePlayer = getPlayerFromName(playerName:gsub(" ", "_"))
 		if isElement(thePlayer) then
-			setData(thePlayer, "f:rank", tonumber(rankID), true)
+			setElementData(thePlayer, "f:rank", tonumber(rankID), true)
 		end
 		
 		for key, factionMember in ipairs( getPlayersInTeam(getPlayerTeam(source)) ) do
@@ -519,7 +481,7 @@ function demoteFactionMember( playerName, rankID, rankName )
 		
 		local thePlayer = getPlayerFromName(playerName:gsub(" ", "_"))
 		if isElement(thePlayer) then
-			setData(thePlayer, "f:rank", tonumber(rankID), true)
+			setElementData(thePlayer, "f:rank", tonumber(rankID), true)
 		end	
 		
 		for key, factionMember in ipairs( getPlayersInTeam(getPlayerTeam(source)) ) do
@@ -543,7 +505,7 @@ function saveFactionRanks( ranks, leaderRank, factionID )
 	local rank = ranks[1] ..",".. ranks[2] ..",".. ranks[3] ..",".. ranks[4] ..",".. ranks[5] ..",".. ranks[6] ..",".. ranks[7] ..",".. ranks[8] ..",".. ranks[9] ..",".. ranks[10] ..",".. ranks[11] ..",".. ranks[12] ..",".. ranks[13] ..",".. ranks[14] ..",".. ranks[15]
 	local update = sql:query("UPDATE factions SET leader_rank=".. sql:escape_string(leaderRank) ..", rank='".. sql:escape_string(tostring(rank)) .."' WHERE id=".. sql:escape_string(factionID) .."")
 	if (update) then
-		setData(getPlayerTeam(source), "leader", leaderRank, true)
+		setElementData(getPlayerTeam(source), "leader", leaderRank, true)
 		
 		sendRanksAndWages( ) -- Ranks and Wage update
 		outputChatBox("Ranks Saved!", source, 0, 255, 0)
@@ -606,10 +568,10 @@ function createGovFaction( name, ranks, wages )
 		local insertid = sql:insert_id()
 		
 		local faction = createTeam(tostring(name))
-		setData(faction, "id", tonumber(insertid), true)
-		setData(faction, "type", 1, true)
-		setData(faction, "leader", 10, true)
-		setData(faction, "balance", 0, true)
+		setElementData(faction, "id", tonumber(insertid), true)
+		setElementData(faction, "type", 1, true)
+		setElementData(faction, "leader", 10, true)
+		setElementData(faction, "balance", 0, true)
 		
 		outputChatBox("Faction '".. tostring(name) .."' created with ID ".. tostring(insertid) ..".", source, 0, 255, 0)
 		
@@ -635,10 +597,10 @@ function createPrivateFaction( name, ranks, wages )
 		local insertid = sql:insert_id()
 		
 		local faction = createTeam(tostring(name))
-		setData(faction, "id", tonumber(insertid), true)
-		setData(faction, "type", 2, true)
-		setData(faction, "leader", 10, true)
-		setData(faction, "balance", 0, true)
+		setElementData(faction, "id", tonumber(insertid), true)
+		setElementData(faction, "type", 2, true)
+		setElementData(faction, "leader", 10, true)
+		setElementData(faction, "balance", 0, true)
 		
 		outputChatBox("Faction '".. tostring(name) .."' created with ID ".. tostring(insertid) ..".", source, 0, 255, 0)
 		
@@ -664,10 +626,10 @@ function createCriminalFaction( name, ranks )
 		local insertid = sql:insert_id()
 		
 		local faction = createTeam(tostring(name))
-		setData(faction, "id", tonumber(insertid), true)
-		setData(faction, "type", 3, true)
-		setData(faction, "leader", 10, true)
-		setData(faction, "balance", 0, true)
+		setElementData(faction, "id", tonumber(insertid), true)
+		setElementData(faction, "type", 3, true)
+		setElementData(faction, "leader", 10, true)
+		setElementData(faction, "balance", 0, true)
 		
 		outputChatBox("Faction '".. tostring(name) .."' created with ID ".. tostring(insertid) ..".", source, 0, 255, 0)
 		
@@ -726,14 +688,14 @@ function createFactions( res )
 		local faction = createTeam(tostring(name))
 		if (faction) then
 				
-			setData(faction, "id", tonumber(id), true)
-			setData(faction, "type", tonumber(factionType), true)
-			setData(faction, "leader", tonumber(leaderRank), true)
-			setData(faction, "balance", tonumber(balance), true)
+			setElementData(faction, "id", tonumber(id), true)
+			setElementData(faction, "type", tonumber(factionType), true)
+			setElementData(faction, "leader", tonumber(leaderRank), true)
+			setElementData(faction, "balance", tonumber(balance), true)
 		end
 		
 		for key, thePlayer in ipairs ( getElementsByType("player") ) do
-			if getData(thePlayer, "faction") == tonumber(id) then
+			if getElementData(thePlayer, "faction") == tonumber(id) then
 				
 				setPlayerTeam(thePlayer, faction)
 				outputServerLog(getPlayerName(thePlayer) .." added to faction ".. getTeamName(faction))

@@ -1,34 +1,12 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Shop System ] ---------
 
 --------- [ Admin Commands ] ---------
 
 -- /createshop
 function createShop( thePlayer, commandName, shopType )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		if (shopType) then
 			
@@ -99,8 +77,8 @@ function createShop( thePlayer, commandName, shopType )
 				setPedRotation(ped, rot)
 				setElementFrozen(ped, true)
 				
-				setData(ped, "dbid", tonumber(insertid), true)
-				setData(ped, "type", tonumber(shopType), true)	
+				setElementData(ped, "dbid", tonumber(insertid), true)
+				setElementData(ped, "type", tonumber(shopType), true)	
 				
 				outputChatBox("Shop created with ID ".. insertid .." & Type ".. shopType ..".", thePlayer, 0, 255, 0)
 			else
@@ -121,14 +99,14 @@ addCommandHandler("createshop", createShop, false, false)
 
 -- /delshop
 function deleteShop( thePlayer, commandName, shopID)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		if (shopID) then
 			local shopID = tonumber(shopID)
 			
 			local found = false
 			for i, ped in ipairs (getElementsByType("ped", resourceRoot)) do
-				if (tonumber(getData(ped, "dbid")) == shopID) then
+				if (tonumber(getElementData(ped, "dbid")) == shopID) then
 				
 					local delete = sql:query("DELETE FROM shops WHERE id=".. sql:escape_string(shopID) .."")
 					if (delete) then
@@ -158,7 +136,7 @@ addCommandHandler("delshop", deleteShop, false, false)
 
 -- /nearbyshops
 function nearbyShops( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerModerator(thePlayer) then
 		
 		local x, y, z = getElementPosition(thePlayer)
 		
@@ -169,8 +147,8 @@ function nearbyShops( thePlayer, commandName )
 			local px, py, pz = getElementPosition(ped)
 			if (getDistanceBetweenPoints3D(x, y, z, px, py, pz) <= 10) then
 				
-				local dbid = getData(ped, "dbid")
-				local shopType = getData(ped, "type")
+				local dbid = getElementData(ped, "dbid")
+				local shopType = getElementData(ped, "type")
 				local skin = getElementModel(ped)
 				
 				outputChatBox("ID: ".. dbid ..", Type: ".. shopType ..", Skin: ".. skin ..".", thePlayer, 212, 156, 49)
@@ -227,11 +205,11 @@ function playerBuyItem( itemName, itemCost, shopName )
 				for key, value in ipairs ( getElementsByType("marker") ) do
 					
 					local id = getElementDimension(value)
-					local elevator = tonumber( getData( value, "elevator" ) )
+					local elevator = tonumber( getElementData( value, "elevator" ) )
 					
 					if ( id == dim and elevator == 0 ) then
 						
-						local owner = tonumber( getData( value, "owner" ) )
+						local owner = tonumber( getElementData( value, "owner" ) )
 						if ( owner ~= -1 ) then
 							
 							local result = sql:query_fetch_assoc("SELECT `charactername` FROM `characters` WHERE `id`=".. sql:escape_string( owner ) .."")
@@ -326,8 +304,8 @@ function spawnShopsOnStart( res )
 		setPedRotation(ped, tonumber(rot))
 		setElementFrozen(ped, true)
 		
-		setData(ped, "dbid", tonumber(dbid), true)
-		setData(ped, "type", tonumber(shopType), true)
+		setElementData(ped, "dbid", tonumber(dbid), true)
+		setElementData(ped, "type", tonumber(shopType), true)
 	end	
 	
 	sql:free_result(result)

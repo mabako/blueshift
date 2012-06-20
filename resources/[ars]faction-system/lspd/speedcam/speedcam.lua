@@ -1,25 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Speed Camera ] ---------
 local positions = { }
 positions[1] = { -139.2421, 1098.4921, 19.5937, "Home St." }
@@ -72,7 +50,7 @@ function onVehicleColShapeHit( hitElement, matchingDimension )
 						vehicleDirection = "North"
 					end	
 						
-					local plate = tostring( getData( hitElement, "plate" ) )
+					local plate = tostring( getElementData( hitElement, "plate" ) )
 					
 					for key, thePlayer in ipairs ( getElementsByType("player") ) do
 						if ( getPlayerTeam( thePlayer ) == getTeamFromName("San Fierro Police Department") ) then

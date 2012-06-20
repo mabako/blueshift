@@ -1,28 +1,6 @@
 local sql = exports.sql
 local element = createElement("shop")
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Vehicle Shops ] ---------
 local shops = 
 { 
@@ -221,16 +199,16 @@ function reorderVehicle( shop, x, y, z, rot )
 				local vehicle = createVehicle( id, x, y, z, 0, 0, rot )
 				if isElement(vehicle) then
 					
-					setData(vehicle, "faction", -1, true)
-					setData(vehicle, "dbid", 0, true)
-					setData(vehicle, "owner", -1, true)
-					setData(vehicle, "fuel", 100, true)
-					setData(vehicle, "plate", "SHOP", true)
-					setData(vehicle, "tinted", 0, true)
-					setData(vehicle, "engine", 0, true)
-					setData(vehicle, "enginebroke", 0, true)
-					setData(vehicle, "impounded", 0, true)
-					setData(vehicle, "handbrake", 0, true)
+					setElementData(vehicle, "faction", -1, true)
+					setElementData(vehicle, "dbid", 0, true)
+					setElementData(vehicle, "owner", -1, true)
+					setElementData(vehicle, "fuel", 100, true)
+					setElementData(vehicle, "plate", "SHOP", true)
+					setElementData(vehicle, "tinted", 0, true)
+					setElementData(vehicle, "engine", 0, true)
+					setElementData(vehicle, "enginebroke", 0, true)
+					setElementData(vehicle, "impounded", 0, true)
+					setElementData(vehicle, "handbrake", 0, true)
 					
 					setElementParent(vehicle, element)
 					setElementFrozen(vehicle, true)
@@ -272,16 +250,16 @@ function spawnShopVehicles( )
 			local vehicle = createVehicle( id, x, y, z, 0, 0, rot )
 			if isElement(vehicle) then
 
-				setData(vehicle, "faction", -1, true)
-				setData(vehicle, "dbid", 0, true)
-				setData(vehicle, "owner", -1, true)
-				setData(vehicle, "fuel", 100, true)
-				setData(vehicle, "plate", "SHOP", true)
-				setData(vehicle, "tinted", 0, true)
-				setData(vehicle, "engine", 0, true)
-				setData(vehicle, "enginebroke", 0, true)
-				setData(vehicle, "impounded", 0, true)
-				setData(vehicle, "handbrake", 0, true)
+				setElementData(vehicle, "faction", -1, true)
+				setElementData(vehicle, "dbid", 0, true)
+				setElementData(vehicle, "owner", -1, true)
+				setElementData(vehicle, "fuel", 100, true)
+				setElementData(vehicle, "plate", "SHOP", true)
+				setElementData(vehicle, "tinted", 0, true)
+				setElementData(vehicle, "engine", 0, true)
+				setElementData(vehicle, "enginebroke", 0, true)
+				setElementData(vehicle, "impounded", 0, true)
+				setElementData(vehicle, "handbrake", 0, true)
 				
 				setElementParent(vehicle, element)
 				setTimer(setElementFrozen, 1000, 1, vehicle, true)
@@ -297,7 +275,7 @@ function startAllCycles( )
 		if ( theVehicle == "Bike" or theVehicle == "BMX" or theVehicle == "Mountain Bike" ) then
 			
 			setVehicleEngineState( value, true )
-			setData( value, "engine", 1 )
+			setElementData( value, "engine", 1 )
 		end
 	end	
 end

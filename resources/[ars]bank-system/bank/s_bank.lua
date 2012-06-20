@@ -1,26 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Client call backs ] ---------
 function depositMoney( amount, accountID, primaryAccount )
 	if (amount and accountID) then
@@ -148,7 +127,7 @@ function transferMoney( amount, accountNo, accountID )
 				
 				if ( ownerTwo ~= ownerOne ) then
 					
-					local playerAccount = tonumber( getData( source, "accountid") )
+					local playerAccount = tonumber( getElementData( source, "accountid") )
 					local account = tonumber( result['account'] )
 					
 					if ( playerAccount == account ) then

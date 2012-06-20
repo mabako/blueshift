@@ -1,25 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 local trailers = { }
 local playerDetached = { }
 local detachTimer = { }
@@ -36,16 +14,16 @@ end
 addEventHandler("onResourceStart", resourceRoot, onTrailerSpawn)
 
 function onEnterTanker( vehicle, seat )
-	if (getData(vehicle, "job") == 4 and getData(source, "job") ~= 4) then
+	if (getElementData(vehicle, "job") == 4 and getElementData(source, "job") ~= 4) then
 		
 		removePedFromVehicle(source)
-	elseif (getData(vehicle, "job") == 4 and getData(source, "job") == 4) then
+	elseif (getElementData(vehicle, "job") == 4 and getElementData(source, "job") == 4) then
 	
 		if (seat == 0) then
 			
 			outputChatBox("Type /jobhelp if you need help regarding your job!", source, 0, 255, 0)
 		
-			if (getData(vehicle, "engine") == 0) then
+			if (getElementData(vehicle, "engine") == 0) then
 				outputChatBox("Press J to start the vehicle's engine.", source, 231, 60, 128)
 			end
 			
@@ -63,7 +41,7 @@ end
 addEventHandler("onPlayerVehicleEnter", root, onEnterTanker)
 
 function onExitTanker( vehicle, seat )
-	if (getData(vehicle, "job") == 4 and getData(source, "job") == 4) then
+	if (getElementData(vehicle, "job") == 4 and getElementData(source, "job") == 4) then
 		
 		if (seat == 0) then
 			
@@ -79,10 +57,10 @@ end
 addEventHandler("onPlayerVehicleExit", root, onExitTanker)
 
 function onAttachTrailer( theTanker )
-	if ( getData( theTanker, "job") == 4 ) then
+	if ( getElementData( theTanker, "job") == 4 ) then
 		
 		local thePlayer = getVehicleController( theTanker )
-		if ( getData(thePlayer, "job") == 4) then
+		if ( getElementData(thePlayer, "job") == 4) then
 			
 			local wasDetachedByPlayer = playerDetached[theTanker]
 			
@@ -105,11 +83,11 @@ end
 addEventHandler("onTrailerAttach", root, onAttachTrailer)
 
 function onDetachTrailer( theTanker )
-	if ( getData( theTanker, "job") == 4 ) then
+	if ( getElementData( theTanker, "job") == 4 ) then
 		
 		local thePlayer = getVehicleController( theTanker )
 		if ( thePlayer ) then
-			if ( getData(thePlayer, "job") == 4) then
+			if ( getElementData(thePlayer, "job") == 4) then
 				
 				local wasDetachedByPlayer = playerDetached[theTanker]
 				local trailer = trailers[theTanker]

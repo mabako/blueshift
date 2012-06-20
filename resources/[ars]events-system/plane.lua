@@ -1,14 +1,3 @@
--- ELEMENT DATA
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end
-
 -- EVENT ( 5/3/2012 )
 local planeEntrance = nil
 local planeExit = nil
@@ -42,7 +31,7 @@ function getEventPlane( )
 	local thePlane = nil
 	for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
 		
-		local dbid = tonumber( getData(theVehicle, "dbid") )
+		local dbid = tonumber( getElementData(theVehicle, "dbid") )
 		if ( dbid == 218 ) then
 			
 			thePlane = theVehicle

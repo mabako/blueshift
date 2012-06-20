@@ -1,28 +1,6 @@
 local sql = exports.sql
 local clients = { }
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Admin Commands] ---------
 
 -- /makeinterior 
@@ -39,7 +17,7 @@ end
 
 -- /makeinterior
 function makeInterior( thePlayer, commandName, interiorid, interiorprice, interiortype, interiorrented, ... )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorid) and (...) and (interiorprice) and (interiortype) and (interiorrented) then
 			
@@ -88,28 +66,28 @@ function makeInterior( thePlayer, commandName, interiorid, interiorprice, interi
 							setElementDimension(entranceMarker, entDim)
 							setElementInterior(entranceMarker, entInt)
 							
-							setData(entranceMarker, "name", tostring(interiorname), true)
-							setData(entranceMarker, "owner", -1, true)
-							setData(entranceMarker, "dbid", tonumber(dbid), true)
-							setData(entranceMarker, "type", tonumber(interiortype), true)
-							setData(entranceMarker, "locked", 0, true)
-							setData(entranceMarker, "price", tonumber(interiorprice), true)
-							setData(entranceMarker, "rented", tonumber(interiorrented), true)
-							setData(entranceMarker, "elevator", 0, true)
+							setElementData(entranceMarker, "name", tostring(interiorname), true)
+							setElementData(entranceMarker, "owner", -1, true)
+							setElementData(entranceMarker, "dbid", tonumber(dbid), true)
+							setElementData(entranceMarker, "type", tonumber(interiortype), true)
+							setElementData(entranceMarker, "locked", 0, true)
+							setElementData(entranceMarker, "price", tonumber(interiorprice), true)
+							setElementData(entranceMarker, "rented", tonumber(interiorrented), true)
+							setElementData(entranceMarker, "elevator", 0, true)
 							
 							-- Create inside marker
 							local exitMarker = createMarker(x, y, z-1, "cylinder", 2, r, g, b, 50)
 							setElementDimension(exitMarker, dbid)
 							setElementInterior(exitMarker, int)
 							
-							setData(exitMarker, "name", tostring(interiorname), true)
-							setData(exitMarker, "owner", -1, true)
-							setData(exitMarker, "dbid", tonumber(dbid), true)
-							setData(exitMarker, "type", tonumber(interiortype), true)
-							setData(exitMarker, "locked", 0, true)
-							setData(exitMarker, "price", tonumber(interiorprice), true)
-							setData(exitMarker, "rented", tonumber(interiorrented), true)
-							setData(exitMarker, "elevator", 0, true)
+							setElementData(exitMarker, "name", tostring(interiorname), true)
+							setElementData(exitMarker, "owner", -1, true)
+							setElementData(exitMarker, "dbid", tonumber(dbid), true)
+							setElementData(exitMarker, "type", tonumber(interiortype), true)
+							setElementData(exitMarker, "locked", 0, true)
+							setElementData(exitMarker, "price", tonumber(interiorprice), true)
+							setElementData(exitMarker, "rented", tonumber(interiorrented), true)
+							setElementData(exitMarker, "elevator", 0, true)
 							
 							setElementParent(exitMarker, entranceMarker)
 								
@@ -138,7 +116,7 @@ addCommandHandler("makeinterior", makeInterior, false, false)
 
 -- /delinterior
 function deleteInterior( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if ( interiorID ) then
 			local interiorID = tonumber(interiorID)
@@ -192,14 +170,14 @@ addCommandHandler("delinterior", deleteInterior, false, false)
 	
 -- /nearbyinteriors
 function getNearbyInteriors( thePlayer, commandName )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		local count = 0
 		outputChatBox("~-~-~-~-~-~ Nearby Interiors ~-~-~-~-~-~", thePlayer, 212, 156, 49)
 		
 		for key, value in ipairs (getElementsByType("marker")) do
 			
-			local elevator = tonumber( getData( value, "elevator") )
+			local elevator = tonumber( getElementData( value, "elevator") )
 			if ( elevator == 0 ) then
 				
 				local x, y, z = getElementPosition(value)
@@ -211,7 +189,7 @@ function getNearbyInteriors( thePlayer, commandName )
 				if ( playerInt == interior )and ( playerDim == dimension ) and ( getDistanceBetweenPoints3D( x, y, z, playerX, playerY, playerZ ) <= 10 ) then
 					
 					count = count + 1
-					outputChatBox("#".. tostring(count) .." - ID: ".. tostring(getData(value, "dbid")) ..", Name: ".. tostring(getData(value, "name")) ..", Owner: ".. tostring(getInteriorOwnerName(tonumber(getData(value, "owner")))), thePlayer, 212, 156, 49)
+					outputChatBox("#".. tostring(count) .." - ID: ".. tostring(getElementData(value, "dbid")) ..", Name: ".. tostring(getElementData(value, "name")) ..", Owner: ".. tostring(getInteriorOwnerName(tonumber(getElementData(value, "owner")))), thePlayer, 212, 156, 49)
 				end
 			end	
 		end
@@ -225,7 +203,7 @@ addCommandHandler("nearbyinteriors", getNearbyInteriors, false, false)
 	
 -- /setinteriorname
 function setInteriorName( thePlayer, commandName, interiorID, ... )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (...) then
 			
@@ -239,8 +217,8 @@ function setInteriorName( thePlayer, commandName, interiorID, ... )
 					local parent = getElementParent( value )			-- Find its parent
 					
 					-- Change the values
-					setData(value, "name", tostring(name), true)
-					setData(parent, "name", tostring(name), true)
+					setElementData(value, "name", tostring(name), true)
+					setElementData(parent, "name", tostring(name), true)
 
 					found = true
 				end
@@ -269,7 +247,7 @@ addCommandHandler("setinteriorname", setInteriorName, false, false)
 	
 -- /setinteriorprice
 function setInteriorPrice( thePlayer, commandName, interiorID, price )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (price) then
 			
@@ -282,8 +260,8 @@ function setInteriorPrice( thePlayer, commandName, interiorID, price )
 					local parent = getElementParent( value )			-- Find its parent
 					
 					-- Change the values
-					setData(value, "price", price, true)
-					setData(parent, "price", price, true)
+					setElementData(value, "price", price, true)
+					setElementData(parent, "price", price, true)
 					
 					found = true
 				end
@@ -312,7 +290,7 @@ addCommandHandler("setinteriorprice", setInteriorPrice, false, false)
 	
 -- /setinteriortype
 function setInteriorType( thePlayer, commandName, interiorID, interiorType )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) and (interiorType) then
 			
@@ -328,15 +306,15 @@ function setInteriorType( thePlayer, commandName, interiorID, interiorType )
 						local parent = getElementParent( value )			-- Find its parent
 					
 						-- Change the values
-						setData(value, "type", interiorType, true)
-						setData(parent, "type", interiorType, true)
+						setElementData(value, "type", interiorType, true)
+						setElementData(parent, "type", interiorType, true)
 						
 						if (interiorType == 3) then
-							setData(value, "owner", -1, true)
-							setData(parent, "owner", -1, true)
+							setElementData(value, "owner", -1, true)
+							setElementData(parent, "owner", -1, true)
 						end
 						
-						local elevator = tonumber( getData( parent, "elevator") )
+						local elevator = tonumber( getElementData( parent, "elevator") )
 						if ( elevator == 0 ) then
 							
 							interior = parent
@@ -398,7 +376,7 @@ addCommandHandler("setinteriortype", setInteriorType, false, false)
 
 -- /tptointerior
 function teleportToInterior( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
 		
 		if (interiorID) then
 			
@@ -408,7 +386,7 @@ function teleportToInterior( thePlayer, commandName, interiorID )
 				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
 					
 					local parent = getElementParent( value )			-- Find its parent
-					local elevator = tonumber( getData( value, "elevator" ) )
+					local elevator = tonumber( getElementData( value, "elevator" ) )
 					if ( parent and elevator == 0 ) then
 						
 						if (isPedInVehicle(thePlayer)) then 
@@ -442,7 +420,7 @@ addCommandHandler("tptointerior", teleportToInterior, false, false)
 
 -- /setinteriorid
 function setInteriorID( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorID) then
 			
@@ -457,7 +435,7 @@ function setInteriorID( thePlayer, commandName, interiorID )
 						
 						local parent = getElementParent( value )
 						
-						local elevator = tonumber( getData( parent, "elevator") )
+						local elevator = tonumber( getElementData( parent, "elevator") )
 						if ( elevator == 0 ) then
 							
 							interior = parent
@@ -512,7 +490,7 @@ addCommandHandler("setinteriorid", setInteriorID, false, false)
 	
 -- /sellproperty
 function sellProperty( thePlayer, commandName )
-	if ( (getData(thePlayer, "loggedin") == 1) and (not isPedDead(thePlayer)) ) then
+	if not isPedDead(thePlayer) then
 		if (getElementDimension(thePlayer) ~= 0 and getElementInterior(thePlayer) ~= 0) then
 			
 			local dbid = getElementDimension(thePlayer)
@@ -522,7 +500,7 @@ function sellProperty( thePlayer, commandName )
 				
 					local parent = getElementParent( value )
 						
-					local elevator = tonumber( getData( parent, "elevator") )
+					local elevator = tonumber( getElementData( parent, "elevator") )
 					if ( elevator == 0 ) then
 						
 						interior = parent
@@ -530,14 +508,14 @@ function sellProperty( thePlayer, commandName )
 				end
 			end	
 			
-			local type = tonumber(getData(interior, "type"))
+			local type = tonumber(getElementData(interior, "type"))
 			if (type ~= 3) then
 				
-				local admin = tonumber(getData(thePlayer, "admin"))
-				local adminduty = tonumber(getData(thePlayer, "adminduty")) 
+				local admin = tonumber(getElementData(thePlayer, "admin"))
+				local adminduty = tonumber(getElementData(thePlayer, "adminduty")) 
 			
-				local owner = tonumber(getData(interior, "owner"))
-				if ( (owner == tonumber(getData(thePlayer, "dbid"))) or (admin >= 4 and adminduty == 1) ) then
+				local owner = tonumber(getElementData(interior, "owner"))
+				if ( (owner == tonumber(getElementData(thePlayer, "dbid"))) or (admin >= 4 and adminduty == 1) ) then
 					
 					local update = sql:query("UPDATE `interiors` SET `owner`='-1' WHERE `id`=".. sql:escape_string(dbid) .."")
 					if (update) then
@@ -547,8 +525,8 @@ function sellProperty( thePlayer, commandName )
 								
 								local parent = getElementParent( value )
 								
-								setData(parent, "owner", -1, true)
-								setData(value, "owner", -1, true)
+								setElementData(parent, "owner", -1, true)
+								setElementData(value, "owner", -1, true)
 							end
 						end	
 					
@@ -557,7 +535,7 @@ function sellProperty( thePlayer, commandName )
 						setElementDimension(thePlayer, getElementDimension(interior))
 						setElementInterior(thePlayer, getElementInterior(interior))
 						
-						local price = tonumber(getData(interior, "price"))
+						local price = tonumber(getElementData(interior, "price"))
 						local moneyBack = nil
 						
 						if (admin >= 4 and adminduty == 1) then
@@ -591,7 +569,7 @@ addCommandHandler("sellproperty", sellProperty, false, false)
 
 -- /setinteriorentrance
 function setInteriorEntrance( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
 		
 		if (interiorID) then
 			
@@ -604,7 +582,7 @@ function setInteriorEntrance( thePlayer, commandName, interiorID )
 				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
 					
 					local parent = getElementParent( value )			-- Find its parent
-					local elevator = tonumber( getData( parent, "elevator" ) )
+					local elevator = tonumber( getElementData( parent, "elevator" ) )
 					if ( parent and elevator == 0 ) then
 						
 						local child = getElementChild( parent, 0 )
@@ -647,7 +625,7 @@ addCommandHandler("setinteriorentrance", setInteriorEntrance, false, false)
 
 -- /setinteriorexit
 function setInteriorExit( thePlayer, commandName, interiorID )
-	if ( getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) ) then	
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (interiorID) then
 			
@@ -659,7 +637,7 @@ function setInteriorExit( thePlayer, commandName, interiorID )
 			for key, value in ipairs (getElementsByType("marker")) do
 				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
 					
-					local elevator = tonumber( getData( value, "elevator" ) )
+					local elevator = tonumber( getElementData( value, "elevator" ) )
 					if ( elevator == 0 ) then
 						
 						if ( interiorID ~= dim ) then
@@ -702,22 +680,22 @@ addCommandHandler("setinteriorexit", setInteriorExit, false, false)
 
 -- ENTER/EXIT
 function interactInterior( thePlayer )
-	if ( getData(thePlayer, "loggedin") == 1 ) and (not isPedDead(thePlayer) ) then
+	if not isPedDead(thePlayer) then
 		
 		for key, value in ipairs (getElementsByType("marker")) do
 			
 			if ( getElementDimension(value) == getElementDimension(thePlayer) and isElementWithinMarker( thePlayer, value ) ) then	-- We're At a Marker
 				
-				local dbid = tonumber(getData(value, "dbid"))
-				local elevator = tonumber(getData(value, "elevator"))
+				local dbid = tonumber(getElementData(value, "dbid"))
+				local elevator = tonumber(getElementData(value, "elevator"))
 				
 				local child = getElementChild(value, 0)	-- Does it Have a Child?
 				if (child) then							-- If it Has a Child ( then we're at the entrance )
 					
-					local locked = tonumber(getData(value, "locked"))
-					local price = tonumber(getData(value, "price"))
-					local owner = tonumber(getData(value, "owner"))
-					local type = tonumber(getData(value, "type"))
+					local locked = tonumber(getElementData(value, "locked"))
+					local price = tonumber(getElementData(value, "price"))
+					local owner = tonumber(getElementData(value, "owner"))
+					local type = tonumber(getElementData(value, "type"))
 					
 					if (owner ~= nil) and (price ~= nil) and (locked ~= nil) then 
 						
@@ -754,7 +732,7 @@ function interactInterior( thePlayer )
 								if (money >= price) then
 								
 									buyInterior( thePlayer, money, price, dbid, value )
-									setData(parent, "owner", dbid, true)	
+									setElementData(parent, "owner", dbid, true)	
 								else
 									outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
 								end
@@ -770,7 +748,7 @@ function interactInterior( thePlayer )
 					local parent = getElementParent( value )	-- Find its parent
 					if (parent) then
 						
-						local locked = tonumber(getData(parent, "locked"))
+						local locked = tonumber(getElementData(parent, "locked"))
 						
 						-- ENTER
 						if (locked == 0) then
@@ -808,14 +786,14 @@ end
 	
 -- LOCK/UNLOCK
 function toggleLock( thePlayer )
-	if ( getData(thePlayer, "loggedin") == 1 ) and (not isPedDead(thePlayer) ) then
+	if not isPedDead(thePlayer) then
 		
-		local adminduty = tonumber(getData(thePlayer, "adminduty"))
+		local adminduty = tonumber(getElementData(thePlayer, "adminduty"))
 		
 		for key, interior in ipairs ( getElementsByType("marker") )  do
 			if ( getElementDimension(interior) == getElementDimension(thePlayer) and isElementWithinMarker(thePlayer, interior) ) then	-- We're At a Marker
 				
-				local elevator = tonumber(getData(interior, "elevator"))
+				local elevator = tonumber(getElementData(interior, "elevator"))
 				
 				local child = getElementChild(interior, 0)	-- Does it Have a Child?
 				if (child) then								-- If it Has a Child ( then we're at the entrance )
@@ -825,11 +803,11 @@ function toggleLock( thePlayer )
 					local key, keyid = exports['[ars]inventory-system']:hasItem(thePlayer, 2, dbid )
 					if (key and keyid) or (adminduty == 1) then		-- Do We Have a Key?
 					
-						local locked = tonumber(getData(interior, "locked"))
+						local locked = tonumber(getElementData(interior, "locked"))
 						if (locked == 1) then
 						
-							setData(interior, "locked", 0)
-							setData(child, "locked", 0)
+							setElementData(interior, "locked", 0)
+							setElementData(child, "locked", 0)
 							
 							local update
 							if ( elevator == 0 ) then
@@ -842,8 +820,8 @@ function toggleLock( thePlayer )
 							outputChatBox("You unlocked the door.", thePlayer, 212, 156, 49)
 						elseif (locked == 0) then
 							
-							setData(interior, "locked", 1)
-							setData(child, "locked", 1)
+							setElementData(interior, "locked", 1)
+							setElementData(child, "locked", 1)
 							
 							local update
 							if ( elevator == 0 ) then
@@ -866,11 +844,11 @@ function toggleLock( thePlayer )
 						
 						local dbid = getElementDimension( interior )
 					
-						local locked = tonumber(getData(parent, "locked"))
+						local locked = tonumber(getElementData(parent, "locked"))
 						if (locked == 1) then
 							
-							setData(parent, "locked", 0)
-							setData(interior, "locked", 0)
+							setElementData(parent, "locked", 0)
+							setElementData(interior, "locked", 0)
 							
 							local update
 							if ( elevator == 0 ) then
@@ -883,8 +861,8 @@ function toggleLock( thePlayer )
 							outputChatBox("You unlocked the door.", thePlayer, 212, 156, 49)
 						elseif (locked == 0) then
 							
-							setData(parent, "locked", 1)
-							setData(interior, "locked", 1)
+							setElementData(parent, "locked", 1)
+							setElementData(interior, "locked", 1)
 							
 							local update
 							if ( elevator == 0 ) then
@@ -914,7 +892,7 @@ function buyInterior(thePlayer, money, price, interiorID, interior )
 	local money = tonumber(money)
 	local price = tonumber(price)
 	local interiorID = tonumber(interiorID)
-	local dbid = tonumber(getData(thePlayer, "dbid"))
+	local dbid = tonumber(getElementData(thePlayer, "dbid"))
 	
 	local update = sql:query("UPDATE interiors SET owner=".. sql:escape_string(dbid) .." WHERE id=".. sql:escape_string(interiorID) .."")
 	if (update) then
@@ -943,7 +921,7 @@ function callElevatorReload( interiorID )
 			if ( getElementDimension( value ) == interiorID ) then
 				
 				local parent = getElementParent( value )
-				if ( getData( parent, "elevator" ) == 1 ) then
+				if ( getElementData( parent, "elevator" ) == 1 ) then
 					
 					reloadElevator( parent )
 				end
@@ -956,7 +934,7 @@ end
 	
 -- RELOAD INTERIOR	
 function reloadInterior( interior )
-	local dbid = tonumber(getData(interior, "dbid"))
+	local dbid = tonumber(getElementData(interior, "dbid"))
 
 	destroyElement(interior) -- Child is automatically deleted
 	
@@ -985,28 +963,28 @@ function reloadInterior( interior )
 	setElementDimension(entranceMarker, entDim)
 	setElementInterior(entranceMarker, entInt)
 	
-	setData(entranceMarker, "name", tostring(name), true)
-	setData(entranceMarker, "owner", tonumber(owner), true)
-	setData(entranceMarker, "dbid", tonumber(dbid), true)
-	setData(entranceMarker, "type", tonumber(type), true)
-	setData(entranceMarker, "locked", tonumber(locked), true)
-	setData(entranceMarker, "price", tonumber(price), true)
-	setData(entranceMarker, "rented", tonumber(rented), true)
-	setData(entranceMarker, "elevator", 0, true)
+	setElementData(entranceMarker, "name", tostring(name), true)
+	setElementData(entranceMarker, "owner", tonumber(owner), true)
+	setElementData(entranceMarker, "dbid", tonumber(dbid), true)
+	setElementData(entranceMarker, "type", tonumber(type), true)
+	setElementData(entranceMarker, "locked", tonumber(locked), true)
+	setElementData(entranceMarker, "price", tonumber(price), true)
+	setElementData(entranceMarker, "rented", tonumber(rented), true)
+	setElementData(entranceMarker, "elevator", 0, true)
 	
 	-- Create inside marker
 	local exitMarker = createMarker(x, y, z-1, "cylinder", 2, r, g, b, 50)
 	setElementDimension(exitMarker, dbid)
 	setElementInterior(exitMarker, int)
 	
-	setData(exitMarker, "name", tostring(name), true)
-	setData(exitMarker, "owner", tonumber(owner), true)
-	setData(exitMarker, "dbid", tonumber(dbid), true)
-	setData(exitMarker, "type", tonumber(type), true)
-	setData(exitMarker, "locked", tonumber(locked), true)
-	setData(exitMarker, "price", tonumber(price), true)	
-	setData(exitMarker, "rented", tonumber(rented), true)
-	setData(exitMarker, "elevator", 0, true)
+	setElementData(exitMarker, "name", tostring(name), true)
+	setElementData(exitMarker, "owner", tonumber(owner), true)
+	setElementData(exitMarker, "dbid", tonumber(dbid), true)
+	setElementData(exitMarker, "type", tonumber(type), true)
+	setElementData(exitMarker, "locked", tonumber(locked), true)
+	setElementData(exitMarker, "price", tonumber(price), true)	
+	setElementData(exitMarker, "rented", tonumber(rented), true)
+	setElementData(exitMarker, "elevator", 0, true)
 	
 	setElementParent(exitMarker, entranceMarker)
 	
@@ -1180,28 +1158,28 @@ function loadOneInterior(id, hasCoroutine)
 		setElementDimension(entranceMarker, entDim)
 		setElementInterior(entranceMarker, entInt)
 		
-		setData(entranceMarker, "name", tostring(name), true)
-		setData(entranceMarker, "owner", tonumber(owner), true)
-		setData(entranceMarker, "dbid", tonumber(dbid), true)
-		setData(entranceMarker, "type", tonumber(type), true)
-		setData(entranceMarker, "locked", tonumber(locked), true)
-		setData(entranceMarker, "price", tonumber(price), true)
-		setData(entranceMarker, "rented", tonumber(rented), true)
-		setData(entranceMarker, "elevator", 0, true)
+		setElementData(entranceMarker, "name", tostring(name), true)
+		setElementData(entranceMarker, "owner", tonumber(owner), true)
+		setElementData(entranceMarker, "dbid", tonumber(dbid), true)
+		setElementData(entranceMarker, "type", tonumber(type), true)
+		setElementData(entranceMarker, "locked", tonumber(locked), true)
+		setElementData(entranceMarker, "price", tonumber(price), true)
+		setElementData(entranceMarker, "rented", tonumber(rented), true)
+		setElementData(entranceMarker, "elevator", 0, true)
 		
 		-- Create inside marker
 		local exitMarker = createMarker(x, y, z-1, "cylinder", 2, r, g, b, 50)
 		setElementDimension(exitMarker, dbid)
 		setElementInterior(exitMarker, int)
 		
-		setData(exitMarker, "name", tostring(name), true)
-		setData(exitMarker, "owner", tonumber(owner), true)
-		setData(exitMarker, "dbid", tonumber(dbid), true)
-		setData(exitMarker, "type", tonumber(type), true)
-		setData(exitMarker, "locked", tonumber(locked), true)
-		setData(exitMarker, "price", tonumber(price), true)
-		setData(exitMarker, "rented", tonumber(rented), true)
-		setData(exitMarker, "elevator", 0, true)
+		setElementData(exitMarker, "name", tostring(name), true)
+		setElementData(exitMarker, "owner", tonumber(owner), true)
+		setElementData(exitMarker, "dbid", tonumber(dbid), true)
+		setElementData(exitMarker, "type", tonumber(type), true)
+		setElementData(exitMarker, "locked", tonumber(locked), true)
+		setElementData(exitMarker, "price", tonumber(price), true)
+		setElementData(exitMarker, "rented", tonumber(rented), true)
+		setElementData(exitMarker, "elevator", 0, true)
 		
 		setElementParent(exitMarker, entranceMarker)
 	end	

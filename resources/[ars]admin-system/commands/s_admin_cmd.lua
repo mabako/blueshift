@@ -42,54 +42,18 @@
 
 local sql = exports.sql
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- /freconnect
 function forceReconnect( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				redirectPlayer(foundPlayer)
+				outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." was force reconnected.", thePlayer, 212, 156, 49)
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					redirectPlayer(foundPlayer, "91.215.156.68", 22003)
-					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." was force reconnected.", thePlayer, 212, 156, 49)
-					
-					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." force reconnect ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-				end	
+				exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." force reconnect ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID]", thePlayer, 212, 156, 49)
@@ -100,104 +64,89 @@ addCommandHandler("freconnect", forceReconnect, false, false)
 
 -- /tpto
 function teleportTo( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+					if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
+						
+						local x, y, z = getElementPosition(foundPlayer)
+						local dimension = getElementDimension(foundPlayer)
+						local interior = getElementInterior(foundPlayer)
+						local rotation = getPedRotation(foundPlayer)
+						
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
+						
+						fadeCamera(thePlayer, false, 0)
+						
+						setElementPosition(thePlayer, x, y, z)
+						setElementDimension(thePlayer, dimension)
+						setElementInterior(thePlayer, interior)
+						
+						fadeCamera(thePlayer, true, 1)
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+					elseif isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
+						
+						local vehicle = getPedOccupiedVehicle(foundPlayer)
+						fadeCamera(thePlayer, false, 0)
+						
+						warpPedIntoVehicle(thePlayer, vehicle, 1)
+						
+						fadeCamera(thePlayer, true, 1)
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					elseif not isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then
+						
+						local vehicle = getPedOccupiedVehicle(thePlayer)
+						local x, y, z = getElementPosition(foundPlayer)
+						local dimension = getElementDimension(foundPlayer)
+						local interior = getElementInterior(foundPlayer)
+						local rotation = getPedRotation(foundPlayer)
+						
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
+						
+						fadeCamera(thePlayer, false, 0)
+						
+						removePedFromVehicle(thePlayer, vehicle)
+						setElementPosition(thePlayer, x, y, z)
+						setElementDimension(thePlayer, dimension)
+						setElementInterior(thePlayer, interior)
+						
+						fadeCamera(thePlayer, true, 1)
 					
-						if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
-							
-							local x, y, z = getElementPosition(foundPlayer)
-							local dimension = getElementDimension(foundPlayer)
-							local interior = getElementInterior(foundPlayer)
-							local rotation = getPedRotation(foundPlayer)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
-							
-							fadeCamera(thePlayer, false, 0)
-							
-							setElementPosition(thePlayer, x, y, z)
-							setElementDimension(thePlayer, dimension)
-							setElementInterior(thePlayer, interior)
-							
-							fadeCamera(thePlayer, true, 1)
+					elseif isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then 
+					
+						local _vehicle = getPedOccupiedVehicle(thePlayer)
 						
-						elseif isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
-							
-							local vehicle = getPedOccupiedVehicle(foundPlayer)
-							fadeCamera(thePlayer, false, 0)
-							
-							warpPedIntoVehicle(thePlayer, vehicle, 1)
-							
-							fadeCamera(thePlayer, true, 1)
+						local vehicle = getPedOccupiedVehicle(foundPlayer)
+						local x, y, z = getElementPosition(vehicle)
+						local dimension = getElementDimension(vehicle)
+						local interior = getElementInterior(vehicle)
+						local _, _, rotation = getVehicleRotation(vehicle)
 						
-						elseif not isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then
-							
-							local vehicle = getPedOccupiedVehicle(thePlayer)
-							local x, y, z = getElementPosition(foundPlayer)
-							local dimension = getElementDimension(foundPlayer)
-							local interior = getElementInterior(foundPlayer)
-							local rotation = getPedRotation(foundPlayer)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
-							
-							fadeCamera(thePlayer, false, 0)
-							
-							removePedFromVehicle(thePlayer, vehicle)
-							setElementPosition(thePlayer, x, y, z)
-							setElementDimension(thePlayer, dimension)
-							setElementInterior(thePlayer, interior)
-							
-							fadeCamera(thePlayer, true, 1)
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 3 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 3 )
 						
-						elseif isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then 
+						fadeCamera(thePlayer, false, 0)
 						
-							local _vehicle = getPedOccupiedVehicle(thePlayer)
-							
-							local vehicle = getPedOccupiedVehicle(foundPlayer)
-							local x, y, z = getElementPosition(vehicle)
-							local dimension = getElementDimension(vehicle)
-							local interior = getElementInterior(vehicle)
-							local _, _, rotation = getVehicleRotation(vehicle)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 3 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 3 )
-							
-							fadeCamera(thePlayer, false, 0)
-							
-							setElementPosition(_vehicle, x, y, z)
-							setElementDimension(_vehicle, dimension)
-							setElementInterior(_vehicle, interior)
-							setVehicleRotation(_vehicle, 0, 0, rotation)
-							
-							fadeCamera(thePlayer, true, 1)
-							
-						end
+						setElementPosition(_vehicle, x, y, z)
+						setElementDimension(_vehicle, dimension)
+						setElementInterior(_vehicle, interior)
+						setVehicleRotation(_vehicle, 0, 0, rotation)
 						
-						outputChatBox("Administrator ".. getPlayerName(thePlayer):gsub("_", " ") .." has teleported to you.", foundPlayer, 212, 156, 49)
-						outputChatBox("You teleported to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						fadeCamera(thePlayer, true, 1)
+						
 					end
+					
+					outputChatBox("Administrator ".. getPlayerName(thePlayer):gsub("_", " ") .." has teleported to you.", foundPlayer, 212, 156, 49)
+					outputChatBox("You teleported to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -209,105 +158,90 @@ addCommandHandler("tpto", teleportTo, false, false)
 	
 -- /tphere
 function teleportHere( thePlayer, commandName, partialPlayerName )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
+		
+					if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
+						
+						local x, y, z = getElementPosition(thePlayer)
+						local dimension = getElementDimension(thePlayer)
+						local interior = getElementInterior(thePlayer)
+						local rotation = getPedRotation(thePlayer)
+						
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
+						
+						fadeCamera(foundPlayer, false, 0)
+						
+						setElementPosition(foundPlayer, x, y, z)
+						setElementDimension(foundPlayer, dimension)
+						setElementInterior(foundPlayer, interior)
+						
+						fadeCamera(foundPlayer, true, 1)
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+					elseif isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
+						
+						local vehicle = getPedOccupiedVehicle(foundPlayer)
+						local x, y, z = getElementPosition(thePlayer)
+						local dimension = getElementDimension(thePlayer)
+						local interior = getElementInterior(thePlayer)
+						local rotation = getPedRotation(thePlayer)
+						
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
+						
+						fadeCamera(foundPlayer, false, 0)
+						
+						removePedFromVehicle(foundPlayer, vehicle)
+						setElementPosition(foundPlayer, x, y, z)
+						setElementDimension(foundPlayer, dimension)
+						setElementInterior(foundPlayer, interior)
+						
+						fadeCamera(foundPlayer, true, 1)
 					
-					if getData(foundPlayer, "loggedin") == 1 then
-			
-						if not isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
-							
-							local x, y, z = getElementPosition(thePlayer)
-							local dimension = getElementDimension(thePlayer)
-							local interior = getElementInterior(thePlayer)
-							local rotation = getPedRotation(thePlayer)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
-							
-							fadeCamera(foundPlayer, false, 0)
-							
-							setElementPosition(foundPlayer, x, y, z)
-							setElementDimension(foundPlayer, dimension)
-							setElementInterior(foundPlayer, interior)
-							
-							fadeCamera(foundPlayer, true, 1)
+					elseif not isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then
 						
-						elseif isPedInVehicle(foundPlayer) and not isPedInVehicle(thePlayer) then 
-							
-							local vehicle = getPedOccupiedVehicle(foundPlayer)
-							local x, y, z = getElementPosition(thePlayer)
-							local dimension = getElementDimension(thePlayer)
-							local interior = getElementInterior(thePlayer)
-							local rotation = getPedRotation(thePlayer)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
-							
-							fadeCamera(foundPlayer, false, 0)
-							
-							removePedFromVehicle(foundPlayer, vehicle)
-							setElementPosition(foundPlayer, x, y, z)
-							setElementDimension(foundPlayer, dimension)
-							setElementInterior(foundPlayer, interior)
-							
-							fadeCamera(foundPlayer, true, 1)
+						local vehicle = getPedOccupiedVehicle(thePlayer)
 						
-						elseif not isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then
-							
-							local vehicle = getPedOccupiedVehicle(thePlayer)
-							
-							fadeCamera(foundPlayer, false, 0)
-							
-							warpPedIntoVehicle(foundPlayer, vehicle, 1)
-							
-							fadeCamera(foundPlayer, true, 1)
+						fadeCamera(foundPlayer, false, 0)
 						
-						elseif isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then 
+						warpPedIntoVehicle(foundPlayer, vehicle, 1)
 						
-							local _vehicle = getPedOccupiedVehicle(thePlayer)
-							
-							local vehicle = getPedOccupiedVehicle(foundPlayer)
-							local x, y, z = getElementPosition(_vehicle)
-							local dimension = getElementDimension(_vehicle)
-							local interior = getElementInterior(_vehicle)
-							local _, _, rotation = getVehicleRotation(_vehicle)
-							
-							x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 3 )
-							y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 3 )
-							
-							fadeCamera(foundPlayer, false, 0)
-							
-							setElementPosition(vehicle, x, y, z)
-							setElementDimension(vehicle, dimension)
-							setElementInterior(vehicle, interior)
-							setVehicleRotation(vehicle, 0, 0, rotation)
-							
-							fadeCamera(foundPlayer, true, 1)
-							
-						end
+						fadeCamera(foundPlayer, true, 1)
+					
+					elseif isPedInVehicle(foundPlayer) and isPedInVehicle(thePlayer) then 
+					
+						local _vehicle = getPedOccupiedVehicle(thePlayer)
 						
-						outputChatBox("Administrator ".. getPlayerName(thePlayer):gsub("_", " ") .." has teleported you to them.", foundPlayer, 212, 156, 49)
-						outputChatBox("You teleported ".. getPlayerName(foundPlayer):gsub("_", " ") .." to you.", thePlayer, 212, 156, 49) 
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						local vehicle = getPedOccupiedVehicle(foundPlayer)
+						local x, y, z = getElementPosition(_vehicle)
+						local dimension = getElementDimension(_vehicle)
+						local interior = getElementInterior(_vehicle)
+						local _, _, rotation = getVehicleRotation(_vehicle)
+						
+						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 3 )
+						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 3 )
+						
+						fadeCamera(foundPlayer, false, 0)
+						
+						setElementPosition(vehicle, x, y, z)
+						setElementDimension(vehicle, dimension)
+						setElementInterior(vehicle, interior)
+						setVehicleRotation(vehicle, 0, 0, rotation)
+						
+						fadeCamera(foundPlayer, true, 1)
+						
 					end
+					
+					outputChatBox("Administrator ".. getPlayerName(thePlayer):gsub("_", " ") .." has teleported you to them.", foundPlayer, 212, 156, 49)
+					outputChatBox("You teleported ".. getPlayerName(foundPlayer):gsub("_", " ") .." to you.", thePlayer, 212, 156, 49) 
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -319,13 +253,13 @@ addCommandHandler("tphere", teleportHere, false, false)
 
 -- /send [firstplayer] to [secondplayer]
 function sendPlayerTo( thePlayer, commandName, partialPlayerNameFirst, theSpecialWord, partialPlayerNameSecond )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerNameFirst) and theSpecialWord == "to" and (partialPlayerNameSecond) then
 			
 			local x, y, z, dimension, interior, rotation
 			local title
-			if getData(thePlayer, "hiddenadmin") == 0 then
+			if getElementData(thePlayer, "hiddenadmin") == 0 then
 		
 				title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 			else
@@ -336,76 +270,45 @@ function sendPlayerTo( thePlayer, commandName, partialPlayerNameFirst, theSpecia
 			local secondPlayerName
 			local secondPlayer
 				
-			local playersSecond = exports['[ars]global']:findPlayer( thePlayer, partialPlayerNameSecond )
-			
-			if #playersSecond == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #playersSecond > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayerSecond = exports['[ars]global']:findPlayer( thePlayer, partialPlayerNameSecond )
+			if foundPlayerSecond then
+				secondPlayerName = getPlayerName(foundPlayerSecond)
+				secondPlayer = foundPlayerSecond
 				
-				local count = 0
-				for k, foundPlayerSecond in ipairs (playersSecond) do
+				if getElementData(foundPlayerSecond, "loggedin") then
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayerSecond, "playerid") ..") ".. getPlayerName(foundPlayerSecond):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayerSecond in ipairs (playersSecond) do
-					
-					secondPlayerName = getPlayerName(foundPlayerSecond)
-					secondPlayer = foundPlayerSecond
-					
-					if getData(foundPlayerSecond, "loggedin") == 1 then
+					if isPedInVehicle(foundPlayerSecond) then
 						
-						if isPedInVehicle(foundPlayerSecond) then
-							
-							removePedFromVehicle(foundPlayerSecond)
-						end
-						
-						x, y, z = getElementPosition(foundPlayerSecond)
-						dimension = getElementDimension(foundPlayerSecond)
-						interior = getElementInterior(foundPlayerSecond)
-						rotation = getPedRotation(foundPlayerSecond)
-								
-						x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
-						y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
-					else
-						outputChatBox(getPlayerName(foundPlayerSecond):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						removePedFromVehicle(foundPlayerSecond)
 					end
+					
+					x, y, z = getElementPosition(foundPlayerSecond)
+					dimension = getElementDimension(foundPlayerSecond)
+					interior = getElementInterior(foundPlayerSecond)
+					rotation = getPedRotation(foundPlayerSecond)
+							
+					x = x + ( ( math.cos ( math.rad ( rotation ) ) ) * 2 )
+					y = y + ( ( math.sin ( math.rad ( rotation ) ) ) * 2 )
+				else
+					outputChatBox(getPlayerName(foundPlayerSecond):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end	
 							
-			
-			local playersFirst = exports['[ars]global']:findPlayer( thePlayer, partialPlayerNameFirst )
-			
-			if #playersFirst == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #playersFirst > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayerFirst in ipairs (playersFirst) do
+			local foundPlayerFirst = exports['[ars]global']:findPlayer( thePlayer, partialPlayerNameFirst )
+			if foundPlayerFirst then
+				if isPedInVehicle(foundPlayerFirst) then
 					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayerFirst, "playerid") ..") ".. getPlayerName(foundPlayerFirst):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayerFirst in ipairs (playersFirst) do
-					
-					if isPedInVehicle(foundPlayerFirst) then
-						
-						removePedFromVehicle(foundPlayerFirst)
-					end
+					removePedFromVehicle(foundPlayerFirst)
+				end
 
-					setElementPosition(foundPlayerFirst, x, y, z)
-					setElementDimension(foundPlayerFirst, dimension)
-					setElementInterior(foundPlayerFirst, interior)
-					
-					outputChatBox("You teleported ".. getPlayerName(foundPlayerFirst):gsub("_", " ") .." to ".. secondPlayerName:gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-					outputChatBox("You were teleported to ".. secondPlayerName:gsub("_", " ") .." by ".. title ..".", foundPlayerFirst, 212, 156, 49)
-					outputChatBox(getPlayerName(foundPlayerFirst):gsub("_", " ") .." has been teleported to you by ".. title ..".", secondPlayer, 212, 156, 49)
-				end					
-			end
+				setElementPosition(foundPlayerFirst, x, y, z)
+				setElementDimension(foundPlayerFirst, dimension)
+				setElementInterior(foundPlayerFirst, interior)
+				
+				outputChatBox("You teleported ".. getPlayerName(foundPlayerFirst):gsub("_", " ") .." to ".. secondPlayerName:gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				outputChatBox("You were teleported to ".. secondPlayerName:gsub("_", " ") .." by ".. title ..".", foundPlayerFirst, 212, 156, 49)
+				outputChatBox(getPlayerName(foundPlayerFirst):gsub("_", " ") .." has been teleported to you by ".. title ..".", secondPlayer, 212, 156, 49)
+			end					
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [First Player Name / ID] to [Second Player Name / ID]", thePlayer, 212, 156, 49)
 		end
@@ -429,7 +332,7 @@ local places = {
 	
 -- /tptoplace
 function teleportToPlace( thePlayer, commandName, placeName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if placeName then
 			
@@ -454,45 +357,31 @@ addCommandHandler("tptoplace", teleportToPlace, false, false)
 	
 -- /pmute
 function mutePlayer(thePlayer, commandName, partialPlayerName )	
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if getElementData(foundPlayer, "muted") == 0 then
 						
-						if getData(foundPlayer, "muted") == 0 then
-							
-							setData(foundPlayer, "muted", 1, true)
-							outputChatBox("You were muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
-							outputChatBox("You muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-						elseif getData(foundPlayer, "muted") == 1 then
-							
-							setData(foundPlayer, "muted", 0, true)
-							outputChatBox("You were un-muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
-							outputChatBox("You un-muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." un-muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-						end
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end	
-				end
+						setElementData(foundPlayer, "muted", 1, true)
+						outputChatBox("You were muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
+						outputChatBox("You muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+					elseif getElementData(foundPlayer, "muted") == 1 then
+						
+						setElementData(foundPlayer, "muted", 0, true)
+						outputChatBox("You were un-muted by Administrator ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 212, 156, 49)
+						outputChatBox("You un-muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." un-muted ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+				end	
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ]", thePlayer, 212, 156, 49)	
@@ -503,61 +392,48 @@ addCommandHandler("pmute", mutePlayer, false, false)
 
 -- /givegun
 function giveGun( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
 			
 			local args = {...}
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
+					
+					local weapon = tonumber(args[1])
+					local ammo = #args ~= 1 and tonumber(args[#args]) or 1
 				
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if not weapon then 
+						local weaponEnd = #args
+						repeat
+							weapon = getWeaponIDFromName(table.concat(args, " ", 1, weaponEnd))
+							weaponEnd = weaponEnd - 1
+						until weapon or weaponEnd == -1
 						
-						local weapon = tonumber(args[1])
-						local ammo = #args ~= 1 and tonumber(args[#args]) or 1
-					
-						if not weapon then 
-							local weaponEnd = #args
-							repeat
-								weapon = getWeaponIDFromName(table.concat(args, " ", 1, weaponEnd))
-								weaponEnd = weaponEnd - 1
-							until weapon or weaponEnd == -1
-							
-							if weaponEnd == -1 then
-								outputChatBox("Invalid Weapon Name.", thePlayer, 255, 0, 0)
-								return
-							elseif weaponEnd == #args - 1 then
-								ammo = 1
-							end
-					
-						elseif not getWeaponNameFromID(weapon) then
-							outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
+						if weaponEnd == -1 then
+							outputChatBox("Invalid Weapon Name.", thePlayer, 255, 0, 0)
+							return
+						elseif weaponEnd == #args - 1 then
+							ammo = 1
 						end
-					
-						takeWeapon(foundPlayer, weapon)
-						local give = giveWeapon(foundPlayer, weapon, ammo, true)
-					
-						if not (give) then
-							outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
-						else
-							outputChatBox("You gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. getWeaponNameFromID(weapon) .. " with " .. ammo .. " Ammo.", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. getWeaponNameFromID(weapon) .. " with " .. ammo .. " Ammo.")
-						end
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+				
+					elseif not getWeaponNameFromID(weapon) then
+						outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
 					end
+				
+					takeWeapon(foundPlayer, weapon)
+					local give = giveWeapon(foundPlayer, weapon, ammo, true)
+				
+					if not (give) then
+						outputChatBox("Invalid Weapon ID.", thePlayer, 255, 0, 0)
+					else
+						outputChatBox("You gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. getWeaponNameFromID(weapon) .. " with " .. ammo .. " Ammo.", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. getWeaponNameFromID(weapon) .. " with " .. ammo .. " Ammo.")
+					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -569,32 +445,19 @@ addCommandHandler("givegun", giveGun, false, false)
 	
 -- /disarm	
 function disarmPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 				
-				for k, foundPlayer in ipairs (players) do
+					takeAllWeapons(foundPlayer)
+					outputChatBox("You disarmed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
 					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					if getData(foundPlayer, "loggedin") == 1 then
-					
-						takeAllWeapons(foundPlayer)
-						outputChatBox("You disarmed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." disarmed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." disarmed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -606,45 +469,31 @@ addCommandHandler("disarm", disarmPlayer, false, false)
 
 -- /sethp
 function setHealth( thePlayer, commandName, partialPlayerName, health )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (health) then
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local health = tonumber(health)
+				if (health > 100) then
+					health = 100
+				elseif (health < 0) then
+					health = 0
+				end
 				
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					toggleControl( thePlayer, "sprint", true )
-					toggleControl( thePlayer, "jump", true )
-					
-					local health = tonumber(health)
-					if (health > 100) then
-						health = 100
-					elseif (health < 0) then
-						health = 0
-					end
-					
-					if getData(foundPlayer, "loggedin") == 1 then
-					
-						local success = setElementHealth(foundPlayer, health)
-						if (success) then
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s health was set to ".. tostring(health) ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s health to ".. tostring(health) ..".")
-						else
-							outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s health to ".. tostring(health) ..".", thePlayer, 255, 0, 0)
-						end
+				if getElementData(foundPlayer, "loggedin") then
+					local success = setElementHealth(foundPlayer, health)
+					if (success) then
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s health was set to ".. tostring(health) ..".", thePlayer, 212, 156, 49)
+						toggleControl( foundPlayer, "sprint", true )
+						toggleControl( foundPlayer, "jump", true )
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s health to ".. tostring(health) ..".")
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s health to ".. tostring(health) ..".", thePlayer, 255, 0, 0)
 					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -656,43 +505,30 @@ addCommandHandler("sethp", setHealth, false, false)
 
 -- /setarmor
 function setArmor( thePlayer, commandName, partialPlayerName, armor )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (armor) then
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local armor = tonumber(armor)
+				if (armor > 100) then
+					armor = 100
+				elseif (armor < 0) then
+					armor = 0
+				end
 				
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					local armor = tonumber(armor)
-					if (armor > 100) then
-						armor = 100
-					elseif (armor < 0) then
-						armor = 0
-					end
-					
-					if getData(foundPlayer, "loggedin") == 1 then
-					
-						local success = setPedArmor(foundPlayer, armor)
-						if (success) then
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s armor was set to ".. tostring(armor) ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s armor to ".. tostring(armor) ..".")
-						else
-							outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s armor to ".. tostring(armor) ..".", thePlayer, 255, 0, 0)
-						end
+				if getElementData(foundPlayer, "loggedin") then
+				
+					local success = setPedArmor(foundPlayer, armor)
+					if (success) then
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s armor was set to ".. tostring(armor) ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s armor to ".. tostring(armor) ..".")
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						outputChatBox("Failed to set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s armor to ".. tostring(armor) ..".", thePlayer, 255, 0, 0)
 					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -704,34 +540,21 @@ addCommandHandler("setarmor", setArmor, false, false)
 
 -- /setskin
 function setSkin( thePlayer, commandName, partialPlayerName, skin )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (skin) then
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 				
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					if getData(foundPlayer, "loggedin") == 1 then
-					
-						local success = setElementModel(foundPlayer, skin)
-						if (success) then
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s skin was set to ".. tostring(skin) ..".", thePlayer, 212, 156, 49)
-						else
-							outputChatBox("Invalid skin ID.", thePlayer, 255, 0, 0)
-						end
+					local success = setElementModel(foundPlayer, skin)
+					if (success) then
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s skin was set to ".. tostring(skin) ..".", thePlayer, 212, 156, 49)
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+						outputChatBox("Invalid skin ID.", thePlayer, 255, 0, 0)
 					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -743,62 +566,47 @@ addCommandHandler("setskin", setSkin, false, false)
 	
 -- /changename		
 function changePlayerName( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
 			
 			local newName = table.concat({...}, " ")
-			
-			local playersBySameNick = exports['[ars]global']:findPlayer(thePlayer, newName)
-			
-			if #playersBySameNick > 1 then
-				outputChatBox("A player with the name ".. newName .." already exists.", thePlayer, 255, 0, 0)
-			else
-				
-				local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-					for k, foundPlayer in ipairs (players) do
-					
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local playerWithSameNick = getPlayerFromName(newName:gsub(" ", "_"))
+				if playerWithSameNick and playerWithSameNick ~= foundPlayer then
+					outputChatBox("A player with the name ".. newName .." already exists.", thePlayer, 255, 0, 0)
 				else
-					for k, foundPlayer in ipairs (players) do
-					
-						if getData(foundPlayer, "loggedin") == 1 then
-							
-							local formerName = getPlayerName(foundPlayer):gsub("_", " ")
-							local dbid = getData(foundPlayer, "dbid")
-							
-							local result = sql:query_fetch_assoc("SELECT `charactername` FROM `characters` WHERE `charactername`='" .. sql:escape_string(newName) .. "' AND id !=" .. sql:escape_string(dbid) .."")
-							if ( not result ) then
-								
-								local name = setPlayerName(foundPlayer, tostring(newName):gsub(" ", "_"))
+					if getElementData(foundPlayer, "loggedin") then
 						
-								if (name) then
-									if getPlayerNametagText(foundPlayer) ~= "Unknown Person" then
-										setPlayerNametagText(foundPlayer, tostring(newName))
-									end
+						local formerName = getPlayerName(foundPlayer):gsub("_", " ")
+						local dbid = getElementData(foundPlayer, "dbid")
+						
+						local result = sql:query_fetch_assoc("SELECT `charactername` FROM `characters` WHERE `charactername`='" .. sql:escape_string(newName) .. "' AND id !=" .. sql:escape_string(dbid) .."")
+						if ( not result ) then
 							
-									local update = sql:query("UPDATE `characters` SET `charactername`='" .. sql:escape_string(newName) .. "' WHERE `id` = " .. sql:escape_string(dbid))
-									if ( update ) then
-									
-										outputChatBox("You changed ".. formerName .."'s name to ".. newName ..".", thePlayer, 212, 156, 49)
-										
-										exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." changed ".. formerName .."'s name to ".. newName ..".")
-									end	
-									
-									sql:free_result(update)
+							local name = setPlayerName(foundPlayer, tostring(newName):gsub(" ", "_"))
+					
+							if (name) then
+								if getPlayerNametagText(foundPlayer) ~= "Unknown Person" then
+									setPlayerNametagText(foundPlayer, tostring(newName))
 								end
-							else
-								outputChatBox("A player with the name ".. newName .." already exists.", thePlayer, 255, 0, 0)
+						
+								local update = sql:query("UPDATE `characters` SET `charactername`='" .. sql:escape_string(newName) .. "' WHERE `id` = " .. sql:escape_string(dbid))
+								if ( update ) then
+								
+									outputChatBox("You changed ".. formerName .."'s name to ".. newName ..".", thePlayer, 212, 156, 49)
+									
+									exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." changed ".. formerName .."'s name to ".. newName ..".")
+								end	
+								
+								sql:free_result(update)
 							end
 						else
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
+							outputChatBox("A player with the name ".. newName .." already exists.", thePlayer, 255, 0, 0)
 						end
+					else
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 					end
 				end
 			end
@@ -811,24 +619,24 @@ addCommandHandler("changename", changePlayerName, false, false)
 
 -- /hideadmin
 function hideAdmin( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
-		local state = tonumber( getData(thePlayer, "hiddenadmin") )
+		local state = tonumber( getElementData(thePlayer, "hiddenadmin") )
 		
 		if ( state == 0 ) then
 		
-			setData( thePlayer, "hiddenadmin", 1, true)
+			setElementData( thePlayer, "hiddenadmin", 1, true)
 			outputChatBox("You are now hidden.", thePlayer, 212, 156, 49)
 	
 		elseif ( state == 1 ) then
 				
-			setData( thePlayer, "hiddenadmin", 0, true)
+			setElementData( thePlayer, "hiddenadmin", 0, true)
 			outputChatBox("You are no longer hidden.", thePlayer, 212, 156, 49)
 		end
 			
 		exports['[ars]global']:updateNametagColor(thePlayer)
 		
-		local update = sql:query("UPDATE accounts SET hiddenadmin=" .. sql:escape_string(getData(thePlayer, "hiddenadmin")) .. " WHERE id =" .. sql:escape_string(getData(thePlayer, "accountid")) )
+		local update = sql:query("UPDATE accounts SET hiddenadmin=" .. sql:escape_string(getElementData(thePlayer, "hiddenadmin")) .. " WHERE id =" .. sql:escape_string(getElementData(thePlayer, "accountid")) )
 		sql:free_result(update)
 	end
 end
@@ -836,22 +644,22 @@ addCommandHandler("hideadmin", hideAdmin, false, false)
 
 -- /adminduty
 function toggleDuty( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local duty = getData(thePlayer, "adminduty")
+		local duty = getElementData(thePlayer, "adminduty")
 		if duty == 1 then
 			
-			setData(thePlayer, "adminduty", 0, true)
+			setElementData(thePlayer, "adminduty", 0, true)
 			outputChatBox("You are now off duty.", thePlayer, 212, 156, 49)
 		elseif duty == 0 then
 			
-			setData(thePlayer, "adminduty", 1, true)
+			setElementData(thePlayer, "adminduty", 1, true)
 			outputChatBox("You are now on duty.", thePlayer, 212, 156, 49)
 		end	
 		
 		exports['[ars]global']:updateNametagColor(thePlayer)
 		
-		local update = sql:query("UPDATE accounts SET adminduty=" .. sql:escape_string(getData(thePlayer, "adminduty")) .. " WHERE id = " .. sql:escape_string(getData(thePlayer, "dbid")) )
+		local update = sql:query("UPDATE accounts SET adminduty=" .. sql:escape_string(getElementData(thePlayer, "adminduty")) .. " WHERE id = " .. sql:escape_string(getElementData(thePlayer, "dbid")) )
 		sql:free_result(update)
 	end	
 end	
@@ -859,36 +667,24 @@ addCommandHandler("adminduty", toggleDuty, false, false)
 
 -- /slap			
 function slapPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "loggedin") == 1 then
-						
-						local x, y, z = getElementPosition(foundPlayer)
-						setElementPosition(foundPlayer, x, y, z + 10)
-						
-						outputChatBox("You slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end	
+					local x, y, z = getElementPosition(foundPlayer)
+					setElementPosition(foundPlayer, x, y, z + 10)
+					
+					outputChatBox("You slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+					
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end	
-			end
+			end	
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID]", thePlayer, 212, 156, 49)
 		end		
@@ -898,36 +694,24 @@ addCommandHandler("slap", slapPlayer, false, false)
 
 -- /hugeslap			
 function hugeslapPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "loggedin") == 1 then
-						
-						local x, y, z = getElementPosition(foundPlayer)
-						setElementPosition(foundPlayer, x, y, z + 20)
-						
-						outputChatBox("You huge slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." huge slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end	
+					local x, y, z = getElementPosition(foundPlayer)
+					setElementPosition(foundPlayer, x, y, z + 20)
+					
+					outputChatBox("You huge slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+					
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." huge slapped ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end	
-			end
+			end	
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID]", thePlayer, 212, 156, 49)
 		end		
@@ -938,90 +722,76 @@ addCommandHandler("hugeslap", hugeslapPlayer, false, false)
 local watching = { }
 -- /watch
 function watchPlayer(thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
+					if foundPlayer ~= thePlayer then 
+						
+						setElementAlpha(thePlayer, 255)
+						setElementData( thePlayer, "invisible", 1, true)
+						
+						setElementData(thePlayer, "nametag", 0, true)
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+						local x, y, z = getElementPosition(thePlayer)
+						local rot = getPedRotation(thePlayer)
+						local dimension = getElementDimension(thePlayer)
+						local interior = getElementInterior(thePlayer)
 						
-						if not (foundPlayer == thePlayer) then 
+						setElementData( thePlayer, "reconx", x, true)
+						setElementData( thePlayer, "recony", y, true)
+						setElementData( thePlayer, "reconz", z, true)
+						setElementData( thePlayer, "reconrot", rot, true)
+						setElementData( thePlayer, "recondimension", dimension, true)
+						setElementData( thePlayer, "reconinterior", interior, true)
 							
-							setElementAlpha(thePlayer, 255)
-							setData( thePlayer, "invisible", 1, true)
-							
-							setData(thePlayer, "nametag", 0, true)
+						setPedWeaponSlot(thePlayer, 0)
 						
-							local x, y, z = getElementPosition(thePlayer)
-							local rot = getPedRotation(thePlayer)
-							local dimension = getElementDimension(thePlayer)
-							local interior = getElementInterior(thePlayer)
+						local playerdimension = getElementDimension(foundPlayer)
+						local playerinterior = getElementInterior(foundPlayer)
+					
+						setElementDimension(thePlayer, playerdimension)
+						setElementInterior(thePlayer, playerinterior)
+						setCameraInterior(thePlayer, playerinterior)
+					
+						local x, y, z = getElementPosition(foundPlayer)
+						setElementPosition(thePlayer, x - 10, y - 10, z - 5)
+						local success = attachElements(thePlayer, foundPlayer, -10, -10, -5)
+						if not (success) then
 							
-							setData( thePlayer, "reconx", x, true)
-							setData( thePlayer, "recony", y, true)
-							setData( thePlayer, "reconz", z, true)
-							setData( thePlayer, "reconrot", rot, true)
-							setData( thePlayer, "recondimension", dimension, true)
-							setData( thePlayer, "reconinterior", interior, true)
-								
-							setPedWeaponSlot(thePlayer, 0)
-							
-							local playerdimension = getElementDimension(foundPlayer)
-							local playerinterior = getElementInterior(foundPlayer)
-						
-							setElementDimension(thePlayer, playerdimension)
-							setElementInterior(thePlayer, playerinterior)
-							setCameraInterior(thePlayer, playerinterior)
-						
-							local x, y, z = getElementPosition(foundPlayer)
-							setElementPosition(thePlayer, x - 10, y - 10, z - 5)
-							local success = attachElements(thePlayer, foundPlayer, -10, -10, -5)
+							success = attachElements(thePlayer, foundPlayer, -5, -5, -5)
 							if not (success) then
 								
-								success = attachElements(thePlayer, foundPlayer, -5, -5, -5)
-								if not (success) then
-									
-									success = attachElements(thePlayer, foundPlayer, 5, 5, -5)
-								end
+								success = attachElements(thePlayer, foundPlayer, 5, 5, -5)
 							end
-						
-							if not (success) then
-								outputChatBox("Failed to watch ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 255, 0, 0)
-							else
-								setCameraTarget(thePlayer, foundPlayer)
-								
-								watching[thePlayer] = foundPlayer
-								outputChatBox("You are now watching " .. getPlayerName(foundPlayer):gsub("_", " ") .. ".", thePlayer, 212, 156, 49)
-							end	
-						else
-							outputChatBox("You cannot watch yourself.", thePlayer, 255, 0, 0)	
 						end
+					
+						if not (success) then
+							outputChatBox("Failed to watch ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 255, 0, 0)
+						else
+							setCameraTarget(thePlayer, foundPlayer)
+							
+							watching[thePlayer] = foundPlayer
+							outputChatBox("You are now watching " .. getPlayerName(foundPlayer):gsub("_", " ") .. ".", thePlayer, 212, 156, 49)
+						end	
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
-					end	
-				end
+						outputChatBox("You cannot watch yourself.", thePlayer, 255, 0, 0)	
+					end
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
+				end	
 			end
 		else	
 	
-			local rx = getData(thePlayer, "reconx")
-			local ry = getData(thePlayer, "recony")
-			local rz = getData(thePlayer, "reconz")
-			local reconrot = getData(thePlayer, "reconrot")
-			local recondimension = getData(thePlayer, "recondimension")
-			local reconinterior = getData(thePlayer, "reconinterior")
+			local rx = getElementData(thePlayer, "reconx")
+			local ry = getElementData(thePlayer, "recony")
+			local rz = getElementData(thePlayer, "reconz")
+			local reconrot = getElementData(thePlayer, "reconrot")
+			local recondimension = getElementData(thePlayer, "recondimension")
+			local reconinterior = getElementData(thePlayer, "reconinterior")
 			
 			if (rx) and (ry) and (rz) and (reconrot) and (recondimension) and (reconinterior) then
 				
@@ -1036,9 +806,9 @@ function watchPlayer(thePlayer, commandName, partialPlayerName)
 				setCameraTarget(thePlayer, thePlayer)
 				
 				setElementAlpha(thePlayer, 255)
-				setData( thePlayer, "invisible", 0, true)
+				setElementData( thePlayer, "invisible", 0, true)
 				
-				setData(thePlayer, "nametag", 1, true)
+				setElementData(thePlayer, "nametag", 1, true)
 				
 				outputChatBox("You are no longer watching a player. ( Turned off )", thePlayer, 212, 156, 49)
 				watching[thePlayer] = nil
@@ -1056,12 +826,12 @@ function removeWatch( )
 			
 			local thePlayer = k
 			
-			local rx = getData(thePlayer, "reconx")
-			local ry = getData(thePlayer, "recony")
-			local rz = getData(thePlayer, "reconz")
-			local reconrot = getData(thePlayer, "reconrot")
-			local recondimension = getData(thePlayer, "recondimension")
-			local reconinterior = getData(thePlayer, "reconinterior")
+			local rx = getElementData(thePlayer, "reconx")
+			local ry = getElementData(thePlayer, "recony")
+			local rz = getElementData(thePlayer, "reconz")
+			local reconrot = getElementData(thePlayer, "reconrot")
+			local recondimension = getElementData(thePlayer, "recondimension")
+			local reconinterior = getElementData(thePlayer, "reconinterior")
 		
 			if (rx) and (ry) and (rz) and (reconrot) and (recondimension) and (reconinterior) then
 			
@@ -1076,9 +846,9 @@ function removeWatch( )
 				setCameraTarget(thePlayer, thePlayer)
 				
 				setElementAlpha(thePlayer, 255)
-				setData( thePlayer, "invisible", 0, true)
+				setElementData( thePlayer, "invisible", 0, true)
 				
-				setData(thePlayer, "nametag", 1, true)
+				setElementData(thePlayer, "nametag", 1, true)
 				
 				outputChatBox("You are no longer watching a player. ( Player Quit )", thePlayer, 212, 156, 49)
 				
@@ -1091,68 +861,48 @@ addEventHandler("onPlayerQuit", getRootElement(), removeWatch)
 
 -- /pkick
 function playerKick( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local reason = table.concat({...}, " ")
 				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+				local thePlayerPower = exports['[ars]global']:getPlayerAdminLevel(thePlayer)
+				local targetPlayerPower = exports['[ars]global']:getPlayerAdminLevel(foundPlayer)
+				
+				if (targetPlayerPower <= thePlayerPower) then
+						
+					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(tostring(getPlayerName(foundPlayer))) .."', admin='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='1', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+					if insert then
 					
-					local reason
-					if (...)then
-						
-						reason = table.concat({...}, " ")
-					else
-						
-						reason = ""
-					end	
-						
-					local thePlayerPower = exports['[ars]global']:getPlayerAdminLevel(thePlayer)
-					local targetPlayerPower = exports['[ars]global']:getPlayerAdminLevel(foundPlayer)
-					
-					if (targetPlayerPower <= thePlayerPower) then
-							
-						local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(tostring(getPlayerName(foundPlayer))) .."', admin='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='1', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
-						if insert then
-						
-							local title
-							if getData(thePlayer, "hiddenadmin") == 0 then
-									
-								title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
-							else
-									
-								title = "Hidden Admin"
-							end
-						
-							outputChatBox("Kick: "..  title .." kicked ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", getRootElement(), 200, 0, 0)
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] ".. exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." kicked ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. reason .." )")
-							
-							if reason ~= "" then
-								outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
-							end
-							
-							kickPlayer(foundPlayer, getRootElement(), reason)
+						local title
+						if getElementData(thePlayer, "hiddenadmin") == 0 then
+								
+							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 						else
-							outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
-						end	
+								
+							title = "Hidden Admin"
+						end
+					
+						outputChatBox("Kick: "..  title .." kicked ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", getRootElement(), 200, 0, 0)
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] ".. exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." kicked ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. reason .." )")
 						
-						sql:free_result(insert)
+						if reason ~= "" then
+							outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
+						end
+						
+						kickPlayer(foundPlayer, getRootElement(), reason)
 					else
-						
-						outputChatBox("You are not authorized to do so.", thePlayer, 255, 0, 0)
-						outputChatBox(getPlayerName(thePlayer) .." attempted to kick you.", foundPlayer, 255, 0 ,0)
-					end
+						outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
+					end	
+					
+					sql:free_result(insert)
+				else
+					
+					outputChatBox("You are not authorized to do so.", thePlayer, 255, 0, 0)
+					outputChatBox(getPlayerName(thePlayer) .." attempted to kick you.", foundPlayer, 255, 0 ,0)
 				end
 			end
 		else
@@ -1173,88 +923,74 @@ addEventHandler("remoteKick", root, remoteKick)
 	
 -- /pban
 function playerBan( thePlayer, commandName, partialPlayerName, hours, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (hours) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local thePlayerPower = exports['[ars]global']:getPlayerAdminLevel(thePlayer)
+				local targetPlayerPower = exports['[ars]global']:getPlayerAdminLevel(foundPlayer)
 				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+				if (targetPlayerPower <= thePlayerPower) then
 					
-						
-					local thePlayerPower = exports['[ars]global']:getPlayerAdminLevel(thePlayer)
-					local targetPlayerPower = exports['[ars]global']:getPlayerAdminLevel(foundPlayer)
+					local seconds = ((hours*60)*60)
+					local rhours = tonumber(hours)
 					
-					if (targetPlayerPower <= thePlayerPower) then
+					if (rhours<1) then
 						
-						local seconds = ((hours*60)*60)
-						local rhours = tonumber(hours)
+						hours = "Permanent"
+					elseif (rhours==1) then
 						
-						if (rhours<1) then
-							
-							hours = "Permanent"
-						elseif (rhours==1) then
-							
-							hours = "1 Hour"
+						hours = "1 Hour"
+					else
+						hours = hours .. " Hours"
+					end
+					
+					local reason
+					if (...)then
+						
+						reason = table.concat({...}, " ")
+					else
+						
+						reason = ""
+					end	
+					
+					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='2', duration=".. sql:escape_string(rhours) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
+					if insert then
+						local title
+						if getElementData(thePlayer, "hiddenadmin") == 0 then
+								
+							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
 						else
-							hours = hours .. " Hours"
+								
+							title = "Hidden Admin"
 						end
 						
-						local reason
-						if (...)then
-							
-							reason = table.concat({...}, " ")
-						else
-							
-							reason = ""
-						end	
+						outputChatBox("Ban: "..  title .." banned ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. tostring(hours) .." )", getRootElement(), 200, 0, 0)
 						
-						local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='2', duration=".. sql:escape_string(rhours) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
-						if insert then
-							local title
-							if getData(thePlayer, "hiddenadmin") == 0 then
-									
-								title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
-							else
-									
-								title = "Hidden Admin"
-							end
-							
-							outputChatBox("Ban: "..  title .." banned ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. tostring(hours) .." )", getRootElement(), 200, 0, 0)
-							
-							if reason ~= "" then
-								outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
-							end
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." banned ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. hours ..")")
-							
-							local update = sql:query("UPDATE accounts SET banned='1', banned_reason='" .. sql:escape_string(reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tonumber(getData(foundPlayer, "accountid"))) .. "'")
-							if update then
-								banPlayer(foundPlayer, true, false, false, getRootElement(), reason, seconds)
-							else
-								outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
-							end	
-							
+						if reason ~= "" then
+							outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
+						end
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." banned ".. getPlayerName(foundPlayer):gsub("_", " ") ..". ( ".. hours ..")")
+						
+						local update = sql:query("UPDATE accounts SET banned='1', banned_reason='" .. sql:escape_string(reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .. "'")
+						if update then
+							banPlayer(foundPlayer, true, false, false, getRootElement(), reason, seconds)
 						else
 							outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 						end	
 						
-						sql:free_result(insert)
 					else
-						
-						outputChatBox("You are not authorized to do so.", thePlayer, 255, 0, 0)
-						outputChatBox(getPlayerName(thePlayer) .." attempted to ban you.", foundPlayer, 255, 0 ,0)
-					end
+						outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
+					end	
+					
+					sql:free_result(insert)
+				else
+					
+					outputChatBox("You are not authorized to do so.", thePlayer, 255, 0, 0)
+					outputChatBox(getPlayerName(thePlayer) .." attempted to ban you.", foundPlayer, 255, 0 ,0)
 				end
 			end
 		else
@@ -1266,7 +1002,7 @@ addCommandHandler("pban", playerBan, false, false)
 	
 -- /unban	
 function playerUnban( thePlayer, commandName, ...)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1315,79 +1051,56 @@ addCommandHandler("unban", playerUnban, false, false)
 
 -- /makeadmin		
 function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (rrank) then
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "loggedin") == 1 then
-						
-						local rrank = tonumber(rrank)
-						if (rrank) then
-						
-							local rank
-							if rrank == 0 then
-								rank = "Player"
-							elseif rrank == 1 then
-								rank = "Trial Moderator"
-							elseif rrank == 2 then
-								rank = "Moderator"
-							elseif rrank == 3 then
-								rank = "High Moderator"
-							elseif rrank == 4 then
-								rank = "Administrator"
-							elseif rrank == 5 then
-								rank = "High Administrator"
-							elseif rrank == 6 then
-								rank = "Sub Owner"
-							elseif rrank == 7 then
-								rank = "Server Owner"
-							elseif (rrank > 7) or (rrank < 0) then
-								rank = "Invalid rank"
-							end
+					local rrank = tonumber(rrank)
+					if (rrank) then
+					
+						local rank
+						if rrank == 0 then
+							rank = "Player"
+						elseif rrank == 1 then
+							rank = "Trial Moderator"
+						elseif rrank == 2 then
+							rank = "Moderator"
+						elseif rrank == 3 then
+							rank = "High Moderator"
+						elseif rrank == 4 then
+							rank = "Administrator"
+						elseif rrank == 5 then
+							rank = "High Administrator"
+						elseif rrank == 6 then
+							rank = "Sub Owner"
+						elseif rrank == 7 then
+							rank = "Server Owner"
+						elseif (rrank > 7) or (rrank < 0) then
+							rank = "Invalid rank"
+						end
+							
+						if (rrank == 0 or rrank == 1 or rrank == 2 or rrank == 3 or rrank == 4 or rrank == 5 or rrank == 6 or rrank == 7) then
+							
+							local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getElementData(foundPlayer, "accountid"))) .."")
+							if (update) then
 								
-							if (rrank == 0 or rrank == 1 or rrank == 2 or rrank == 3 or rrank == 4 or rrank == 5 or rrank == 6 or rrank == 7) then
+								setElementData( foundPlayer, "admin", tonumber(rrank), true)
+								setElementData( foundPlayer, "adminduty", 1, true)
 								
-								local update = sql:query("UPDATE `accounts` SET `admin`=".. sql:escape_string(tonumber(rrank)) .." WHERE id=".. sql:escape_string(tonumber(getData(foundPlayer, "accountid"))) .."")
-								if (update) then
-									
-									setData( foundPlayer, "admin", tonumber(rrank), true)
-									setData( foundPlayer, "adminduty", 1, true)
-									
-									exports['[ars]global']:updateNametagColor( foundPlayer )
-									
-									outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank was set to ".. rank ..".", thePlayer, 212, 156, 49)
-									
-									exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank to ".. rank ..".")
-								else
-									outputDebugString("Unable to update admin rank!")
-								end	
+								exports['[ars]global']:updateNametagColor( foundPlayer )
 								
-								sql:free_result(update)
+								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank was set to ".. rank ..".", thePlayer, 212, 156, 49)
+								
+								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s administrative rank to ".. rank ..".")
 							else
-								outputChatBox("Invalid rank ID.", thePlayer, 255, 200, 0)
-								outputChatBox("#0 Player", thePlayer, 212, 156, 49)
-								outputChatBox("#1 Trial Moderator", thePlayer, 212, 156, 49)
-								outputChatBox("#2 Moderator", thePlayer, 212, 156, 49)
-								outputChatBox("#3 High Moderator", thePlayer, 212, 156, 49)
-								outputChatBox("#4 Administrator", thePlayer, 212, 156, 49)
-								outputChatBox("#5 High Administrator", thePlayer, 212, 156, 49)
-								outputChatBox("#6 Sub Owner", thePlayer, 212, 156, 49)
-								outputChatBox("#7 Server Owner", thePlayer, 212, 156, 49)
-							end
+								outputDebugString("Unable to update admin rank!")
+							end	
+							
+							sql:free_result(update)
 						else
 							outputChatBox("Invalid rank ID.", thePlayer, 255, 200, 0)
 							outputChatBox("#0 Player", thePlayer, 212, 156, 49)
@@ -1398,10 +1111,20 @@ function makePlayerAdmin( thePlayer, commandName, partialPlayerName, rrank )
 							outputChatBox("#5 High Administrator", thePlayer, 212, 156, 49)
 							outputChatBox("#6 Sub Owner", thePlayer, 212, 156, 49)
 							outputChatBox("#7 Server Owner", thePlayer, 212, 156, 49)
-						end		
+						end
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end
+						outputChatBox("Invalid rank ID.", thePlayer, 255, 200, 0)
+						outputChatBox("#0 Player", thePlayer, 212, 156, 49)
+						outputChatBox("#1 Trial Moderator", thePlayer, 212, 156, 49)
+						outputChatBox("#2 Moderator", thePlayer, 212, 156, 49)
+						outputChatBox("#3 High Moderator", thePlayer, 212, 156, 49)
+						outputChatBox("#4 Administrator", thePlayer, 212, 156, 49)
+						outputChatBox("#5 High Administrator", thePlayer, 212, 156, 49)
+						outputChatBox("#6 Sub Owner", thePlayer, 212, 156, 49)
+						outputChatBox("#7 Server Owner", thePlayer, 212, 156, 49)
+					end		
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -1414,56 +1137,41 @@ addCommandHandler("makeadmin", makePlayerAdmin, false, false)
 -- /jail
 local jails = { }
 function jailPlayer( thePlayer, commandName, partialPlayerName, minutes, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (minutes) and (...) then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local reason = table.concat({...}, " ")
+				
+				-- tables can remember him
+				jails[foundPlayer] = { }
+				jails[foundPlayer]["timer"] = setTimer(unjailPlayer, 60000, 1, foundPlayer)
+				jails[foundPlayer]["jailtime"] = tonumber(minutes)
+				jails[foundPlayer]["jail_by"] = tostring(getPlayerName(thePlayer):gsub("_", " "))
+				jails[foundPlayer]["jail_reason"] = tostring(reason)
 			
+				setElementInterior(foundPlayer, 3)
+				setElementDimension(foundPlayer, 65000 + getElementData(foundPlayer, "playerid"))
+				setElementPosition(foundPlayer, 193.5804, 175.1421, 1003.0234)
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-				
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-				
-					local reason = table.concat({...}, " ")
-					
-					-- tables can remember him
-					jails[foundPlayer] = { }
-					jails[foundPlayer]["timer"] = setTimer(unjailPlayer, 60000, 1, foundPlayer)
-					jails[foundPlayer]["jailtime"] = tonumber(minutes)
-					jails[foundPlayer]["jail_by"] = tostring(getPlayerName(thePlayer):gsub("_", " "))
-					jails[foundPlayer]["jail_reason"] = tostring(reason)
-				
-					setElementInterior(foundPlayer, 3)
-					setElementDimension(foundPlayer, 65000 + getData(foundPlayer, "playerid"))
-					setElementPosition(foundPlayer, 193.5804, 175.1421, 1003.0234)
-				
-					local title = ""
-					if getData(thePlayer, "hiddenadmin") == 0 then
-						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
-					else
-						title = "Hidden Admin"
-					end
-			
-					outputChatBox("Jail: "..  title .." jailed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for ".. tostring(minutes) .." minute(s).", getRootElement(), 200, 0, 0)
-					outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
-					
-					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." jailed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for ".. tostring(minutes) .." minute(s). ( ".. reason .. " )")
-					
-					local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(minutes) ..", jail_reason='".. sql:escape_string(tostring(reason)) .."', jail_by='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE id=" .. sql:escape_string(getData(foundPlayer, "accountid")) .."")
-					local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='0', duration=".. sql:escape_string(minutes) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
-					
-					sql:free_result(update)
-					sql:free_result(insert)
+				local title = ""
+				if getElementData(thePlayer, "hiddenadmin") == 0 then
+					title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
+				else
+					title = "Hidden Admin"
 				end
+		
+				outputChatBox("Jail: "..  title .." jailed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for ".. tostring(minutes) .." minute(s).", getRootElement(), 200, 0, 0)
+				outputChatBox("Reason: ".. reason, getRootElement(), 200, 0, 0)
+				
+				exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." jailed ".. getPlayerName(foundPlayer):gsub("_", " ") .." for ".. tostring(minutes) .." minute(s). ( ".. reason .. " )")
+				
+				local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(minutes) ..", jail_reason='".. sql:escape_string(tostring(reason)) .."', jail_by='".. sql:escape_string(tostring(getPlayerName(thePlayer))) .."' WHERE id=" .. sql:escape_string(getElementData(foundPlayer, "accountid")) .."")
+				local insert = sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='0', duration=".. sql:escape_string(minutes) ..", reason='".. sql:escape_string(reason) .."', date=NOW()")
+				
+				sql:free_result(update)
+				sql:free_result(insert)
 			end	
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ] [ Time ( minutes ) ] [ Reason ]", thePlayer, 212, 156, 49)
@@ -1474,55 +1182,41 @@ addCommandHandler("jail", jailPlayer, false, false)
 
 -- /unjail
 function forceUnjail( thePlayer, commandName, partialPlayerName)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-				
-					if ( jails[foundPlayer] ~= nil ) then
-						
-						local jailTimer = jails[foundPlayer]["timer"]
-						if isTimer(jailTimer) then
-							killTimer(jailTimer)
-						end
-						
-						jails[foundPlayer] = nil
-						
-						local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(foundPlayer, "accountid")) .."")	
-						sql:free_result(update)
-						
-						setElementDimension(foundPlayer, 0)
-						setElementInterior(foundPlayer, 0)
-						setElementPosition(foundPlayer, 1521.4355, -1675.1318, 13.5468)
-						setElementRotation(foundPlayer, 270)
-						
-						if getData(thePlayer, "hiddenadmin") == 1 then
-							outputChatBox("You were unjailed by an administrator.", foundPlayer, 0, 255, 0)
-						else
-							outputChatBox("You were unjailed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
-						end	
-						
-						outputChatBox("You unjailed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unjailed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if ( jails[foundPlayer] ~= nil ) then
+					
+					local jailTimer = jails[foundPlayer]["timer"]
+					if isTimer(jailTimer) then
+						killTimer(jailTimer)
+					end
+					
+					jails[foundPlayer] = nil
+					
+					local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(foundPlayer, "accountid")) .."")	
+					sql:free_result(update)
+					
+					setElementDimension(foundPlayer, 0)
+					setElementInterior(foundPlayer, 0)
+					setElementPosition(foundPlayer, 1521.4355, -1675.1318, 13.5468)
+					setElementRotation(foundPlayer, 270)
+					
+					if getElementData(thePlayer, "hiddenadmin") == 1 then
+						outputChatBox("You were unjailed by an administrator.", foundPlayer, 0, 255, 0)
 					else
-						
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not jailed.", thePlayer, 212, 156, 49)
+						outputChatBox("You were unjailed by ".. getPlayerName(thePlayer):gsub("_", " ") ..".", foundPlayer, 0, 255, 0)
 					end	
-				end
+					
+					outputChatBox("You unjailed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+					
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." unjailed ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+				else
+					
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not jailed.", thePlayer, 212, 156, 49)
+				end	
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ]", thePlayer, 212, 156, 49)
@@ -1547,7 +1241,7 @@ function unjailPlayer( thePlayer )
 				
 				outputChatBox("You have served your admin jail sentence.", thePlayer, 0, 255, 0)
 				
-				local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")	
+				local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")	
 				sql:free_result(update)
 			else
 				
@@ -1555,7 +1249,7 @@ function unjailPlayer( thePlayer )
 					jails[thePlayer]["jailtime"] = timeLeft - 1
 					jails[thePlayer]["timer"] = setTimer(unjailPlayer, 60000, 1, thePlayer)
 					
-					local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(timeLeft-1) .." WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")
+					local update = sql:query("UPDATE accounts SET jail_time=".. sql:escape_string(timeLeft-1) .." WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")
 					sql:free_result(update)
 				end
 			end
@@ -1569,7 +1263,7 @@ function unjailPlayer( thePlayer )
 		
 			outputChatBox("You have served your admin jail sentence.", thePlayer, 0, 255, 0)
 			
-			local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getData(thePlayer, "accountid")) .."")	
+			local update = sql:query("UPDATE accounts SET jail_time='0', jail_reason=NULL, jail_by=NULL WHERE id=" .. sql:escape_string(getElementData(thePlayer, "accountid")) .."")	
 			sql:free_result(update)
 		end
 	end	
@@ -1591,7 +1285,7 @@ addEventHandler("onPlayerQuit", root,
 )
 
 function jailedPlayers( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		local count = 0
 		outputChatBox("========= Jailed Players =========", thePlayer, 212, 156, 49)
@@ -1641,7 +1335,7 @@ function remoteJail( jailtime, jailby, jailreason )
 	jails[source]["jail_reason"] = jailreason
 						
 	setElementInterior(source, 3)
-	setElementDimension(source, 65000 + getData(source, "playerid"))
+	setElementDimension(source, 65000 + getElementData(source, "playerid"))
 	setElementPosition(source, 193.5804, 175.1421, 1003.0234)
 	
 	outputChatBox("You were jailed by ".. jailby .." for ".. jailtime .." minute(s).", source, 200, 0, 0)
@@ -1652,39 +1346,25 @@ addEventHandler("remoteJail", getRootElement(), remoteJail)
 
 -- /setmoney
 function setMoney( thePlayer, commandName, partialPlayerName, money )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (money) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "loggedin") == 1 then
+					if (tonumber(money) > 99999999 or tonumber(money) < 0) then
 						
-						if (tonumber(money) > 99999999 or tonumber(money) < 0) then
-							
-							outputChatBox("Invalid amount entered.", thePlayer, 255, 0, 0)
-						else	
-							
-							setPlayerMoney(foundPlayer, tonumber(money)*100)
-							outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s money to $".. tostring(money) ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s money to $".. tostring(money) ..".")
-						end	
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
-					end
+						outputChatBox("Invalid amount entered.", thePlayer, 255, 0, 0)
+					else	
+						
+						setPlayerMoney(foundPlayer, tonumber(money)*100)
+						outputChatBox("You set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s money to $".. tostring(money) ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s money to $".. tostring(money) ..".")
+					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
 				end
 			end
 		else
@@ -1696,39 +1376,24 @@ addCommandHandler("setmoney", setMoney, false, false)
 
 -- /givemoney
 function giveMoney( thePlayer, commandName, partialPlayerName, money )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (money) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					if getData(foundPlayer, "loggedin") == 1 then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
+					if (tonumber(money) > 99999999 or tonumber(money) < 0) then
 						
-						if (tonumber(money) > 99999999 or tonumber(money) < 0) then
-							
-							outputChatBox("Invalid amount entered.", thePlayer, 255, 0, 0)
-						else	
-							
-							givePlayerMoney(foundPlayer, tonumber(money)*100)
-							outputChatBox("You gave $".. tostring(money) .." to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." $".. tostring(money) ..".")
-						end	
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
-					end
+						outputChatBox("Invalid amount entered.", thePlayer, 255, 0, 0)
+					else	
+						
+						givePlayerMoney(foundPlayer, tonumber(money)*100)
+						outputChatBox("You gave $".. tostring(money) .." to ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." $".. tostring(money) ..".")
+					end	
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
 				end
 			end
 		else
@@ -1740,51 +1405,37 @@ addCommandHandler("givemoney", giveMoney, false, false)
 
 -- /freeze
 function playerFreeze( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then 
 					
-					if getData(foundPlayer, "loggedin") == 1 then 
+					local vehicle = getPedOccupiedVehicle(foundPlayer)
+					if vehicle then
 						
-						local vehicle = getPedOccupiedVehicle(foundPlayer)
-						if vehicle then
-							
-							setElementFrozen(vehicle, true)
-							toggleAllControls(foundPlayer, false, true, false)
-						else
-							
-							toggleAllControls(foundPlayer, false, true, false)
-							setPedWeaponSlot(foundPlayer, 0)
-						end
-							
-						local title
-						if getData(thePlayer, "hiddenadmin") == 0 then
-						
-							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
-						else
-						
-							title = "Hidden Admin"
-						end	
-						
-						outputChatBox("You were frozen by ".. title ..".", foundPlayer, 212, 156, 49)
-						outputChatBox("You froze ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+						setElementFrozen(vehicle, true)
+						toggleAllControls(foundPlayer, false, true, false)
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
+						
+						toggleAllControls(foundPlayer, false, true, false)
+						setPedWeaponSlot(foundPlayer, 0)
 					end
+						
+					local title
+					if getElementData(thePlayer, "hiddenadmin") == 0 then
+					
+						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
+					else
+					
+						title = "Hidden Admin"
+					end	
+					
+					outputChatBox("You were frozen by ".. title ..".", foundPlayer, 212, 156, 49)
+					outputChatBox("You froze ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
 				end
 			end
 		else
@@ -1796,50 +1447,36 @@ addCommandHandler("freeze", playerFreeze, false, false)
 
 -- /unfreeze
 function unplayerFreeze( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then 
 					
-					if getData(foundPlayer, "loggedin") == 1 then 
+					local vehicle = getPedOccupiedVehicle(foundPlayer)
+					if vehicle then
 						
-						local vehicle = getPedOccupiedVehicle(foundPlayer)
-						if vehicle then
-							
-							setElementFrozen(vehicle, false)
-							toggleAllControls(foundPlayer, true, true, true)
-						else
-							
-							toggleAllControls(foundPlayer, true, true, true)
-						end
-							
-						local title
-						if getData(thePlayer, "hiddenadmin") == 0 then
-											
-							title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
-						else
-											
-							title = "Hidden Admin"
-						end	
-						
-						outputChatBox("You were unfrozen by ".. title ..".", foundPlayer, 212, 156, 49)
-						outputChatBox("You unfroze ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+						setElementFrozen(vehicle, false)
+						toggleAllControls(foundPlayer, true, true, true)
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
+						
+						toggleAllControls(foundPlayer, true, true, true)
 					end
+						
+					local title
+					if getElementData(thePlayer, "hiddenadmin") == 0 then
+										
+						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
+					else
+										
+						title = "Hidden Admin"
+					end	
+					
+					outputChatBox("You were unfrozen by ".. title ..".", foundPlayer, 212, 156, 49)
+					outputChatBox("You unfroze ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)	
 				end
 			end
 		else
@@ -1851,70 +1488,56 @@ addCommandHandler("unfreeze", unplayerFreeze, false, false)
 
 -- /makedon(ator)
 function makePlayerDonator( thePlayer, commandName, partialPlayerName, llevel )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) and (llevel) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData(foundPlayer, "loggedin") then
 					
-					if getData(foundPlayer, "loggedin") == 1 then
-						
-						local llevel = tonumber(llevel)
-						if (llevel) then
-						
-							local level
-							if llevel == 0 then
-								level = "Non-donator"
-							elseif llevel == 1 then
-								level = "Level One Donator"
-							elseif llevel == 2 then
-								level = "Level Two Donator"
-							elseif llevel == 3 then
-								level = "Level Three Donator"
+					local llevel = tonumber(llevel)
+					if (llevel) then
+					
+						local level
+						if llevel == 0 then
+							level = "Non-donator"
+						elseif llevel == 1 then
+							level = "Level One Donator"
+						elseif llevel == 2 then
+							level = "Level Two Donator"
+						elseif llevel == 3 then
+							level = "Level Three Donator"
+						end
+							
+						if (llevel >= 0 and llevel <= 3) then
+							
+							local update = sql:query("UPDATE `accounts` SET `donator`=".. sql:escape_string(llevel) .." WHERE `id`=".. sql:escape_string( tonumber( getElementData(foundPlayer, "accountid") ) ) .."")
+							if ( update ) then
+								
+								setElementData( foundPlayer, "donator", tonumber(llevel), true)
+								exports['[ars]global']:updateNametagColor( foundPlayer )
+								
+								outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s donator level was set to ".. level ..".", thePlayer, 212, 156, 49)
+								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s donator level to ".. level ..".")
 							end
-								
-							if (llevel >= 0 and llevel <= 3) then
-								
-								local update = sql:query("UPDATE `accounts` SET `donator`=".. sql:escape_string(llevel) .." WHERE `id`=".. sql:escape_string( tonumber( getData(foundPlayer, "accountid") ) ) .."")
-								if ( update ) then
-									
-									setData( foundPlayer, "donator", tonumber(llevel), true)
-									exports['[ars]global']:updateNametagColor( foundPlayer )
-									
-									outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s donator level was set to ".. level ..".", thePlayer, 212, 156, 49)
-									exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." set ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s donator level to ".. level ..".")
-								end
-								
-								sql:free_result(update)
-							else
-								outputChatBox("~-~-~-~-~-~ Invalid level ID. ~-~-~-~-~-~", thePlayer, 255, 156, 49)
-								outputChatBox("#0 Non-donator", thePlayer, 212, 156, 49)
-								outputChatBox("#1 Level One Donator", thePlayer, 212, 156, 49)
-								outputChatBox("#2 Level Two Donator", thePlayer, 212, 156, 49)
-								outputChatBox("#3 Level Three Donator", thePlayer, 212, 156, 49)
-							end
+							
+							sql:free_result(update)
 						else
 							outputChatBox("~-~-~-~-~-~ Invalid level ID. ~-~-~-~-~-~", thePlayer, 255, 156, 49)
 							outputChatBox("#0 Non-donator", thePlayer, 212, 156, 49)
 							outputChatBox("#1 Level One Donator", thePlayer, 212, 156, 49)
 							outputChatBox("#2 Level Two Donator", thePlayer, 212, 156, 49)
 							outputChatBox("#3 Level Three Donator", thePlayer, 212, 156, 49)
-						end		
+						end
 					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
-					end
+						outputChatBox("~-~-~-~-~-~ Invalid level ID. ~-~-~-~-~-~", thePlayer, 255, 156, 49)
+						outputChatBox("#0 Non-donator", thePlayer, 212, 156, 49)
+						outputChatBox("#1 Level One Donator", thePlayer, 212, 156, 49)
+						outputChatBox("#2 Level Two Donator", thePlayer, 212, 156, 49)
+						outputChatBox("#3 Level Three Donator", thePlayer, 212, 156, 49)
+					end		
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -1927,7 +1550,7 @@ addCommandHandler("makedonator", makePlayerDonator, false, false)
 
 -- /setmotd
 function setMOTD( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1948,7 +1571,7 @@ addCommandHandler("setmotd", setMOTD)
 
 -- /setamotd
 function setAMOTD( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerHighAdministrator(thePlayer) then
 		
 		if (...) then
 			
@@ -1969,62 +1592,48 @@ addCommandHandler("setamotd", setAMOTD)
 	
 -- /warn
 function warnPlayer( thePlayer, commandName, partialPlayerName, ... )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (...) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local reason = table.concat({...}, " ")
+				local title
+				if getElementData(thePlayer, "hiddenadmin") == 0 then
+					title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
+				else
+					title = "Hidden Admin"
+				end	
 				
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
+				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
+				local row = sql:fetch_assoc(result)
+				if (row) then
+					local currentWarns = row['warns']
 					
-					local reason = table.concat({...}, " ")
-					local title
-					if getData(thePlayer, "hiddenadmin") == 0 then
-						title = exports['[ars]global']:getPlayerAdminTitle(thePlayer) .. " ".. getPlayerName(thePlayer):gsub("_", " ")
+					local warnUpdate = currentWarns + 1
+					if (warnUpdate >= 3) then
+						
+						local sql_reason = "AdmWrns"
+						
+						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+						sql:query("UPDATE accounts SET warns='3', banned='1', banned_reason='" .. sql:escape_string(sql_reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .. "'")
+						
+						outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
+						outputChatBox("Ban: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was auto banned. ( ".. warnUpdate .."/3 Admin Warnings )", getRootElement(), 200, 0, 0)
+						local ban = banPlayer(foundPlayer, true, false, false, getRootElement(), reason, 0)
 					else
-						title = "Hidden Admin"
+					
+						sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getElementData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
+						sql:query("UPDATE accounts SET warns='".. sql:escape_string(warnUpdate) .."' WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .. "'")
+						outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." warned ".. getPlayerName(thePlayer):gsub("_", " ") ..". ( ".. reason .." ) (".. warnUpdate .."/3)")
 					end	
-					
-					local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
-					local row = sql:fetch_assoc(result)
-					if (row) then
-						local currentWarns = row['warns']
-						
-						local warnUpdate = currentWarns + 1
-						if (warnUpdate >= 3) then
-							
-							local sql_reason = "AdmWrns"
-							
-							sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
-							sql:query("UPDATE accounts SET warns='3', banned='1', banned_reason='" .. sql:escape_string(sql_reason) .. "', banned_by='" .. sql:escape_string(getPlayerName(thePlayer)) .. "' WHERE id='" .. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .. "'")
-							
-							outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
-							outputChatBox("Ban: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was auto banned. ( ".. warnUpdate .."/3 Admin Warnings )", getRootElement(), 200, 0, 0)
-							local ban = banPlayer(foundPlayer, true, false, false, getRootElement(), reason, 0)
-						else
-						
-							sql:query("INSERT INTO adminhistory SET player='" .. sql:escape_string(getPlayerName(foundPlayer)) .. "', admin='".. sql:escape_string(getPlayerName(thePlayer)) .. "', hidden=".. sql:escape_string(tostring(getData(thePlayer, "hiddenadmin"))) ..", action='5', duration='0', reason='".. sql:escape_string(reason) .."', date=NOW()")
-							sql:query("UPDATE accounts SET warns='".. sql:escape_string(warnUpdate) .."' WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .. "'")
-							outputChatBox("Warn: ".. getPlayerName(foundPlayer):gsub("_", " ") .." was warned by ".. title ..". ( ".. reason .." ) (".. warnUpdate .."/3)", getRootElement(), 200, 0, 0)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." warned ".. getPlayerName(thePlayer):gsub("_", " ") ..". ( ".. reason .." ) (".. warnUpdate .."/3)")
-						end	
-					else
-						outputChatBox("MySQL Error.", thePlayer, 255, 0, 0)
-					end
-					
-					sql:free_result(result)
+				else
+					outputChatBox("MySQL Error.", thePlayer, 255, 0, 0)
 				end
+				
+				sql:free_result(result)
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Player Name / ID] [Reason]", thePlayer, 212, 156, 49)
@@ -2035,47 +1644,32 @@ addCommandHandler("warn", warnPlayer, false, false)
 
 -- /unwarn
 function unWarnPlayer( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerAdministrator(thePlayer) then
+	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
+				local row = sql:fetch_assoc(result)
+				if (row) then
 					
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-			
-					local result = sql:query("SELECT warns FROM accounts WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
-					local row = sql:fetch_assoc(result)
-					if (row) then
+					local currentWarns = row['warns']
+					if (tonumber(currentWarns) ~= 0) then
 						
-						local currentWarns = row['warns']
-						if (tonumber(currentWarns) ~= 0) then
-							
-							local warnUpdate = currentWarns - 1
-							
-							local update = sql:query("UPDATE accounts SET warns=".. sql:escape_string(warnUpdate) .." WHERE id='".. sql:escape_string(tostring(getData(foundPlayer, "dbid"))) .."'")
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s warns have been reduced to ".. warnUpdate ..".", thePlayer, 212, 156, 49)
-							
-							exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." un-warned ".. getPlayerName(thePlayer):gsub("_", " ") ..".")
-						else
-							outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s warns are already 0.", thePlayer, 255, 0, 0)
-						end
+						local warnUpdate = currentWarns - 1
+						
+						local update = sql:query("UPDATE accounts SET warns=".. sql:escape_string(warnUpdate) .." WHERE id='".. sql:escape_string(tostring(getElementData(foundPlayer, "dbid"))) .."'")
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s warns have been reduced to ".. warnUpdate ..".", thePlayer, 212, 156, 49)
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." un-warned ".. getPlayerName(thePlayer):gsub("_", " ") ..".")
 					else
-						outputChatBox("MySQL Error.", thePlayer, 255, 0, 0)
+						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .."'s warns are already 0.", thePlayer, 255, 0, 0)
 					end
-					
-					sql:free_result(result)
+				else
+					outputChatBox("MySQL Error.", thePlayer, 255, 0, 0)
 				end
+				
+				sql:free_result(result)
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [ Player Name / ID ]", thePlayer, 212, 156, 49)
@@ -2086,23 +1680,23 @@ addCommandHandler("unwarn", unWarnPlayer, false, false)
 
 -- /disappear	
 function toggleDisappear( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local current = getData(thePlayer, "invisible")
+		local current = getElementData(thePlayer, "invisible")
 		if (current == 1) then
 			
 			setElementAlpha(thePlayer, 255)
-			setData( thePlayer, "invisible", 0, true)
+			setElementData( thePlayer, "invisible", 0, true)
 			
-			setData(thePlayer, "nametag", 0, true)
+			setElementData(thePlayer, "nametag", 0, true)
 			
 			outputChatBox("You are now visible.", thePlayer, 212, 156, 49)
 		elseif (current == 0) then
 			
 			setElementAlpha(thePlayer, 0)
-			setData( thePlayer, "invisible", 1, true)
+			setElementData( thePlayer, "invisible", 1, true)
 			
-			setData(thePlayer, "nametag", 1, true)
+			setElementData(thePlayer, "nametag", 1, true)
 			
 			outputChatBox("You are now invisible.", thePlayer, 212, 156, 49)
 		end
@@ -2112,16 +1706,16 @@ addCommandHandler("disappear", toggleDisappear, false, false)
 
 -- /tognametag	
 function toggleNametag( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
-		local current = getData(thePlayer, "nametag")
+		local current = getElementData(thePlayer, "nametag")
 		if (current == 1) then
 			
-			setData(thePlayer, "nametag", 0, true)
+			setElementData(thePlayer, "nametag", 0, true)
 			outputChatBox("Your nametag is now invisible.", thePlayer, 212, 156, 49)
 		else
 			
-			setData(thePlayer, "nametag", 1, true)
+			setElementData(thePlayer, "nametag", 1, true)
 			outputChatBox("Your nametag is now visible.", thePlayer, 212, 156, 49)
 		end
 	end
@@ -2130,42 +1724,27 @@ addCommandHandler("tognametag", toggleNametag, false, false)
 
 -- /giveitem
 function givePlayerItem(thePlayer, commandName, partialPlayerName, itemID, ...)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (itemID) and (...) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local itemID = tonumber(itemID)
+				local itemValue = tostring( table.concat({...}, " ") )
+				
+				local success, itemName = exports['[ars]inventory-system']:giveItem(foundPlayer, itemID, itemValue)
+				if (success) then
+					outputChatBox("You gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. tostring(itemName) .." with value ".. tostring(itemValue) ..".", thePlayer, 212, 156, 49)
 					
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do	
-					
-					local itemID = tonumber(itemID)
-					local itemValue = tostring( table.concat({...}, " ") )
-					
-					local success, itemName = exports['[ars]inventory-system']:giveItem(foundPlayer, itemID, itemValue)
-					if (success) then
-						outputChatBox("You gave ".. getPlayerName(foundPlayer):gsub("_", " ") .." a ".. tostring(itemName) .." with value ".. tostring(itemValue) ..".", thePlayer, 212, 156, 49)
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(thePlayer):gsub("_", " ") .." a ".. tostring(itemName) .." with value ".. tostring(itemValue) ..".")
+				else
+					if ( itemName ~= "" ) then
 						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." gave ".. getPlayerName(thePlayer):gsub("_", " ") .." a ".. tostring(itemName) .." with value ".. tostring(itemValue) ..".")
-					else
-						if ( itemName ~= "" ) then
-							
-							local f = string.upper(string.sub(itemName, 1, 1))
-							local reason = string.sub(itemName, 2)
-							
-							outputChatBox("Failed to Give Item. ( ".. f .. reason .." )", thePlayer, 255, 0, 0)
-						end	
-					end
+						local f = string.upper(string.sub(itemName, 1, 1))
+						local reason = string.sub(itemName, 2)
+						
+						outputChatBox("Failed to Give Item. ( ".. f .. reason .." )", thePlayer, 255, 0, 0)
+					end	
 				end
 			end
 		else
@@ -2177,35 +1756,20 @@ addCommandHandler("giveitem", givePlayerItem, false, false)
 
 -- /takeitem
 function takePlayerItem(thePlayer, commandName, partialPlayerName, itemID)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) and (itemID) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local itemID = tonumber(itemID)
+				
+				local success, itemName = exports['[ars]inventory-system']:takeItem(foundPlayer, itemID)
+				if (success) then
+					outputChatBox("You took away one ".. tostring(itemName) .." from ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
 					
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do	
-					
-					local itemID = tonumber(itemID)
-					
-					local success, itemName = exports['[ars]inventory-system']:takeItem(foundPlayer, itemID)
-					if (success) then
-						outputChatBox("You took away one ".. tostring(itemName) .." from ".. getPlayerName(foundPlayer):gsub("_", " ") ..".", thePlayer, 212, 156, 49)
-						
-						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." took away one ".. tostring(itemName) .." from ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
-					else
-						outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." does not have an item with that ID ".. tostring(itemID) ..".", thePlayer, 255, 0, 0)
-					end
+					exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." took away one ".. tostring(itemName) .." from ".. getPlayerName(foundPlayer):gsub("_", " ") ..".")
+				else
+					outputChatBox(getPlayerName(foundPlayer):gsub("_", " ") .." does not have an item with that ID ".. tostring(itemID) ..".", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -2217,67 +1781,51 @@ addCommandHandler("takeitem", takePlayerItem, false, false)
 
 -- /checkinv
 function checkInventory( thePlayer, commandName, partialPlayerName )
-	if getData(thePlayer, "loggedin") == 1 then
-		
-		if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
-		
-			if (partialPlayerName) then
-				
-				local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-					for k, foundPlayer in ipairs (players) do
+	if ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) and commandName == "checkinv" ) or ( getElementData( thePlayer, "faction" ) == 1 and commandName == "frisk" ) then
+	
+		if (partialPlayerName) then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData( foundPlayer, "loggedin" ) then
+					
+					if ( commandName == "frisk" ) then
+						local x, y, z = getElementPosition( thePlayer )
+						local px, py, pz = getElementPosition( foundPlayer )
 						
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
-				else
-					for k, foundPlayer in ipairs (players) do
-						if ( getData( foundPlayer, "loggedin" ) == 1 ) then
+						if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) > 5 ) then
+							outputChatBox("You are too far away from that player", thePlayer, 255, 0, 0 )
+							return
+						end
+					end
+					
+					local items, values = exports['[ars]inventory-system']:getPlayerInventory( foundPlayer )
+					
+					local weapons = { }
+					for i = 1, 12 do
+						local playerWeapon = getPedWeapon( foundPlayer, i )
+						if ( playerWeapon ~= 0 and playerWeapon ~= 1 ) then
 							
-							if ( commandName == "frisk" ) then
-								local x, y, z = getElementPosition( thePlayer )
-								local px, py, pz = getElementPosition( foundPlayer )
-								
-								if ( getDistanceBetweenPoints3D( x, y, z, px, py, pz ) > 5 ) then
-									outputChatBox("You are too far away from that player", thePlayer, 255, 0, 0 )
-									return
-								end
-							end
+							local weaponName = getWeaponNameFromID( playerWeapon )
+							local weaponAmmo = getPedTotalAmmo( foundPlayer, i )
 							
-							local items, values = exports['[ars]inventory-system']:getPlayerInventory( foundPlayer )
-							
-							local weapons = { }
-							for i = 1, 12 do
-								local playerWeapon = getPedWeapon( foundPlayer, i )
-								if ( playerWeapon ~= 0 and playerWeapon ~= 1 ) then
-									
-									local weaponName = getWeaponNameFromID( playerWeapon )
-									local weaponAmmo = getPedTotalAmmo( foundPlayer, i )
-									
-									if ( weaponAmmo > 0 ) then
-										weapons[#weapons+1] = { weaponName, weaponAmmo }
-									end	
-								end	
-							end
-							
-							if ( items ) and ( values ) and ( weapons ) then
-							
-								triggerClientEvent(thePlayer, "showClientInventory", thePlayer, foundPlayer, items, values, weapons )
-								
-								exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." checked ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s inventory.")
-							end
-						else
-							outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
+							if ( weaponAmmo > 0 ) then
+								weapons[#weapons+1] = { weaponName, weaponAmmo }
+							end	
 						end	
 					end
-				end
-			else
-				outputChatBox("SYNTAX: /".. commandName .." [Player Name/ID]", thePlayer, 212, 156, 49)
+					
+					if ( items ) and ( values ) and ( weapons ) then
+					
+						triggerClientEvent(thePlayer, "showClientInventory", thePlayer, foundPlayer, items, values, weapons )
+						
+						exports['[ars]logs-system']:logAdminCommand("[".. string.upper(commandName) .."] "..exports['[ars]global']:getPlayerAdminTitle( thePlayer ) .." ".. getPlayerName(thePlayer):gsub("_", " ") .." checked ".. getPlayerName(foundPlayer):gsub("_", " ") .."'s inventory.")
+					end
+				else
+					outputChatBox("The player is not logged in.", thePlayer, 255, 0, 0)
+				end	
 			end
+		else
+			outputChatBox("SYNTAX: /".. commandName .." [Player Name/ID]", thePlayer, 212, 156, 49)
 		end	
 	end	
 end
@@ -2286,7 +1834,7 @@ addCommandHandler("frisk", checkInventory, false, false)
 
 -- /x
 function setXcoordinate(thePlayer, commandName, ix)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (ix) then
 			outputChatBox("SYNTAX: /".. commandName .." [x value]", thePlayer, 212, 156, 49)
 		else
@@ -2305,7 +1853,7 @@ addCommandHandler("x", setXcoordinate)
 
 -- /y
 function setYcoordinate(thePlayer, commandName, iy)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (iy) then
 			outputChatBox("SYNTAX: /".. commandName .." [y value]", thePlayer, 212, 156, 49)
 		else
@@ -2324,7 +1872,7 @@ addCommandHandler("y", setYcoordinate, false, false)
 
 -- /z
 function setZcoordinate(thePlayer, commandName, iz)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not (iz) then
 			outputChatBox("SYNTAX: /".. commandName .." [z value]", thePlayer, 212, 156, 49)
 		else
@@ -2343,7 +1891,7 @@ addCommandHandler("z", setZcoordinate, false, false)
 
 -- /xyz
 function setXYZcoordinates(thePlayer, commandName, x, y, z)
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		if not tonumber(x) or not tonumber(y) or not tonumber(z) then
 			outputChatBox("SYNTAX: /".. commandName .." [x] [y] [z]", thePlayer, 212, 156, 49)
 		else
@@ -2355,61 +1903,48 @@ addCommandHandler("xyz", setXYZcoordinates, false, false)
 
 -- /allchars
 function getAllCharacters( thePlayer, commandName, partialPlayerName )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (partialPlayerName) then
-			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				if getElementData( foundPlayer, "loggedin" ) then
+				
+					local accountid = tonumber( getElementData(foundPlayer, "accountid") )
+					local accountname = tostring( getElementData(foundPlayer, "accountname") )
 					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					if ( getData( foundPlayer, "loggedin" ) == 1 ) then
+					outputChatBox("~-~-~-~-~-~-~ ".. accountname .." - ".. accountid .." ~-~-~-~-~-~-~", thePlayer, 212, 156, 49)
 					
-						local accountid = tonumber( getData(foundPlayer, "accountid") )
-						local accountname = tostring( getData(foundPlayer, "accountname") )
-						
-						outputChatBox("~-~-~-~-~-~-~ ".. accountname .." - ".. accountid .." ~-~-~-~-~-~-~", thePlayer, 212, 156, 49)
-						
-						local count = 1
-						
-						local result = sql:query("SELECT `charactername`, `faction` FROM `characters` WHERE `account`=".. sql:escape_string( accountid ) .."")
-						while true do
-							local row = sql:fetch_assoc(result)
-							if ( row ) then
-								
-								local charactername = tostring( row['charactername'] )
-								local faction = tonumber( row['faction'] )
-								
-								local name = "#FF0000Not in a faction"
-								if ( faction > 0 ) then
-									local result = sql:query_fetch_assoc("SELECT `name` FROM `factions` WHERE `id`=".. sql:escape_string( faction ) .."")
-									if ( result ) then
-										
-										name = "#00FF00".. tostring( result['name'] )
-									end
-								end	
-								
-								outputChatBox("#".. count ..": ".. charactername .." - ".. name, thePlayer, 212, 156, 49, true)
-	
-								count = count + 1
-							else
-								break
-							end
+					local count = 1
+					
+					local result = sql:query("SELECT `charactername`, `faction` FROM `characters` WHERE `account`=".. sql:escape_string( accountid ) .."")
+					while true do
+						local row = sql:fetch_assoc(result)
+						if ( row ) then
+							
+							local charactername = tostring( row['charactername'] )
+							local faction = tonumber( row['faction'] )
+							
+							local name = "#FF0000Not in a faction"
+							if ( faction > 0 ) then
+								local result = sql:query_fetch_assoc("SELECT `name` FROM `factions` WHERE `id`=".. sql:escape_string( faction ) .."")
+								if ( result ) then
+									
+									name = "#00FF00".. tostring( result['name'] )
+								end
+							end	
+							
+							outputChatBox("#".. count ..": ".. charactername .." - ".. name, thePlayer, 212, 156, 49, true)
+
+							count = count + 1
+						else
+							break
 						end
-						
-						sql:free_result(result)
-					else
-						outputChatBox("The Player is not logged in.", thePlayer, 255, 0, 0)
 					end
+					
+					sql:free_result(result)
+				else
+					outputChatBox("The Player is not logged in.", thePlayer, 255, 0, 0)
 				end
 			end
 		else
@@ -2421,23 +1956,14 @@ addCommandHandler("allchars", getAllCharacters, false, false)
 
 -- /allaccs
 function getAllAccounts( thePlayer, commandName, ... )
-	if ( getData(thePlayer, "loggedin") == 1 ) and ( exports['[ars]global']:isPlayerTrialModerator(thePlayer) ) then
+	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
 		
 		if (...) then
 			
 			local partialPlayerName = table.concat({...}, " ")
 			
-			local players = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName)
-			if ( #players > 1 ) then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-			
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			elseif ( #players == 1 ) then
-				local foundPlayer = players[#players]
-				
+			local foundPlayer = exports['[ars]global']:findPlayer(thePlayer, partialPlayerName, {hideNoPlayers = true})
+			if foundPlayer then
 				local ip = getPlayerIP( foundPlayer )
 				ip = string.sub( tostring( ip ), 1, decimalPlace( ip ) + 2 )
 				

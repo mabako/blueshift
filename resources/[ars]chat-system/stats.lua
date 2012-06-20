@@ -1,53 +1,16 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 -- /stats
 function showPlayerStats( thePlayer, commandName, partialPlayerName )
 	local drivingLicense, hoursPlayed, vehicles, properties = nil
 	
 	if ( partialPlayerName ) then
 		
-		if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
-			
-			local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
-			
-			if #players == 0 then
-				outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-			elseif #players > 1 then
-				outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
-				
-				local count = 0
-				for k, foundPlayer in ipairs (players) do
-					
-					count = count + 1
-					outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-				end		
-			else
-				for k, foundPlayer in ipairs (players) do
-					
-					outputChatBox("~-~-~-~-~~-~ Stats: ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~", thePlayer, 212, 156, 49)
-					outputStats( thePlayer, getPlayerStats( foundPlayer ) )
-				end
+		if getElementData(thePlayer, "loggedin") and exports['[ars]global']:isPlayerTrialModerator(thePlayer) then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				outputChatBox("~-~-~-~-~~-~ Stats: ".. getPlayerName( foundPlayer ):gsub("_", " ") .." ~-~-~-~-~~-~", thePlayer, 212, 156, 49)
+				outputStats( thePlayer, getPlayerStats( foundPlayer ) )
 			end	
 		end
 	else
@@ -104,28 +67,28 @@ function getPlayerStats( thePlayer )
 	if ( result ) then
 		
 		local drivingLicense = tonumber( result['drivinglicense'] )
-		local hoursPlayed = tonumber( getData(thePlayer, "hoursplayed" ) )
+		local hoursPlayed = tonumber( getElementData(thePlayer, "hoursplayed" ) )
 		
 		local vehicles = { }
 		for key, theVehicle in ipairs ( getElementsByType("vehicle") ) do
 			
-			local dbid = tonumber( getData( thePlayer, "dbid" ) )
-			if ( tonumber( getData( theVehicle, "owner" ) ) == dbid ) then
+			local dbid = tonumber( getElementData( thePlayer, "dbid" ) )
+			if ( tonumber( getElementData( theVehicle, "owner" ) ) == dbid ) then
 				
-				vehicles[tonumber( getData( theVehicle, "dbid" ) )] = theVehicle
+				vehicles[tonumber( getElementData( theVehicle, "dbid" ) )] = theVehicle
 			end
 		end
 			
 		local properties = { }
 		for key, theProperty in ipairs ( getElementsByType("marker") ) do
 			
-			local dbid = tonumber( getData( thePlayer, "dbid" ) )
-			local elevator = tonumber( getData( theProperty, "elevator" ) )
+			local dbid = tonumber( getElementData( thePlayer, "dbid" ) )
+			local elevator = tonumber( getElementData( theProperty, "elevator" ) )
 			if ( getElementChild( theProperty, 0 ) and elevator == 0 ) then -- Parent
 			
-				if ( tonumber( getData( theProperty, "owner" ) ) == dbid ) then
+				if ( tonumber( getElementData( theProperty, "owner" ) ) == dbid ) then
 				
-					properties[tonumber( getData( theProperty, "dbid" ) )] = tostring( getData( theProperty, "name") )
+					properties[tonumber( getElementData( theProperty, "dbid" ) )] = tostring( getElementData( theProperty, "name") )
 				end	
 			end
 		end

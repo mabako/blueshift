@@ -1,27 +1,5 @@
 local sql = exports.sql
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Phone System ] ---------
 
 local lines = { }
@@ -33,39 +11,39 @@ lines["Los Santos Taxi Services"] = 500
 local playerRingtone = { }
 
 function callPhone( thePlayer, commandName, phoneNumber )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if getElementData(thePlayer, "loggedin") and not isPedDead(thePlayer) then
 		
 		local hasPhone = exports['[ars]inventory-system']:hasItem(thePlayer, 3)
 		if ( hasPhone ) then
 			
-			if ( tonumber( getData(thePlayer, "calling") ) == 0 and tonumber( getData(thePlayer, "ringing") ) == 0 ) then
+			if ( tonumber( getElementData(thePlayer, "calling") ) == 0 and tonumber( getElementData(thePlayer, "ringing") ) == 0 ) then
 				
 				if (phoneNumber) then
 					local phoneNumber = tonumber(phoneNumber)
 					
-					local togglephone = tonumber( getData( thePlayer, "togglephone" ) )
+					local togglephone = tonumber( getElementData( thePlayer, "togglephone" ) )
 					if ( togglephone == 0 ) then
 						
 						local found = false
 						for key, foundPlayer in ipairs( getElementsByType("player") ) do
-							if ( getData(foundPlayer, "loggedin" ) == 1 ) then
+							if getElementData(foundPlayer, "loggedin" ) then
 								
 								local hasPhone, matchPhoneNumber = exports['[ars]inventory-system']:hasItem(foundPlayer, 3, phoneNumber)
 							
 								if (hasPhone and matchPhoneNumber) then
 									
 									if ( foundPlayer ~= thePlayer ) then
-										if ( tonumber( getData(foundPlayer, "ringing") ) == 0 and tostring( getData(foundPlayer, "calling") ) == "0" ) then
+										if ( tonumber( getElementData(foundPlayer, "ringing") ) == 0 and tostring( getElementData(foundPlayer, "calling") ) == "0" ) then
 											
-											local togglephone = tonumber( getData( foundPlayer, "togglephone" ) )
+											local togglephone = tonumber( getElementData( foundPlayer, "togglephone" ) )
 											if ( togglephone == 0 ) then
 												
 												found = true
 												
-												setData(foundPlayer, "ringing", 1, true)
+												setElementData(foundPlayer, "ringing", 1, true)
 												
-												setData(foundPlayer, "calling", tonumber(getData(thePlayer, "dbid")), true)
-												setData(thePlayer, "calling", tonumber(getData(foundPlayer, "dbid")), true)
+												setElementData(foundPlayer, "calling", tonumber(getElementData(thePlayer, "dbid")), true)
+												setElementData(thePlayer, "calling", tonumber(getElementData(foundPlayer, "dbid")), true)
 												
 												triggerClientEvent (thePlayer, "playDialSound", thePlayer)
 												
@@ -105,8 +83,8 @@ function callPhone( thePlayer, commandName, phoneNumber )
 									
 									found = true
 									
-									setData(thePlayer, "pickedup", 1, true)
-									setData(thePlayer, "calling", tostring ( key ), true)
+									setElementData(thePlayer, "pickedup", 1, true)
+									setElementData(thePlayer, "calling", tostring ( key ), true)
 									
 									triggerClientEvent( thePlayer, "playDialSound", thePlayer )
 									outputChatBox("Dialing ".. phoneNumber .."...", thePlayer, 212, 156, 49)
@@ -155,19 +133,19 @@ end
 
 local calling = { }
 function pickupPhone( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
-		if ( tonumber( getData(thePlayer, "ringing") ) == 1 ) then
+		if ( tonumber( getElementData(thePlayer, "ringing") ) == 1 ) then
 			
-			setData(thePlayer, "pickedup", 1, true)
-			setData(thePlayer, "ringing", 0, true)
+			setElementData(thePlayer, "pickedup", 1, true)
+			setElementData(thePlayer, "ringing", 0, true)
 			
 			for key, value in ipairs ( getElementsByType("player") ) do
-				if ( getData(value, "loggedin" ) == 1 ) then
+				if getElementData(value, "loggedin" ) then
 				
-					if ( tonumber(getData(thePlayer, "calling")) == tonumber(getData(value, "dbid")) ) then
+					if ( tonumber(getElementData(thePlayer, "calling")) == tonumber(getElementData(value, "dbid")) ) then
 						
-						setData(value, "pickedup", 1, true)
+						setElementData(value, "pickedup", 1, true)
 						
 						calling[thePlayer] = value
 						calling[value] = thePlayer
@@ -190,19 +168,19 @@ end
 addCommandHandler("pickup", pickupPhone, false, false)
 
 function hangupPhone( thePlayer, commandName )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
-		if ( tonumber( getData(thePlayer, "ringing") ) == 1 or tostring( getData(thePlayer, "calling") ) ~= "0" ) then
+		if ( tonumber( getElementData(thePlayer, "ringing") ) == 1 or tostring( getElementData(thePlayer, "calling") ) ~= "0" ) then
 			
 			local found = false
 			for key, value in ipairs ( getElementsByType("player") ) do
-				if ( getData(value, "loggedin" ) == 1 ) then
+				if getElementData(value, "loggedin" ) then
 					
-					if ( tonumber(getData(thePlayer, "calling")) == tonumber(getData(value, "dbid")) ) then
+					if ( tonumber(getElementData(thePlayer, "calling")) == tonumber(getElementData(value, "dbid")) ) then
 					
-						if ( getData(thePlayer, "ringing") == 1 ) then
+						if ( getElementData(thePlayer, "ringing") == 1 ) then
 							
-							setData(thePlayer, "ringing", 0, true)
+							setElementData(thePlayer, "ringing", 0, true)
 							
 							resetCalling(thePlayer)
 							resetCalling(value)
@@ -220,9 +198,9 @@ function hangupPhone( thePlayer, commandName )
 							return
 						end
 							
-						if ( tostring(getData(thePlayer, "calling")) ~= "0" ) then
+						if ( tostring(getElementData(thePlayer, "calling")) ~= "0" ) then
 							
-							setData(value, "ringing", 0, true)
+							setElementData(value, "ringing", 0, true)
 							
 							resetCalling(thePlayer)
 							resetCalling(value)
@@ -245,7 +223,7 @@ function hangupPhone( thePlayer, commandName )
 			if ( not found ) then
 				
 				for key, value in pairs ( lines ) do
-					if ( tostring( getData(thePlayer, "calling") ) == tostring( key ) ) then	
+					if ( tostring( getElementData(thePlayer, "calling") ) == tostring( key ) ) then	
 
 						resetCalling(thePlayer)
 						outputChatBox("You hung up your phone.", thePlayer, 212, 156, 49)
@@ -261,25 +239,25 @@ end
 addCommandHandler("hangup", hangupPhone, false, false)
 
 function togglePlayerPhone( thePlayer )
-	if getData(thePlayer, "loggedin") == 1 and exports['[ars]global']:isPlayerLevelTwoDonator( thePlayer ) then
+	if exports['[ars]global']:isPlayerLevelTwoDonator( thePlayer ) then
 		
-		local togglephone = tonumber( getData( thePlayer, "togglephone") )
+		local togglephone = tonumber( getElementData( thePlayer, "togglephone") )
 		if ( togglephone == 1 ) then
 			
-			local update = sql:query("UPDATE `characters` SET `togphone`='0' WHERE `id`=".. sql:escape_string( tonumber( getData( thePlayer, "dbid") ) ) .."")
+			local update = sql:query("UPDATE `characters` SET `togphone`='0' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "dbid") ) ) .."")
 			if ( update ) then
 				
-				setData( thePlayer, "togglephone", 0, true )
+				setElementData( thePlayer, "togglephone", 0, true )
 				outputChatBox("You switched on your phone.", thePlayer, 212, 156, 49)
 			end
 			
 			sql:free_result(update)
 		else
 			
-			local update = sql:query("UPDATE `characters` SET `togphone`='1' WHERE `id`=".. sql:escape_string( tonumber( getData( thePlayer, "dbid") ) ) .."")
+			local update = sql:query("UPDATE `characters` SET `togphone`='1' WHERE `id`=".. sql:escape_string( tonumber( getElementData( thePlayer, "dbid") ) ) .."")
 			if ( update ) then
 				
-				setData( thePlayer, "togglephone", 1, true )
+				setElementData( thePlayer, "togglephone", 1, true )
 				outputChatBox("You switched off your phone.", thePlayer, 212, 156, 49)
 			end
 			
@@ -291,11 +269,11 @@ addCommandHandler("togphone", togglePlayerPhone, false, false)
 addCommandHandler("togglephone", togglePlayerPhone, false, false)
 
 function phoneChat( thePlayer, commandName, ... )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 
 		local callingLine = false
 		for key, value in pairs ( lines ) do
-			if ( tostring( getData(thePlayer, "calling") ) == key ) then
+			if ( tostring( getElementData(thePlayer, "calling") ) == key ) then
 				
 				callingLine = true
 				break
@@ -305,13 +283,13 @@ function phoneChat( thePlayer, commandName, ... )
 		local callingNumber = false
 		
 		if ( not callingLine ) then
-			if ( tonumber( getData(thePlayer, "calling") ) > 0 ) then
+			if ( tonumber( getElementData(thePlayer, "calling") ) > 0 ) then
 				
 				callingNumber = true
 			end
 		end	
 		
-		if ( callingLine or callingNumber ) and ( tonumber( getData(thePlayer, "ringing") ) == 0 and tonumber( getData(thePlayer, "pickedup") ) == 1 ) then
+		if ( callingLine or callingNumber ) and ( tonumber( getElementData(thePlayer, "ringing") ) == 0 and tonumber( getElementData(thePlayer, "pickedup") ) == 1 ) then
 			
 			if (...) then
 				
@@ -334,7 +312,7 @@ function phoneChat( thePlayer, commandName, ... )
 				
 					local operatorTellText = ""
 					for key, value in pairs ( lines ) do
-						if ( key == tostring( getData(thePlayer, "calling") ) ) then
+						if ( key == tostring( getElementData(thePlayer, "calling") ) ) then
 							
 							local operatorAskText = ""
 							if ( key == "Los Santos Police Department") then
@@ -360,7 +338,7 @@ function phoneChat( thePlayer, commandName, ... )
 							-- Taxi Drivers
 							if ( key == "Los Santos Taxi Services" ) then
 								for index, array in ipairs( getElementsByType("player") ) do
-									if ( tonumber( getData( array, "job") ) == 3 ) then
+									if ( tonumber( getElementData( array, "job") ) == 3 ) then
 										
 										outputChatBox(operatorAskText, array, 0, 100, 255)
 										outputChatBox("[".. dispatch .."] Message: ".. message .."", array, 0, 100, 255)
@@ -402,7 +380,7 @@ end
 addCommandHandler("p", phoneChat, false, false)
 
 function useShortMessageService( thePlayer, commandName, phoneNumber, ... )
-	if getData(thePlayer, "loggedin") == 1 and not isPedDead(thePlayer) then
+	if not isPedDead(thePlayer) then
 		
 		local hasPhone = exports['[ars]inventory-system']:hasItem(thePlayer, 3)
 		if ( hasPhone ) then
@@ -412,19 +390,19 @@ function useShortMessageService( thePlayer, commandName, phoneNumber, ... )
 				local phoneNumber = tonumber(phoneNumber)
 				local message = table.concat({...}, " ")
 				
-				local togglephone = tonumber( getData( thePlayer, "togglephone" ) )
+				local togglephone = tonumber( getElementData( thePlayer, "togglephone" ) )
 				if ( togglephone == 0 ) then
 					
 					local found = false
 					for key, foundPlayer in ipairs( getElementsByType("player") ) do
-						if ( getData(foundPlayer, "loggedin" ) == 1 ) then
+						if getElementData(foundPlayer, "loggedin" ) then
 						
 							local hasPhone, matchPhoneNumber = exports['[ars]inventory-system']:hasItem(foundPlayer, 3, phoneNumber)
 							if (hasPhone and matchPhoneNumber) then
 							
 								if ( foundPlayer ~= thePlayer ) then
 									
-									local togglephone = tonumber( getData( foundPlayer, "togglephone" ) )
+									local togglephone = tonumber( getElementData( foundPlayer, "togglephone" ) )
 									if ( togglephone == 0 ) then
 				
 										outputChatBox("SMS received from #:".. tostring( getCallerNumber( thePlayer ) ) .." ".. tostring( message ), foundPlayer, 217, 89, 26)
@@ -463,15 +441,15 @@ addCommandHandler("sms", useShortMessageService, false, false)
 
 function dropPlayerCall( )
 	
-	local ringing = tonumber( getData( source, "ringing") )
-	local calling = tostring( getData( source, "calling") )
+	local ringing = tonumber( getElementData( source, "ringing") )
+	local calling = tostring( getElementData( source, "calling") )
 	
 	if ( ringing == 1 ) or ( calling ~= "0" ) then
 		
 		if ( lines[calling] == nil ) then
 			
 			for key, thePlayer in ipairs ( getElementsByType("player") ) do
-				if ( tonumber( getData( thePlayer, "dbid") ) == calling ) then
+				if ( tonumber( getElementData( thePlayer, "dbid") ) == calling ) then
 					
 					restartPhone( thePlayer )
 					outputChatBox("They hung up.", thePlayer, 212, 156, 49)
@@ -489,15 +467,15 @@ end
 addEventHandler("onPlayerQuit", root, dropPlayerCall)
 
 function resetCalling( thePlayer )
-	setData(thePlayer, "calling", 0, true)
-	setData(thePlayer, "pickedup", 0, true)
+	setElementData(thePlayer, "calling", 0, true)
+	setElementData(thePlayer, "pickedup", 0, true)
 end	
 
 function restartPhone( thePlayer )
 
-	setData(thePlayer, "calling", 0, true)
-	setData(thePlayer, "ringing", 0, true)
-	setData(thePlayer, "pickedup", 0, true)
+	setElementData(thePlayer, "calling", 0, true)
+	setElementData(thePlayer, "ringing", 0, true)
+	setElementData(thePlayer, "pickedup", 0, true)
 	
 	--outputChatBox("Your phone was restarted.", thePlayer, 212, 156, 49)
 end
@@ -515,7 +493,7 @@ addEventHandler("onResourceStart", resourceRoot,
 
 function savePlayerWallpaper( wallpaper )
 	if ( wallpaper ) then
-		local dbid = tonumber( getData(source, "dbid") )
+		local dbid = tonumber( getElementData(source, "dbid") )
 		
 		local update = sql:query("UPDATE `characters` SET `wallpaper`=".. sql:escape_string( tonumber( wallpaper ) ) .." WHERE `id`=".. sql:escape_string( dbid ) .."")
 		if ( not update ) then
@@ -531,7 +509,7 @@ addEventHandler("savePlayerWallpaper", root, savePlayerWallpaper)
 
 function savePlayerRingtone( ringtone )
 	if ( ringtone ) then
-		local dbid = tonumber( getData(source, "dbid") )
+		local dbid = tonumber( getElementData(source, "dbid") )
 		
 		local update = sql:query("UPDATE `characters` SET `ringtone`=".. sql:escape_string( tonumber( ringtone ) ) .." WHERE `id`=".. sql:escape_string( dbid ) .."")
 		if ( not update ) then
@@ -549,7 +527,7 @@ addEventHandler("savePlayerRingtone", root, savePlayerRingtone)
 
 function savePlayerContact( contacts )
 	if ( contacts ) then
-		local dbid = tonumber( getData(source, "dbid") )
+		local dbid = tonumber( getElementData(source, "dbid") )
 		
 		local update = sql:query("UPDATE `characters` SET `contacts`='".. sql:escape_string( tostring( contacts ) ) .."' WHERE `id`=".. sql:escape_string( dbid ) .."")
 		if ( not update ) then
@@ -564,7 +542,7 @@ addEvent("savePlayerContact", true)
 addEventHandler("savePlayerContact", root, savePlayerContact)
 
 function getPhoneDetails( )
-	local dbid = tonumber( getData(source, "dbid") )
+	local dbid = tonumber( getElementData(source, "dbid") )
 	if ( dbid ) then
 		
 		local details = { }
@@ -577,7 +555,7 @@ function getPhoneDetails( )
 			local contacts = tostring( result['contacts'] )
 			local togglephone = tonumber( result['togphone'] )
 			
-			setData( source, "togglephone", togglephone, true )
+			setElementData( source, "togglephone", togglephone, true )
 			playerRingtone[source] = ringtone
 			
 			details[dbid] = { ringtone, wallpaper, contacts }

@@ -1,32 +1,10 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Fuel Meter ] ---------
 local vehicles = { }
 
 function onVehicleTurnOn( theVehicle )
 	if ( getElementType( theVehicle ) == "vehicle" ) then
 		
-		vehicles[theVehicle] = tonumber( getData(theVehicle, "fuel") )
+		vehicles[theVehicle] = tonumber( getElementData(theVehicle, "fuel") )
 	end	
 end
 addEvent("onVehicleTurnOn", true)
@@ -48,7 +26,7 @@ function takeVehicleFuel( )
 			
 			vehicles[key] = tonumber( vehicles[key] ) - 0.3 -- Decrease
 			
-			setData( key, "fuel", tonumber( vehicles[key] ), true )
+			setElementData( key, "fuel", tonumber( vehicles[key] ), true )
 		else
 			local thePlayer = getVehicleOccupant( key )
 			if ( thePlayer ) then
@@ -57,7 +35,7 @@ function takeVehicleFuel( )
 			end
 			
 			setVehicleEngineState( key, false )
-			setData(key, "engine", 0, true)
+			setElementData(key, "engine", 0, true)
 			
 			vehicles[key] = nil
 		end	
@@ -73,7 +51,7 @@ function refuelFromGasStation( theVehicle )
 		triggerEvent("giveMoneyToGovernment", source, 130 )
 		
 		outputChatBox("Your vehicle has been refuelled for $130.", source, 212, 156, 49)
-		setData( theVehicle, "fuel", 151, true )
+		setElementData( theVehicle, "fuel", 151, true )
 	end
 end
 addEvent("refuelFromGasStation", true)

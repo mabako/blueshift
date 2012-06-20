@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Friend System ] ---------
 local screenX, screenY = guiGetScreenSize( )
 
@@ -96,7 +85,7 @@ function isFriendOnline( username )
 		local username = tostring( username )
 		
 		for key, value in ipairs ( getElementsByType("player") ) do
-			if ( tostring( getData( value, "accountname") ) == username ) then
+			if ( tostring( getElementData( value, "accountname") ) == username ) then
 				
 				return getPlayerName( value ):gsub("_", " ")
 			end

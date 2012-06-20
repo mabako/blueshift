@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Phone System ] ---------
 local screenX, screenY = guiGetScreenSize( )
 local menu = "main"
@@ -47,7 +36,7 @@ function drawPhoneCover( )
 end
 
 function createPhoneUI( )
-	if ( getData( localPlayer, "loggedin" ) == 1 ) then
+	if getElementData( localPlayer, "loggedin" ) then
 		
 		local width, height = 200, 242
 		winX, winY = (screenX/2) - (width/2), (screenY/2) - (height/2)
@@ -1207,7 +1196,7 @@ addEventHandler("onClientPlayerQuit", root,
 )
 
 function startPhone( )
-	if ( getData( localPlayer, "loggedin" ) == 1 ) then
+	if getElementData( localPlayer, "loggedin" ) then
 		triggerServerEvent("getPhoneDetails", localPlayer)
 	end
 end

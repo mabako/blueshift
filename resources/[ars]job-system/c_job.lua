@@ -1,26 +1,4 @@
-local screenX, screenY = guiGetScreenSize( )
-
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:c_assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
+local screenX, screenY = guiGetScreenSize( )	
 
 --------- [ Job Employee ] ---------
 local employee = nil
@@ -37,13 +15,13 @@ addEventHandler("onClientResourceStart", resourceRoot, createEmployee)
 
 --------- [ Job Access ] ---------
 function onEmployeeClick(button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement)
-	if (getData(getLocalPlayer(), "loggedin") == 1) and (not isElement(jobWindow)) then
+	if getElementData(getLocalPlayer(), "loggedin") and (not isElement(jobWindow)) then
 		
 		if (button == "right" and state == "up") then
 			
 			if (clickedElement) and (clickedElement == employee) then
 				
-				local license = tonumber( getData(localPlayer, "d:license") )
+				local license = tonumber( getElementData(localPlayer, "d:license") )
 				if ( license == 1 ) then
 					showJobUI( )
 				else
@@ -63,7 +41,7 @@ function showJobUI( )
 	-- Elements
 	jobWindow = guiCreateWindow(jobX, jobY, jobWidth, jobHeight, "Government Jobs' list", false)
 		
-	if (getData(localPlayer, "job") == 0) then 
+	if (getElementData(localPlayer, "job") == 0) then 
 		
 		welcomeLbl = guiCreateLabel(20, 30, 420, 20, "Welcome, this is the list of the current available Government jobs.", false, jobWindow)
 		
@@ -119,7 +97,7 @@ function showJobUI( )
 		end, false)
 		
 		guiSetFont(welcomeLbl, "clear-normal")
-	elseif (getData(localPlayer, "job") > 0) then 
+	elseif (getElementData(localPlayer, "job") > 0) then 
 		
 		guiSetSize(jobWindow, 460, 160, false)
 		guiSetText(jobWindow, "Quit Job")

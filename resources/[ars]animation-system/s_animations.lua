@@ -1,33 +1,9 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 --------- [ Animation System ] ---------
 
 -- /cover
 addCommandHandler("cover",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "ped", "duck_cower", -1, false, false, false)
-		end
+		setPedAnimation( thePlayer, "ped", "duck_cower", -1, false, false, false)
 	end, false, false
 )	
 
@@ -35,130 +11,91 @@ addCommandHandler("cover",
 -- /cpr 
 addCommandHandler("cpr",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "medic", "cpr", 8000, false, true, false )
-		end
+		setPedAnimation( thePlayer, "medic", "cpr", 8000, false, true, false )
 	end, false, false
 )
 
 -- /wait
 addCommandHandler("wait",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "COP_AMBIENT", "Coplook_loop", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "COP_AMBIENT", "Coplook_loop", -1, true, false, false )
 	end, false, false
 )
 
 -- /think
 addCommandHandler("think",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "COP_AMBIENT", "Coplook_think", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "COP_AMBIENT", "Coplook_think", -1, true, false, false )
 	end, false, false
 )	
 
 -- /lean
 addCommandHandler("lean",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "GANGS", "leanIDLE", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "GANGS", "leanIDLE", -1, true, false, false )
 	end, false, false
 )
 
 -- /idle
 addCommandHandler("idle",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "DEALER", "DEALER_IDLE_01", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "DEALER", "DEALER_IDLE_01", -1, true, false, false )
 	end, false, false
 )
 
 -- /piss
 addCommandHandler("piss",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "PAULNMAC", "Piss_loop", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "PAULNMAC", "Piss_loop", -1, true, false, false )
 	end, false, false
 )	
 
 -- /wank
 addCommandHandler("wank",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "PAULNMAC", "wank_loop", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "PAULNMAC", "wank_loop", -1, true, false, false )
 	end, false, false
 )
 
 -- /slapass
 addCommandHandler("slapass",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "SWEET", "sweet_ass_slap", 2000, true, false, false )
-		end
+		setPedAnimation( thePlayer, "SWEET", "sweet_ass_slap", 2000, true, false, false )
 	end, false, false
 )	
 
 -- /fixcar
 addCommandHandler("fixcar",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "CAR", "Fixn_Car_loop", -1, true, false, false )
-		end
+		setPedAnimation( thePlayer, "CAR", "Fixn_Car_loop", -1, true, false, false )
 	end, false, false
 )
 
 -- /handsup
 addCommandHandler("handsup",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "ped", "handsup", -1, false, false, false )
-		end
+		setPedAnimation( thePlayer, "ped", "handsup", -1, false, false, false )
 	end, false, false
 )	
 
 -- /hailtaxi 
 addCommandHandler("hailtaxi",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "MISC", "Hiker_Pose", -1, false, true, false )
-		end
+		setPedAnimation( thePlayer, "MISC", "Hiker_Pose", -1, false, true, false )
 	end, false, false
 )	
 
 -- /scratch
 addCommandHandler("scratch",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "MISC", "Scratchballs_01", -1, true, true, false )
-		end
+		setPedAnimation( thePlayer, "MISC", "Scratchballs_01", -1, true, true, false )
 	end, false, false
 )	
 
 -- /fu
 addCommandHandler("fu",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "RIOT", "RIOT_FUKU", 800, false, true, false )
-		end
+		setPedAnimation( thePlayer, "RIOT", "RIOT_FUKU", 800, false, true, false )
 	end, false, false
 )
 
@@ -167,31 +104,28 @@ addCommandHandler("strip",
 	function( thePlayer, commandName, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_A", -1, false, true, false )
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_B", -1, false, true, false )
-			elseif ( id == 4 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_C", -1, false, true, false )
-			elseif ( id == 5 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_D", -1, false, true, false )
-			elseif ( id == 6 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_E", -1, false, true, false )
-			elseif ( id == 7 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_F", -1, false, true, false )
-			elseif ( id == 8 ) then
-				setPedAnimation( thePlayer, "STRIP", "strip_G", -1, false, true, false )
-			elseif ( id == 9 ) then
-				setPedAnimation( thePlayer, "STRIP", "STR_Loop_A", -1, false, true, false )
-			elseif ( id == 10 ) then
-				setPedAnimation( thePlayer, "STRIP", "STR_Loop_B", -1, false, true, false )
-			elseif ( id == 11 ) then
-				setPedAnimation( thePlayer, "STRIP", "STR_Loop_C", -1, false, true, false )
-			else
-				setPedAnimation( thePlayer, "STRIP", "PUN_HOLLER", -1, false, true, false )
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_A", -1, false, true, false )
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_B", -1, false, true, false )
+		elseif ( id == 4 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_C", -1, false, true, false )
+		elseif ( id == 5 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_D", -1, false, true, false )
+		elseif ( id == 6 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_E", -1, false, true, false )
+		elseif ( id == 7 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_F", -1, false, true, false )
+		elseif ( id == 8 ) then
+			setPedAnimation( thePlayer, "STRIP", "strip_G", -1, false, true, false )
+		elseif ( id == 9 ) then
+			setPedAnimation( thePlayer, "STRIP", "STR_Loop_A", -1, false, true, false )
+		elseif ( id == 10 ) then
+			setPedAnimation( thePlayer, "STRIP", "STR_Loop_B", -1, false, true, false )
+		elseif ( id == 11 ) then
+			setPedAnimation( thePlayer, "STRIP", "STR_Loop_C", -1, false, true, false )
+		else
+			setPedAnimation( thePlayer, "STRIP", "PUN_HOLLER", -1, false, true, false )
 		end
 	end, false, false
 )
@@ -199,10 +133,7 @@ addCommandHandler("strip",
 -- /drink
 addCommandHandler("drink",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "BAR", "dnk_stndM_loop", 2300, false, false, false )
-		end
+		setPedAnimation( thePlayer, "BAR", "dnk_stndM_loop", 2300, false, false, false )
 	end, false, false
 )
 
@@ -211,13 +142,10 @@ addCommandHandler("lay",
 	function( thePlayer, commandName, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "BEACH", "sitnwait_Loop_W", -1, true, false, false )
-			else
-				setPedAnimation( thePlayer, "BEACH", "Lay_Bac_Loop", -1, true, false, false )
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "BEACH", "sitnwait_Loop_W", -1, true, false, false )
+		else
+			setPedAnimation( thePlayer, "BEACH", "Lay_Bac_Loop", -1, true, false, false )
 		end
 	end, false, false
 )	
@@ -225,30 +153,21 @@ addCommandHandler("lay",
 -- /beg
 addCommandHandler("beg",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "SHOP", "SHP_Rob_React", 4000, true, false, false )
-		end
+		setPedAnimation( thePlayer, "SHOP", "SHP_Rob_React", 4000, true, false, false )
 	end, false, false
 )
 
 -- /mourn
 addCommandHandler("mourn",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "GRAVEYARD", "mrnM_loop", -1, true, false, false)
-		end
+		setPedAnimation( thePlayer, "GRAVEYARD", "mrnM_loop", -1, true, false, false)
 	end, false, false
 )
 
 -- /cry
 addCommandHandler("cry",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation( thePlayer, "GRAVEYARD", "mrnF_loop", -1, true, false, false)
-		end
+		setPedAnimation( thePlayer, "GRAVEYARD", "mrnF_loop", -1, true, false, false)
 	end, false, false
 )
 
@@ -257,15 +176,12 @@ addCommandHandler("cheer",
 	function( thePlayer, commandName, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "OTB", "wtchrace_win", -1, true, false, false )
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "RIOT", "RIOT_shout", -1, true, false, false )
-			else
-				setPedAnimation( thePlayer, "STRIP", "PUN_HOLLER", -1, true, false, false )
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "OTB", "wtchrace_win", -1, true, false, false )
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "RIOT", "RIOT_shout", -1, true, false, false )
+		else
+			setPedAnimation( thePlayer, "STRIP", "PUN_HOLLER", -1, true, false, false )
 		end
 	end, false, false
 )
@@ -275,25 +191,22 @@ addCommandHandler("dance",
 	function( thePlayer, commandName, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "DANCING", "dance_loop", -1, true, false, false )
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "DANCING", "DAN_Down_A", -1, true, false, false )
-			elseif ( id == 4 ) then
-				setPedAnimation( thePlayer, "DANCING", "DAN_Loop_A", -1, true, false, false )
-			elseif ( id == 5 ) then
-				setPedAnimation( thePlayer, "DANCING", "DAN_Right_A", -1, true, false, false )
-			elseif ( id == 6 ) then
-				setPedAnimation( thePlayer, "DANCING", "DAN_Up_A", -1, true, false, false )
-			elseif ( id == 7 ) then
-				setPedAnimation( thePlayer, "DANCING", "dnce_M_a", -1, true, false, false )
-			elseif ( id == 8 ) then
-				setPedAnimation( thePlayer, "DANCING", "dnce_M_b", -1, true, false, false )
-			else
-				setPedAnimation( thePlayer, "DANCING", "DAN_Left_A", -1, true, false, false )
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "DANCING", "dance_loop", -1, true, false, false )
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "DANCING", "DAN_Down_A", -1, true, false, false )
+		elseif ( id == 4 ) then
+			setPedAnimation( thePlayer, "DANCING", "DAN_Loop_A", -1, true, false, false )
+		elseif ( id == 5 ) then
+			setPedAnimation( thePlayer, "DANCING", "DAN_Right_A", -1, true, false, false )
+		elseif ( id == 6 ) then
+			setPedAnimation( thePlayer, "DANCING", "DAN_Up_A", -1, true, false, false )
+		elseif ( id == 7 ) then
+			setPedAnimation( thePlayer, "DANCING", "dnce_M_a", -1, true, false, false )
+		elseif ( id == 8 ) then
+			setPedAnimation( thePlayer, "DANCING", "dnce_M_b", -1, true, false, false )
+		else
+			setPedAnimation( thePlayer, "DANCING", "DAN_Left_A", -1, true, false, false )
 		end
 	end, false, false
 )
@@ -302,17 +215,14 @@ addCommandHandler("dance",
 addCommandHandler("crack",
 	function( thePlayer, commadName, id )
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "CRACK", "crckidle1", -1, true, false, false)
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "CRACK", "crckidle3", -1, true, false, false)
-			elseif ( id == 4 ) then
-				setPedAnimation( thePlayer, "CRACK", "crckidle4", -1, true, false, false)
-			else
-				setPedAnimation( thePlayer, "CRACK", "crckidle2", -1, true, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "CRACK", "crckidle1", -1, true, false, false)
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "CRACK", "crckidle3", -1, true, false, false)
+		elseif ( id == 4 ) then
+			setPedAnimation( thePlayer, "CRACK", "crckidle4", -1, true, false, false)
+		else
+			setPedAnimation( thePlayer, "CRACK", "crckidle2", -1, true, false, false)
 		end
 	end, false, false
 )	
@@ -321,19 +231,16 @@ addCommandHandler("crack",
 addCommandHandler("gsign",
 	function( thePlayer, commadName, id )
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			if ( id == 2 ) then
-				setPedAnimation(thePlayer, "GHANDS", "gsign2", 4000, true, false, false)
-			elseif ( id == 3 ) then
-				setPedAnimation(thePlayer, "GHANDS", "gsign3", 4000, true, false, false)
-			elseif ( id == 4 ) then
-				setPedAnimation(thePlayer, "GHANDS", "gsign4", 4000, true, false, false)
-			elseif ( id == 5 ) then
-				setPedAnimation(thePlayer, "GHANDS", "gsign5", 4000, true, false, false)
-			else
-				setPedAnimation(thePlayer, "GHANDS", "gsign1", 4000, true, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation(thePlayer, "GHANDS", "gsign2", 4000, true, false, false)
+		elseif ( id == 3 ) then
+			setPedAnimation(thePlayer, "GHANDS", "gsign3", 4000, true, false, false)
+		elseif ( id == 4 ) then
+			setPedAnimation(thePlayer, "GHANDS", "gsign4", 4000, true, false, false)
+		elseif ( id == 5 ) then
+			setPedAnimation(thePlayer, "GHANDS", "gsign5", 4000, true, false, false)
+		else
+			setPedAnimation(thePlayer, "GHANDS", "gsign1", 4000, true, false, false)
 		end
 	end, false, false
 )
@@ -341,10 +248,7 @@ addCommandHandler("gsign",
 -- /puke
 addCommandHandler("puke",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "FOOD", "EAT_Vomit_P", 8000, true, false, false )
-		end
+		setPedAnimation( thePlayer, "FOOD", "EAT_Vomit_P", 8000, true, false, false )
 	end, false, false
 )
 
@@ -352,15 +256,12 @@ addCommandHandler("puke",
 addCommandHandler("rap",
 	function( thePlayer, commandName, id )
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "LOWRIDER", "RAP_B_Loop", -1, true, false, false)
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "LOWRIDER", "RAP_C_Loop", -1, true, false, false)
-			else
-				setPedAnimation( thePlayer, "LOWRIDER", "RAP_A_Loop", -1, true, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "LOWRIDER", "RAP_B_Loop", -1, true, false, false)
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "LOWRIDER", "RAP_C_Loop", -1, true, false, false)
+		else
+			setPedAnimation( thePlayer, "LOWRIDER", "RAP_A_Loop", -1, true, false, false)
 		end
 	end, false, false
 )
@@ -368,10 +269,7 @@ addCommandHandler("rap",
 -- /aim
 addCommandHandler("aim",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation(thePlayer, "SHOP", "ROB_Loop_Threat", -1, false, true, false)
-		end
+		setPedAnimation(thePlayer, "SHOP", "ROB_Loop_Threat", -1, false, true, false)
 	end, false, false
 )
 
@@ -379,26 +277,23 @@ addCommandHandler("aim",
 addCommandHandler("sit",
 	function( thePlayer, commandName, id )
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			if ( isPedInVehicle( thePlayer ) ) then
-				if ( id == 2 ) then
-					setPedAnimation( thePlayer, "CAR", "Sit_relaxed" )
-				else
-					setPedAnimation( thePlayer, "CAR", "Tap_hand" )
-				end
+		if ( isPedInVehicle( thePlayer ) ) then
+			if ( id == 2 ) then
+				setPedAnimation( thePlayer, "CAR", "Sit_relaxed" )
 			else
-				if ( id == 2 ) then
-					setPedAnimation( thePlayer, "FOOD", "FF_Sit_Look", -1, true, false, false)
-				elseif ( id == 3 ) then
-					setPedAnimation( thePlayer, "Attractors", "Stepsit_loop", -1, true, false, false)
-				elseif ( id == 4 ) then
-					setPedAnimation( thePlayer, "BEACH", "ParkSit_W_loop", 1, true, false, false)
-				elseif ( id == 5 ) then
-					setPedAnimation( thePlayer, "BEACH", "ParkSit_M_loop", 1, true, false, false)
-				else
-					setPedAnimation( thePlayer, "ped", "SEAT_idle", -1, true, false, false)
-				end
+				setPedAnimation( thePlayer, "CAR", "Tap_hand" )
+			end
+		else
+			if ( id == 2 ) then
+				setPedAnimation( thePlayer, "FOOD", "FF_Sit_Look", -1, true, false, false)
+			elseif ( id == 3 ) then
+				setPedAnimation( thePlayer, "Attractors", "Stepsit_loop", -1, true, false, false)
+			elseif ( id == 4 ) then
+				setPedAnimation( thePlayer, "BEACH", "ParkSit_W_loop", 1, true, false, false)
+			elseif ( id == 5 ) then
+				setPedAnimation( thePlayer, "BEACH", "ParkSit_M_loop", 1, true, false, false)
+			else
+				setPedAnimation( thePlayer, "ped", "SEAT_idle", -1, true, false, false)
 			end
 		end
 	end, false, false
@@ -408,15 +303,12 @@ addCommandHandler("sit",
 addCommandHandler("smoke", 
 	function( thePlayer, commandName, id )
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "SMOKING", "M_smkstnd_loop", -1, true, false, false)
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "LOWRIDER", "M_smkstnd_loop", -1, true, false, false)
-			else
-				setPedAnimation( thePlayer, "GANGS", "smkcig_prtl", -1, true, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "SMOKING", "M_smkstnd_loop", -1, true, false, false)
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "LOWRIDER", "M_smkstnd_loop", -1, true, false, false)
+		else
+			setPedAnimation( thePlayer, "GANGS", "smkcig_prtl", -1, true, false, false)
 		end
 	end, false, false
 )
@@ -424,100 +316,70 @@ addCommandHandler("smoke",
 -- /smokelean
 addCommandHandler("smokelean",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "LOWRIDER", "M_smklean_loop", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "LOWRIDER", "M_smklean_loop", -1, true, false, false)
 	end, false, false
 )
 
 -- /laugh
 addCommandHandler("laugh",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "RAPPING", "Laugh_01", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "RAPPING", "Laugh_01", -1, true, false, false)
 	end, false, false
 )
 
 -- /carchat
 addCommandHandler("carchat", 
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "CAR_CHAT", "car_talkm_loop", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "CAR_CHAT", "car_talkm_loop", -1, true, false, false)
 	end, false, false
 )
 
 -- /tired
 addCommandHandler("tired",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "FAT", "idle_tired", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "FAT", "idle_tired", -1, true, false, false)
 	end, false, false
 )
 
 -- /bitchslap
 addCommandHandler("bitchslap",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "MISC", "bitchslap", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "MISC", "bitchslap", -1, true, false, false)
 	end, false, false
 )
 
 -- /shocked
 addCommandHandler("shocked",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "ON_LOOKERS", "panic_loop", -1, true, false, false)
-		end
+		setPedAnimation(thePlayer, "ON_LOOKERS", "panic_loop", -1, true, false, false)
 	end, false, false
 )	
 
 -- /dive
 addCommandHandler("dive",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			setPedAnimation(thePlayer, "ped", "EV_dive", -1, false, true, false)
-		end
+		setPedAnimation(thePlayer, "ped", "EV_dive", -1, false, true, false)
 	end, false, false
 )
 
 -- /what Amination
 addCommandHandler("what",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "RIOT", "RIOT_ANGRY", -1, true, false, false)
-		end
+		setPedAnimation( thePlayer, "RIOT", "RIOT_ANGRY", -1, true, false, false)
 	end, false, false
 )
 
 -- /fallfront
 addCommandHandler("fallfront",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "ped", "FLOOR_hit_f", -1, false, false, false)
-		end
+		setPedAnimation( thePlayer, "ped", "FLOOR_hit_f", -1, false, false, false)
 	end, false, false
 )
 
 -- /fall
 addCommandHandler("fall",
 	function( thePlayer )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			setPedAnimation( thePlayer, "ped", "FLOOR_hit", -1, false, false, false)
-		end
+		setPedAnimation( thePlayer, "ped", "FLOOR_hit", -1, false, false, false)
 	end, false, false
 )
 
@@ -533,14 +395,11 @@ addCommandHandler("walk",
 	function( thePlayer, command, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-			
-			if ( not walk[id] ) then
-				id = 2
-			end
-				
-			setPedAnimation( thePlayer, "PED", walk[id], -1, true, true, false)
+		if ( not walk[id] ) then
+			id = 2
 		end
+			
+		setPedAnimation( thePlayer, "PED", walk[id], -1, true, true, false)
 	end, false, false	
 )
 
@@ -549,15 +408,12 @@ addCommandHandler("win",
 	function( thePlayer, command, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "CASINO", "manwinb", 2000, false, false, false)
-			elseif ( id == 3 ) then
-				setPedAnimation( thePlayer, "benchpress", "gym_bp_celebrate", 2000, false, false, false)
-			else
-				setPedAnimation( thePlayer, "CASINO", "manwind", 2000, false, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "CASINO", "manwinb", 2000, false, false, false)
+		elseif ( id == 3 ) then
+			setPedAnimation( thePlayer, "benchpress", "gym_bp_celebrate", 2000, false, false, false)
+		else
+			setPedAnimation( thePlayer, "CASINO", "manwind", 2000, false, false, false)
 		end
 	end, false, false
 )
@@ -567,13 +423,10 @@ addCommandHandler("daps",
 	function( thePlayer, command, id )
 		
 		local id = tonumber( id )
-		if ( getData( thePlayer, "loggedin" ) == 1 ) then
-		
-			if ( id == 2 ) then
-				setPedAnimation( thePlayer, "GANGS", "hndshkca", -1, true, false, false)
-			else
-				setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, true, false, false)
-			end
+		if ( id == 2 ) then
+			setPedAnimation( thePlayer, "GANGS", "hndshkca", -1, true, false, false)
+		else
+			setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, true, false, false)
 		end
 	end, false, false
 )	
@@ -581,43 +434,23 @@ addCommandHandler("daps",
 -- /givedaps
 addCommandHandler("givedaps", 
 	function( thePlayer, command, partialPlayerName )
-		
-		if ( getData(thePlayer, "loggedin") == 1 ) then
-			
-			if (partialPlayerName) then
-			
-				local players = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+		if (partialPlayerName) then
+			local foundPlayer = exports['[ars]global']:findPlayer( thePlayer, partialPlayerName )
+			if foundPlayer then
+				local targX, targY, targZ = getElementPosition( foundPlayer )
+				local x, y, z = getElementPosition( thePlayer )
 				
-				if #players == 0 then
-					outputChatBox("No one found with that Name / ID.", thePlayer, 255, 0, 0)
-				elseif #players > 1 then
-					outputChatBox("Multple Players found!", thePlayer, 255, 200, 0)
+				if ( getDistanceBetweenPoints3D( x, y, z, targX, targY, targZ ) < 2 ) then 
 					
-					local count = 0
-					for k, foundPlayer in ipairs (players) do
-						
-						count = count + 1
-						outputChatBox("(".. getData(foundPlayer, "playerid") ..") ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 255, 0)
-					end		
+					setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, false, false, false)
+					setPedAnimation( foundPlayer, "GANGS", "hndshkfa", -1, false, false, false)
 				else
-					for k, foundPlayer in ipairs (players) do
-						
-						local targX, targY, targZ = getElementPosition( foundPlayer )
-						local x, y, z = getElementPosition( thePlayer )
-						
-						if ( getDistanceBetweenPoints3D( x, y, z, targX, targY, targZ ) < 2 ) then 
-							
-							setPedAnimation( thePlayer, "GANGS", "hndshkfa", -1, false, false, false)
-							setPedAnimation( foundPlayer, "GANGS", "hndshkfa", -1, false, false, false)
-						else
-							outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 0, 0)
-						end	
-					end
-				end
-			else
-				outputChatBox("SYNTAX: /".. command .." [ Player Name/ID ]", thePlayer, 212, 156, 49)
+					outputChatBox("You are too far away from ".. getPlayerName(foundPlayer):gsub("_", " "), thePlayer, 255, 0, 0)
+				end	
 			end
-		end	
+		else
+			outputChatBox("SYNTAX: /".. command .." [ Player Name/ID ]", thePlayer, 212, 156, 49)
+		end
 	end, false, false
 )	
 

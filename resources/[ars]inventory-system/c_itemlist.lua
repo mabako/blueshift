@@ -1,18 +1,7 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 itemlistWindow = nil
 
 function openItemlist()
-	if getData(getLocalPlayer(), "loggedin") == 1 and exports['[ars]global']:c_isPlayerTrialModerator(getLocalPlayer()) then
+	if exports['[ars]global']:c_isPlayerTrialModerator(getLocalPlayer()) then
 		if not (itemlistWindow) then
 			local screenX, screenY = guiGetScreenSize()
 			

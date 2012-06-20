@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 -------------- [ Nametags ] ---------------
 local font = dxCreateFont("font.ttf", 12, true)
 
@@ -16,9 +5,9 @@ function renderNameTags( )
 	local a, b, c = getCameraMatrix( )
 	
 	for k, v in ipairs( getElementsByType("player") ) do
-		if getData(v, "loggedin") == 1 then
+		if getElementData(v, "loggedin") then
 			
-			if getData(v, "nametag") == 1 then
+			if getElementData(v, "nametag") == 1 then
 				
 				local x, y, z = getElementPosition(getLocalPlayer())
 				local px, py, pz = getElementPosition(v)
@@ -56,7 +45,7 @@ function renderNameTags( )
 					
 					if (sx) and (sy) then
 						
-						dxDrawText("[".. getData(v, "playerid") .."] ".. getPlayerNametagText(v):gsub("_", " ") .."", sx, sy - txtSkyPosition*20, sx, sy, tocolor(r, g, b, 255), 1, font, "center", "center")
+						dxDrawText("[".. getElementData(v, "playerid") .."] ".. getPlayerNametagText(v):gsub("_", " ") .."", sx, sy - txtSkyPosition*20, sx, sy, tocolor(r, g, b, 255), 1, font, "center", "center")
 						
 						dxDrawRectangle(sx - 50, (sy + 20) - barSkyPosition*10 , h_barsize, 15, color, false)
 						-- Bounding Box

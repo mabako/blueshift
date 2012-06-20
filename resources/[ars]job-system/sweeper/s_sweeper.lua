@@ -1,39 +1,17 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 local leaveTimer = { }
 
 --------- [ Sweeper Job ] ---------
 function onEnterSweeper( vehicle, seat )
-	if (getData(vehicle, "job") == 1 and getData(source, "job") ~= 1) then -- The vehicle & player are not allowed to do sweeper job
+	if (getElementData(vehicle, "job") == 1 and getElementData(source, "job") ~= 1) then -- The vehicle & player are not allowed to do sweeper job
 		
 		removePedFromVehicle(source)
-	elseif (getData(vehicle, "job") == 1 and getData(source, "job") == 1) then
+	elseif (getElementData(vehicle, "job") == 1 and getElementData(source, "job") == 1) then
 	
 		if (seat == 0) then	-- They are the driver
 			
 			outputChatBox("Type /jobhelp if you need help regarding your job!", source, 0, 255, 0)
 				
-			if (getData(vehicle, "engine") == 0) then
+			if (getElementData(vehicle, "engine") == 0) then
 				outputChatBox("Press J to start the vehicle's engine.", source, 231, 60, 128)	-- Incase they are new..
 			end
 			
@@ -44,7 +22,7 @@ end
 addEventHandler("onPlayerVehicleEnter", root, onEnterSweeper)
 
 function onExitSweeper( vehicle, seat )
-	if (getData(vehicle, "job") == 1 and getData(source, "job") == 1) then
+	if (getElementData(vehicle, "job") == 1 and getElementData(source, "job") == 1) then
 		
 		if (seat == 0) then	-- They were in the driver's seat
 			

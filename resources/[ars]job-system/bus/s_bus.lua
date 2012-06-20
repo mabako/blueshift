@@ -1,40 +1,18 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
-local function setData( theElement, key, value, sync )
-	local key = tostring(key)
-	local value = tonumber(value) or tostring(value)
-	if isElement(theElement) and (key) and (value) then
-		
-		return exports['[ars]anticheat-system']:assignData( theElement, tostring(key), value, sync )
-	else
-		return false
-	end	
-end
-
 local leaveTimer = { }
 
 --------- [ Bus Job ] ---------
 function onEnterBus( vehicle, seat )
-	if (getData(vehicle, "job") == 2 and getData(source, "job") ~= 2) then -- The vehicle & player are not allowed to do bus job
+	if (getElementData(vehicle, "job") == 2 and getElementData(source, "job") ~= 2) then -- The vehicle & player are not allowed to do bus job
 		
 		removePedFromVehicle(source)
 		return
-	elseif (getData(vehicle, "job") == 2 and getData(source, "job") == 2) then
+	elseif (getElementData(vehicle, "job") == 2 and getElementData(source, "job") == 2) then
 	
 		if (seat == 0) then		-- They are the driver
 			
 			outputChatBox("Type /jobhelp if you need help regarding your job!", source, 0, 255, 0)
 			
-			if (getData(vehicle, "engine") == 0) then -- Incase they are new and don't know whats wrong..
+			if (getElementData(vehicle, "engine") == 0) then -- Incase they are new and don't know whats wrong..
 				
 				outputChatBox("Press J to start the vehicle's engine.", source, 219, 105, 29)
 			end
@@ -46,7 +24,7 @@ end
 addEventHandler("onPlayerVehicleEnter", root, onEnterBus)
 
 function onExitBus( vehicle, seat )
-	if (getData(vehicle, "job") == 2 and getData(source, "job") == 2) then
+	if (getElementData(vehicle, "job") == 2 and getElementData(source, "job") == 2) then
 		
 		if (seat == 0) then	-- They were in the driver's seat
 			

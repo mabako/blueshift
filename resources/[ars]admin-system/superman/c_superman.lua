@@ -174,16 +174,6 @@ local function getVector2DAngle(vec)
   return angle
 end
 
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --
 -- Initialization and shutdown functions
 --
@@ -293,7 +283,7 @@ end
 function Superman.onJump(key, keyState)
   local self = Superman
 
-  local admin = getData(localPlayer, "admin")
+  local admin = getElementData(localPlayer, "admin")
  
   if (tonumber(admin) > 1) then
 	  local task = getPedSimplestTask(localPlayer)
@@ -312,7 +302,7 @@ end
 function Superman.cmdSuperman()
   local self = Superman
 
-  local admin = getData(localPlayer, "admin")
+  local admin = getElementData(localPlayer, "admin")
   
   if (tonumber(admin) > 1) then
 	  if isPedInVehicle(localPlayer) or isPlayerFlying(localPlayer) then return end
@@ -322,7 +312,7 @@ function Superman.cmdSuperman()
 end
 
 function Superman.startFlight()
-  local admin = getData(localPlayer, "admin")
+  local admin = getElementData(localPlayer, "admin")
   
   if (tonumber(admin) > 1) then
 	  local self = Superman

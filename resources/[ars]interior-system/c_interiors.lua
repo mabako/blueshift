@@ -1,14 +1,3 @@
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Interior System ] ---------
 
 -- DRAW INTERIOR DETAILS
@@ -39,12 +28,12 @@ function drawInteriorDetails( )
 						local sightClear = isLineOfSightClear( a, b, c, x, y, z + 0.75, true, true, false, false, false )
 						if ( sightClear ) then
 							
-							local name = tostring(getData(value, "name"))
-							local price = tonumber(getData(value, "price"))
-							local owner = tonumber(getData(value, "owner"))
-							local rented = tonumber(getData(value, "rented"))
-							local type = tonumber(getData(value, "type"))
-							local elevator = tonumber(getData(value, "elevator"))
+							local name = tostring(getElementData(value, "name"))
+							local price = tonumber(getElementData(value, "price"))
+							local owner = tonumber(getElementData(value, "owner"))
+							local rented = tonumber(getElementData(value, "rented"))
+							local type = tonumber(getElementData(value, "type"))
+							local elevator = tonumber(getElementData(value, "elevator"))
 						
 							local helpText = nil
 							
@@ -95,7 +84,7 @@ addEventHandler("renderInteriorDetails", localPlayer, renderInteriorDetails)
 
 addEventHandler("onClientResourceStart", resourceRoot,
 	function( )
-		if ( getData( localPlayer, "loggedin" ) == 1 ) then
+		if getElementData( localPlayer, "loggedin" ) then
 			
 			rendering = true
 			addEventHandler("onClientRender", root, drawInteriorDetails)

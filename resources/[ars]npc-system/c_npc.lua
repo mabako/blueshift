@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ NPC System ] ---------
 addEventHandler("onClientPedDamage", root, cancelEvent) -- NPCs 100% bullet proof
 
@@ -40,12 +29,12 @@ end
 function clickSupplyNPC( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clickedElement )
 	if ( button == "right" and state == "up" ) then
 		
-		if ( getData( localPlayer, "loggedin" ) == 1 ) then 
+		if getElementData( localPlayer, "loggedin" ) then 
 			
-			if ( clickedElement == crips ) and ( getData( localPlayer, "faction" ) == 5 ) then
+			if ( clickedElement == crips ) and ( getElementData( localPlayer, "faction" ) == 5 ) then
 				
 				showCriminalSupplyUI( "Quentin Howard", "South Side Crips", "Yo' dawg, wha' can I get ya' today?" )
-			elseif ( clickedElement == dough ) and ( getData( localPlayer, "faction" ) == 10 ) then	
+			elseif ( clickedElement == dough ) and ( getElementData( localPlayer, "faction" ) == 10 ) then	
 				
 				showCriminalSupplyUI( "Samuel Higgins", "The Dough Club", "Ey' wha' can I get ya' nigga?" )
 			else
@@ -74,7 +63,7 @@ local canBuy = false
 function giveSupplierData( data, reload )
 	supplierData = data
 	
-	local faction = tonumber( getData( localPlayer, "faction" ) )
+	local faction = tonumber( getElementData( localPlayer, "faction" ) )
 	
 	local npc = nil
 	if ( faction == 5 ) then

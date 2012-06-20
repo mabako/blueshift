@@ -1,16 +1,5 @@
 local screenX, screenY = guiGetScreenSize( )
 
---------- [ Element Data returns ] ---------
-local function getData( theElement, key )
-	local key = tostring(key)
-	if isElement(theElement) and (key) then
-		
-		return exports['[ars]anticheat-system']:c_callData( theElement, tostring(key) )
-	else
-		return false
-	end
-end	
-
 --------- [ Vehicle Towing ] ---------
 local employee = createPed(93, 251.2578, 67.5410, 1003.6406, 90)
 setElementInterior(employee, 6)
@@ -21,7 +10,7 @@ addEventHandler("onClientClick", root,
 		if ( button == "right" and state == "up" ) then
 			
 			if ( clickedElement ) and ( clickedElement == employee ) then
-				if ( getData( localPlayer, "loggedin") == 1 and not isElement( towVehicleWindow ) ) then
+				if ( getElementData( localPlayer, "loggedin") and not isElement( towVehicleWindow ) ) then
 			
 					createTowVehicleWindow(  )
 				end	
@@ -44,15 +33,15 @@ function createTowVehicleWindow(  )
 	
 	for key, theVehicle in ipairs ( getElementsByType("vehicle" ) ) do
 		
-		if ( getData( theVehicle, "impounded") == 1 ) then
+		if ( getElementData( theVehicle, "impounded") == 1 ) then
 			
-			local owner = tonumber( getData( theVehicle, "owner" ) )
-			local dbid = tonumber( getData( localPlayer, "dbid" ) )
+			local owner = tonumber( getElementData( theVehicle, "owner" ) )
+			local dbid = tonumber( getElementData( localPlayer, "dbid" ) )
 			
 			if ( owner == dbid ) then
 				local row = guiGridListAddRow( towVehicleList )
 				
-				guiGridListSetItemText( towVehicleList, row, 1, tostring( getData( theVehicle, "dbid" ) ), false, false)
+				guiGridListSetItemText( towVehicleList, row, 1, tostring( getElementData( theVehicle, "dbid" ) ), false, false)
 				guiGridListSetItemText( towVehicleList, row, 2, tostring( getVehicleName( theVehicle ) ), false, false)
 			end
 		end
