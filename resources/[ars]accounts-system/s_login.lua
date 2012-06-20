@@ -82,6 +82,8 @@ function attemptLogin( username, password, remember )
 			if (update) then
 				
 				triggerEvent("loginPlayer", source, result['username'], result['id'], result['admin'], result['adminduty'], result['hiddenadmin'], result['reports'], result['donator'], result['togpm'], result['tutorial'], result['friends'], result['skinmods'], result['weaponmods'], result['vehiclemods'], true)
+			else
+				triggerClientEvent(source, "showSignInMessage", source, "Unknown login error.", 150)
 			end
 			
 			sql:free_result(update)
