@@ -50,7 +50,7 @@ function localChat( thePlayer, message, language )
 		
 		local message = tostring( message )
 		
-		outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", thePlayer, 255, 255, 255, true)
+		outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", thePlayer, 255, 255, 255)
 		
 		-- Convey the message to all the players around him by doing a loop
 		for k, players in ipairs ( getElementsByType("player") ) do
@@ -63,22 +63,18 @@ function localChat( thePlayer, message, language )
 					
 				-- Color should be according to the distance
 				local msgR, msgG, msgB
-				local colorCode
 				if (distance <= 6) then
 					msgR, msgG, msgB = 255, 255, 255
-					colorCode = "#FFFFFF"
 				elseif (distance > 6 and distance <= 12) then
 					msgR, msgG, msgB = 200, 200, 200
-					colorCode = "#C8C8C8"
 				elseif (distance > 12 and distance <= 20) then	
 					msgR, msgG, msgB = 145, 145, 145
-					colorCode = "#919191"
 				end	
 					
 				if getElementData(thePlayer, "loggedin") and ( not isPedDead(thePlayer) ) and ( players ~= thePlayer ) then
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
 				
-						outputLongChatBox("[English] ".. colorCode .."".. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", players, msgR, msgG, msgB, true)
+						outputLongChatBox("[English] " .. getPlayerName(thePlayer):gsub("_", " ") .." says: ", message, "", players, msgR, msgG, msgB)
 					end
 				end	
 			end	
@@ -130,7 +126,7 @@ function shoutLocal( thePlayer, commandName, ... )
 					
 				if (distance <= 30) then
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
-						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." shouts: ", message .. "!!", "", players, 255, 255, 255, true)
+						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." shouts: ", message .. "!!", "", players, 255, 255, 255)
 					end	
 				end
 			end	
@@ -157,7 +153,7 @@ function whisperLocal( thePlayer, commandName, ... )
 					
 				if (distance <= 2) then
 					if (getElementDimension(players) == getElementDimension(thePlayer) and getElementInterior(players) == getElementInterior(thePlayer)) then
-						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." whispers: ", message, "", players, 200, 200, 200, true)
+						outputLongChatBox("[English] ".. getPlayerName(thePlayer):gsub("_", " ") .." whispers: ", message, "", players, 200, 200, 200)
 					end	
 				end
 			end
