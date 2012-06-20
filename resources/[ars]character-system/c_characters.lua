@@ -8,6 +8,11 @@ local currentTab = 1
 function showCharactersUI( characters, theFriends, messages, skinmods, weaponmods, vehiclemods )
 	clearCharacterScreen()
 	
+	-- close ALL other windows
+	for k, v in ipairs( getElementsByType("gui-window") ) do
+		destroyElement( v )
+	end
+	
 	local winWidth, winHeight = 480, 450
 	local winX, winY = (screenX - screenX) + (20), (screenY/2) - (winHeight/2)
 	
