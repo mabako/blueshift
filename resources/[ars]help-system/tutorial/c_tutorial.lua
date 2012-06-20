@@ -260,10 +260,7 @@ function getRandomQuestion( )
 end
 
 function endEvaluation( )
-	local marks = ( marks/8 ) * 100
-	if ( string.len( tostring( marks ) ) > 2 ) then
-		marks = math.floor( tonumber( marks ) ) - 2
-	end
+	local marks = math.floor( marks/8 )
 	
 	-- Passed
 	local x = 225
