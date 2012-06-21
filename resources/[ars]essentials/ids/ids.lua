@@ -4,7 +4,7 @@ addEventHandler("onPlayerJoin", root,
 	function( )
 		local slot = nil
 		
-		for i = 1, 128 do
+		for i = 1, getMaxPlayers() do
 			if ( playerID[ i ] == nil ) then
 				
 				slot = i

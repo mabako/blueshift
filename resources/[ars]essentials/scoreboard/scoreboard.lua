@@ -1,3 +1,50 @@
+-- scoreboard test
+--[[
+function shuffle(t)
+  local n = #t
+ 
+  while n >= 2 do
+	-- n is now the last pertinent index
+	local k = math.random(n) -- 1 <= k <= n
+	-- Quick swap
+	t[n], t[k] = t[k], t[n]
+	n = n - 1
+  end
+ 
+  return t
+end
+
+local count = 5
+local function getElementsByType()
+	local t = {}
+	while #t < count do
+		table.insert(t, #t+1)
+	end
+	return shuffle(t)
+end
+
+local function getPlayerPing(i)
+	return i * 13
+end
+
+local function getElementData(i)
+	return i
+end
+
+local function getPlayerName(i)
+	return "derp" .. i
+end
+
+function getPlayerNametagColor(i)
+	return 255-i, 0, i
+end
+
+bindKey('num_sub', 'down',
+	function()
+		count = count - 1
+	end
+)
+]]
 -------------- [ Scoreboard ] ---------------
 local screenX, screenY = guiGetScreenSize()
 
@@ -12,43 +59,19 @@ local logoy = (y/2) - (logoheight/2)
 local isEventHandled = false
 local page = 1
 
-local players = { }
-function assemblePlayersByID( )
-	players = nil
-	players = { }
-	
-	for i = 1, 50 do
-		for key, thePlayer in ipairs( getElementsByType("player") ) do
-			
-			local playerID = tonumber( getElementData(thePlayer, "playerid") )
-			if ( playerID == i ) then
-
-				players[playerID] = thePlayer
-			end
-		end
-	end
-	
-	return true
-end	
-	
-function removePlayerFromList( )
-	local playerID = tonumber( getElementData(source, "playerid") )
-	players[playerID] = nil
+local function byIDs(a, b)
+	return getElementData(a, "playerid") < getElementData(b, "playerid")
 end
-addEventHandler("onClientPlayerQuit", getRootElement(), removePlayerFromList)
-	
+
 function renderPlayerList( )
 	dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 200))
 	
-	limit = 0
-	for k, v in pairs (players) do
-		limit = limit + 1
-	end
+	local players = getElementsByType("player")
+	table.sort(players, byIDs)
 	
-	local clientName = getPlayerName(getLocalPlayer()):gsub("_", " ")
-	
-	dxDrawText("Blueshift Gaming 1.0", x + 2, y + 403, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
-	dxDrawText("Players: (".. limit .."/50)", x + 208, y + 403, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
+	dxDrawText("Blushift Gaming 1.0", x + 4, y + 403, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
+	local playersText = #players .." Player" .. (#players == 1 and "" or "s")
+	dxDrawText(playersText, x + width - 4 - dxGetTextWidth(playersText, 1, "default-bold"), y + 403, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
 	
 	dxDrawText("ID", x + 15, y + 13, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
 	dxDrawText("Player", x + 60, y + 13, screenX, screenY, tocolor(255, 255, 255, 150), 1, "default-bold")
@@ -58,223 +81,50 @@ function renderPlayerList( )
 	
 	local yTxt = (screenY/2) - (height/2) + 35
 	
-	for k, v in pairs (players) do
-		
-		if isElement(v) then
+	-- might of want to fix the page here
+	local any = false
+	while not any do
+		for i = page * 12 - 11, math.min(page * 12 + 12, #players) do
+			local v = players[i]
+			any = true
 			
 			local name = tostring( getPlayerName(v):gsub("_", " ") )
 			local id = tostring( getElementData(v, "playerid") )
 			local ping = tostring( getPlayerPing(v) )
 			local r, g, b = getPlayerNametagColor(v)
 			
-			if ( page == 1 ) then
-				
-				if k <= 24 then
-			
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-						
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-			
-					yTxt = yTxt + 15
-				end	
-			elseif ( page == 2 ) then	
-			
-				if k >= 12 and k < 36 then
-				
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15	
-				end	
-			elseif ( page == 3 ) then		
-			
-				if k >= 24 and k < 48 then
-				
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15	
-				end	
-			elseif ( page == 4 ) then		
-				
-				if k >= 36 and k < 60 then
-				
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15	
-				end	
-			elseif ( page == 5 ) then	
-				
-				if k >= 48 and k < 72 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15	
-				end	
-			elseif ( page == 6 ) then	
-				
-				if id >= 60 and id < 84 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15
-				end	
-			elseif ( page == 7 ) then	
-				
-				if id >= 72 and id < 96 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15
-				end	
-			elseif ( page == 8 ) then	
-				
-				if id >= 84 and id < 108 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15
-				end	
-			elseif ( page == 9 ) then	
-				
-				if id >= 96 and id < 120 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-						
-					yTxt = yTxt + 15
-				end	
-			elseif ( page == 10 ) then	
-				
-				if id >= 108 and id <= 128 then
-					
-					
-					if name == clientName then
-						dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
-					end	
-					
-					dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-					dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
-				
-					yTxt = yTxt + 15		
-				end		
+			if v == localPlayer then
+				dxDrawRectangle(x, yTxt, 300, 15, tocolor(255, 255, 255, 40))
 			end	
-		end	
-	end	
+				
+			dxDrawText(tostring(id), x + 15, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
+			dxDrawText(tostring(name), x + 60, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
+			dxDrawText(tostring(ping), x + 250, yTxt, screenX, screenY, tocolor(r, g, b, 255), 1, "default-bold")
+	
+			yTxt = yTxt + 15
+		end
+		
+		if not any then
+			if page == 1 then
+				break
+			else
+				page = page - 1
+			end
+		end
+	end
 end
 
 function scrollDown( )
 	if (isEventHandled) then
-		if (limit >= 24 and limit < 36) then
-			
-			if (page ~= 2) then
-				page = page + 1	
-			end	
-		elseif (limit >= 36 and limit < 48 ) then
-			
-			if (page ~= 3) then
-				page = page + 1	
-			end	
-		elseif (limit >= 48 and limit < 60) then
-			
-			if (page ~= 4) then
-				page = page + 1	
-			end	
-		elseif (limit >= 60 and limit < 72) then
-			
-			if (page ~= 5) then
-				page = page + 1	
-			end	
-		elseif (limit >= 72 and limit <= 84) then
-			
-			if (page ~= 6) then
-				page = page + 1		
-			end
-		elseif (limit >= 84 and limit <	96) then
-			
-			if (page ~= 7) then
-				page = page + 1
-			end
-		elseif (limit >= 96 and limit < 108) then
-			
-			if (page ~= 8) then
-				page = page + 1
-			end
-		elseif (limit >= 108 and limit < 120) then
-			
-			if (page ~= 9) then
-				page = page +1
-			end
-		elseif (limit >= 120 and limit <= 128) then
-			
-			if (page ~= 10) then
-				page = page + 1
-			end	
+		if (page+1) * 12 < #getElementsByType("player") then
+			page = page + 1
 		end
 	end	
 end
 
 function scrollUp( )
 	if (isEventHandled) then
-		if (page ~= 1) then
+		if page > 1 then
 			
 			page = page - 1
 		end	
@@ -287,11 +137,9 @@ function drawPlayerList( )
 			
 			isEventHandled = true
 			
-			local done = assemblePlayersByID( )
-			if ( done ) then
-				addEventHandler("onClientRender", getRootElement(), renderPlayerList)
-			end	
-		end	
+			addEventHandler("onClientRender", getRootElement(), renderPlayerList)
+			addEventHandler("onClientPlayerWeaponSwitch", root, cancelEvent)
+		end
 	end	
 end
 
@@ -300,6 +148,7 @@ function removePlayerList( )
 		
 		isEventHandled = false
 		removeEventHandler("onClientRender", getRootElement(), renderPlayerList)
+		removeEventHandler("onClientPlayerWeaponSwitch", root, cancelEvent)
 	end	
 end
 
