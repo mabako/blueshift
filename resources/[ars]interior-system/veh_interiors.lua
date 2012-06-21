@@ -59,7 +59,6 @@ function createVehicleInterior( theVehicle )
 			setElementDimension( exitMarker, exitDimension )
 			setElementInterior( exitMarker, exitInterior )
 			
-			setElementData( exitMarker, "name", tostring( interiorName ), true )
 			setElementData( exitMarker, "owner", tonumber( interiorOwner ), true )
 			setElementData( exitMarker, "dbid", tonumber( -interiorID ), true )
 			setElementData( exitMarker, "type", tonumber( interiorType ), true )

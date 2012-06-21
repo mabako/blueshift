@@ -66,6 +66,7 @@ function makeInterior( thePlayer, commandName, interiorid, interiorprice, interi
 							setElementDimension(entranceMarker, entDim)
 							setElementInterior(entranceMarker, entInt)
 							
+							setElementID(entranceMarker, "int-" .. tostring(dbid))
 							setElementData(entranceMarker, "name", tostring(interiorname), true)
 							setElementData(entranceMarker, "owner", -1, true)
 							setElementData(entranceMarker, "dbid", tonumber(dbid), true)
@@ -118,23 +119,10 @@ addCommandHandler("makeinterior", makeInterior, false, false)
 function deleteInterior( thePlayer, commandName, interiorID )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
 		
+		local interiorID = tonumber(interiorID)
 		if ( interiorID ) then
-			local interiorID = tonumber(interiorID)
-			
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local parent = getElementParent( value )			-- Find its parent
-					
-					-- Delete
-					destroyElement( parent )
-					
-					found = true
-				end
-			end	
-			
-			if (found) then
-				
+			local marker = getElementByID("int-" .. interiorID)
+			if marker then
 				local result = sql:query("SELECT * FROM `elevators` WHERE `parentid`=".. sql:escape_string(interiorID) .."")
 				while true do
 					
@@ -150,8 +138,9 @@ function deleteInterior( thePlayer, commandName, interiorID )
 				
 				local delete = sql:query("DELETE FROM `interiors` WHERE id=".. sql:escape_string(interiorID) .."")
 				if (delete) then
-				
 					outputChatBox("Deleted interior with ID ".. tostring(interiorID) ..".", thePlayer, 0, 255, 0)
+					
+					destroyElement( marker )
 				else
 					outputDebugString("MySQL Error: Unable to delete interior!")
 					outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
@@ -204,33 +193,20 @@ addCommandHandler("nearbyinteriors", getNearbyInteriors, false, false)
 -- /setinteriorname
 function setInteriorName( thePlayer, commandName, interiorID, ... )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
-		
+		local interiorID = tonumber(interiorID)
 		if (interiorID) and (...) then
-			
-			local interiorID = tonumber(interiorID)
 			local name = table.concat({...}, " ")
-			
-			local found = false
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local parent = getElementParent( value )			-- Find its parent
-					
-					-- Change the values
-					setElementData(value, "name", tostring(name), true)
-					setElementData(parent, "name", tostring(name), true)
-
-					found = true
-				end
-			end
-
-			if (found) then
+			local marker = getElementByID("int-" .. interiorID)
+			if marker then
 				local update = sql:query("UPDATE `interiors` SET name='".. sql:escape_string(tostring(name)) .."' WHERE id=".. sql:escape_string(interiorID) .."")
 				if (not update) then
 					
 					outputDebugString("MySQL Error: Unable to change interior name!")
 					outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 				else
+					-- Change the values
+					setElementData(marker, "name", tostring(name), true)
+					
 					outputChatBox("Changed Interior name to '".. tostring(name) .."'. (ID ".. tostring(interiorID) ..")", thePlayer, 0, 255, 0)
 				end	
 				
@@ -377,39 +353,25 @@ addCommandHandler("setinteriortype", setInteriorType, false, false)
 -- /tptointerior
 function teleportToInterior( thePlayer, commandName, interiorID )
 	if exports['[ars]global']:isPlayerTrialModerator(thePlayer) then	
-		
+		local interiorID = tonumber(interiorID)
 		if (interiorID) then
 			
-			local interiorID = tonumber(interiorID)
-			
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local parent = getElementParent( value )			-- Find its parent
-					local elevator = tonumber( getElementData( value, "elevator" ) )
-					if ( parent and elevator == 0 ) then
-						
-						if (isPedInVehicle(thePlayer)) then 
-							removePedFromVehicle(thePlayer) 
-						end
-						
-						local interiorX, interiorY, interiorZ = getElementPosition(parent)
-						local interiorInterior, interiorDimension = getElementDimension(parent), getElementInterior(parent)
-						
-						setElementPosition(thePlayer, interiorX, interiorY, interiorZ+1)
-						setElementInterior(thePlayer, interiorInterior)
-						setElementDimension(thePlayer, interiorDimension)
-						
-						outputChatBox("Teleported to Interior ID ".. interiorID ..".", thePlayer, 0, 255, 0)
-						
-						found = true
-						break
-					end
-				end	
-			end	
-
-			if (not found) then
-				outputChatBox("Couldn't find interior with ID ".. tostring(interiorID) ..".", thePlayer, 255, 0, 0)
+			local marker = getElementByID("int-" .. interiorID)
+			if marker then
+				if (isPedInVehicle(thePlayer)) then 
+					removePedFromVehicle(thePlayer) 
+				end
+				
+				local interiorX, interiorY, interiorZ = getElementPosition(marker)
+				local interiorInterior, interiorDimension = getElementDimension(marker), getElementInterior(marker)
+				
+				setElementPosition(thePlayer, interiorX, interiorY, interiorZ+1)
+				setElementInterior(thePlayer, interiorInterior)
+				setElementDimension(thePlayer, interiorDimension)
+				
+				outputChatBox("Teleported to Interior ID ".. interiorID ..".", thePlayer, 0, 255, 0)
+			else
+				outputChatBox("Couldn't find interior with ID ".. interiorID ..".", thePlayer, 255, 0, 0)
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Interior ID]", thePlayer, 212, 156, 49)
@@ -570,51 +532,39 @@ addCommandHandler("sellproperty", sellProperty, false, false)
 -- /setinteriorentrance
 function setInteriorEntrance( thePlayer, commandName, interiorID )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
-		
+		local interiorID = tonumber(interiorID)
 		if (interiorID) then
-			
-			local interiorID = tonumber(interiorID)
-			
-			local x, y, z = getElementPosition( thePlayer )
-			local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
-
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local parent = getElementParent( value )			-- Find its parent
-					local elevator = tonumber( getElementData( parent, "elevator" ) )
-					if ( parent and elevator == 0 ) then
-						
-						local child = getElementChild( parent, 0 )
-						local cx, cy, cz = getElementPosition( child )
-						local cint, cdim = getElementInterior( child ), getElementDimension( child )
-						
-						setElementPosition(parent, x, y, z - 1)
-						setElementInterior(parent, int)
-						setElementDimension(parent, dim)
-						
-						setElementPosition(child, cx, cy, cz)
-						setElementInterior(child, cint)
-						setElementDimension(child, cdim)
-						
-						outputChatBox("Changed interior entrance. (".. interiorID ..")", thePlayer, 0, 255, 0)
-						
-						found = true
-						break
-					end
-				end	
-			end	
-
-			if (not found) then
-				outputChatBox("Couldn't find interior with ID ".. tostring(interiorID) ..".", thePlayer, 255, 0, 0)
-			else	
+			local marker = getElementByID("int-" .. interiorID)
+			if marker then
+				local x, y, z = getElementPosition( thePlayer )
+				local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
+				if dim == interiorID then
+					outputChatBox("Can't put an interior inside itself.", thePlayer, 255, 0, 0)
+				end
+				
+				
 				local update = sql:query("UPDATE `interiors` SET `entx`=".. sql:escape_string( tonumber(x) ) ..", `enty`=".. sql:escape_string( tonumber(y) ) ..", `entz`=".. sql:escape_string( tonumber(z-1) ) ..", `entdim`=".. sql:escape_string( tonumber(dim) )..", `entint`=".. sql:escape_string( tonumber(int) ) .." WHERE `id`=".. sql:escape_string( tonumber(interiorID) ) .."")
 				if ( not update ) then
 					outputDebugString("MySQL Error: Unable to set interior exit!")
 					outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
-				end	
-				
+				else
+					local child = getElementChild( marker, 0 )
+					local cx, cy, cz = getElementPosition( child )
+					local cint, cdim = getElementInterior( child ), getElementDimension( child )
+					
+					setElementPosition(marker, x, y, z - 1)
+					setElementInterior(marker, int)
+					setElementDimension(marker, dim)
+					
+					setElementPosition(child, cx, cy, cz)
+					setElementInterior(child, cint)
+					setElementDimension(child, cdim)
+					
+					outputChatBox("Changed interior entrance. (".. interiorID ..")", thePlayer, 0, 255, 0)
+				end
+			else
 				sql:free_result(update)
+				outputChatBox("Couldn't find interior with ID ".. tostring(interiorID) ..".", thePlayer, 255, 0, 0)
 			end
 		else
 			outputChatBox("SYNTAX: /".. commandName .." [Interior ID]", thePlayer, 212, 156, 49)
@@ -624,53 +574,28 @@ end
 addCommandHandler("setinteriorentrance", setInteriorEntrance, false, false)	
 
 -- /setinteriorexit
-function setInteriorExit( thePlayer, commandName, interiorID )
+function setInteriorExit( thePlayer, commandName )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then
-		
-		if (interiorID) then
-			
-			local interiorID = tonumber(interiorID)
-			
-			local x, y, z = getElementPosition( thePlayer )
-			local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
-
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local elevator = tonumber( getElementData( value, "elevator" ) )
-					if ( elevator == 0 ) then
-						
-						if ( interiorID ~= dim ) then
-							
-							outputChatBox("You cannot put an interior's exit into another interior.", thePlayer, 255, 0, 0)
-							return
-						else	
-							setElementPosition(value, x, y, z - 1)
-							setElementInterior(value, int)
-							setElementDimension(value, dim)
-							
-							outputChatBox("Changed interior exit. (".. interiorID ..")", thePlayer, 0, 255, 0)
-							
-							found = true
-						end	
-						break
-					end
-				end	
-			end	
-
-			if (not found) then
-				outputChatBox("Couldn't find interior with ID ".. tostring(interiorID) ..".", thePlayer, 255, 0, 0)
+		local x, y, z = getElementPosition( thePlayer )
+		local int, dim = getElementInterior( thePlayer ), getElementDimension( thePlayer )
+		local marker = getElementByID("int-" .. dim)
+		if marker then
+			local update = sql:query("UPDATE `interiors` SET `x`=".. sql:escape_string( tonumber(x) ) ..", `y`=".. sql:escape_string( tonumber(y) ) ..", `z`=".. sql:escape_string( tonumber(z) ) ..", `int`=".. sql:escape_string( tonumber(int) ) .." WHERE `id`=".. sql:escape_string( tonumber(dim) ) .."")
+			if ( not update ) then
+				outputDebugString("MySQL Error: Unable to set interior exit!")
+				outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 			else
-				local update = sql:query("UPDATE `interiors` SET `x`=".. sql:escape_string( tonumber(x) ) ..", `y`=".. sql:escape_string( tonumber(y) ) ..", `z`=".. sql:escape_string( tonumber(z) ) ..", `int`=".. sql:escape_string( tonumber(int) ) .." WHERE `id`=".. sql:escape_string( tonumber(interiorID) ) .."")
-				if ( not update ) then
-					outputDebugString("MySQL Error: Unable to set interior exit!")
-					outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
-				end
+				local child = getElementChild(marker, 0)
+				setElementPosition(child, x, y, z - 1)
+				setElementInterior(child, int)
+				setElementDimension(child, dim)
 				
-				sql:free_result(update)
+				outputChatBox("Changed interior exit. (".. dim ..")", thePlayer, 0, 255, 0)
 			end
+			
+			sql:free_result(update)
 		else
-			outputChatBox("SYNTAX: /".. commandName .." [Interior ID]", thePlayer, 212, 156, 49)
+			outputChatBox("Couldn't find interior with ID ".. tostring(dim) ..".", thePlayer, 255, 0, 0)
 		end
 	end
 end
@@ -732,7 +657,7 @@ function interactInterior( thePlayer )
 								if (money >= price) then
 								
 									buyInterior( thePlayer, money, price, dbid, value )
-									setElementData(parent, "owner", dbid, true)	
+									setElementData(value, "owner", dbid, true)
 								else
 									outputChatBox("You do not have enough money.", thePlayer, 255, 0, 0)
 								end
@@ -963,6 +888,7 @@ function reloadInterior( interior )
 	setElementDimension(entranceMarker, entDim)
 	setElementInterior(entranceMarker, entInt)
 	
+	setElementID(entranceMarker, "int-" .. dbid)
 	setElementData(entranceMarker, "name", tostring(name), true)
 	setElementData(entranceMarker, "owner", tonumber(owner), true)
 	setElementData(entranceMarker, "dbid", tonumber(dbid), true)
@@ -977,7 +903,6 @@ function reloadInterior( interior )
 	setElementDimension(exitMarker, dbid)
 	setElementInterior(exitMarker, int)
 	
-	setElementData(exitMarker, "name", tostring(name), true)
 	setElementData(exitMarker, "owner", tonumber(owner), true)
 	setElementData(exitMarker, "dbid", tonumber(dbid), true)
 	setElementData(exitMarker, "type", tonumber(type), true)
@@ -1158,6 +1083,7 @@ function loadOneInterior(id, hasCoroutine)
 		setElementDimension(entranceMarker, entDim)
 		setElementInterior(entranceMarker, entInt)
 		
+		setElementID(entranceMarker, "int-" .. dbid)
 		setElementData(entranceMarker, "name", tostring(name), true)
 		setElementData(entranceMarker, "owner", tonumber(owner), true)
 		setElementData(entranceMarker, "dbid", tonumber(dbid), true)
@@ -1172,7 +1098,6 @@ function loadOneInterior(id, hasCoroutine)
 		setElementDimension(exitMarker, dbid)
 		setElementInterior(exitMarker, int)
 		
-		setElementData(exitMarker, "name", tostring(name), true)
 		setElementData(exitMarker, "owner", tonumber(owner), true)
 		setElementData(exitMarker, "dbid", tonumber(dbid), true)
 		setElementData(exitMarker, "type", tonumber(type), true)
