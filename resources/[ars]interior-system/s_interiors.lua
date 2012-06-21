@@ -224,26 +224,11 @@ addCommandHandler("setinteriorname", setInteriorName, false, false)
 -- /setinteriorprice
 function setInteriorPrice( thePlayer, commandName, interiorID, price )
 	if exports['[ars]global']:isPlayerAdministrator(thePlayer) then	
-		
+		local interiorID = tonumber(interiorID)
+		local price = tonumber(price)
 		if (interiorID) and (price) then
-			
-			local interiorID = tonumber(interiorID)
-			local price = tonumber(price)
-			
-			for key, value in ipairs (getElementsByType("marker")) do
-				if ( getElementDimension( value ) == interiorID ) then  -- Look for an interior in the given dimension
-					
-					local parent = getElementParent( value )			-- Find its parent
-					
-					-- Change the values
-					setElementData(value, "price", price, true)
-					setElementData(parent, "price", price, true)
-					
-					found = true
-				end
-			end
-
-			if (found) then
+			local marker = getElementByID("int-" .. interiorID)
+			if marker then
 				local update = sql:query("UPDATE interiors SET price=".. sql:escape_string(price) .." WHERE id=".. sql:escape_string(interiorID) .."")
 				if (not update) then
 					
@@ -251,6 +236,7 @@ function setInteriorPrice( thePlayer, commandName, interiorID, price )
 					outputDebugString("SQL Error: #".. sql:errno() ..": ".. sql:err())
 				else
 					outputChatBox("Changed Interior price to $".. tostring(price) .." (ID ".. tostring(interiorID) ..")", thePlayer, 0, 255, 0)
+					setElementData(marker, "price", price, true)
 				end	
 				
 				sql:free_result(update)
