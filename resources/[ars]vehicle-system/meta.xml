@@ -27,4 +27,7 @@
 	
 	<file src="fuelmeter/fueldisc.png"/>
 	<file src="fuelmeter/fuelneedle.png"/>
+	
+	<script src="indicators/s_indicators.lua"/>
+	<script src="indicators/c_indicators.lua" type="client"/>
 </meta>	
