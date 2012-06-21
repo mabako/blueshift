@@ -14,7 +14,9 @@ local stations =
 	{ 1941.7363, -1776.3798, 13.6406, 89, "Richard Henry" },
 	{ 2256.0859, 27.2636, 26.5828, 2, "Jason Reed" },
 	{ 655.7255, -557.8544, 16.5014, 91, "Jack Normal" },
-	{ -2026.5937, 156.8115, 29.0390, 91, "Silvius Audre" }
+	{ -2026.5937, 156.8115, 29.0390, 91, "Silvius Audre" },
+	{ 1008.9609, -936.1807, 42.3281, 0, "Jimmy O'Toole" },
+	{ 1001.7969, -937.1377, 42.328, 180, "John Jones" },
 }
 
 local gasPedestrian = { }
@@ -23,6 +25,7 @@ function spawnGasPedestrian( )
 	for key, value in ipairs ( stations ) do
 		
 		local pedestrian = createPed( 50, value[1], value[2], value[3], value[4] )
+		setElementFrozen(pedestrian, true)
 		gasPedestrian[pedestrian] = value[5]
 	end	
 end
