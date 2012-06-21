@@ -1,14 +1,14 @@
 local weathers = 
 {
-	{ 0, "Sunny 1" },
-	{ 1, "Sunny 2" },
-	{ 2, "Sunny 3" },
-	{ 3, "Sunny 4" },
-	{ 7, "Sunny 5" },
-	{ 11, "Sunny 6" },
-	{ 8, "Rainy" },
-	{ 10, "Clear" },
-	{ 9, "Fog" },
+	{ 0, "Sunny 1", 5 },
+	{ 1, "Sunny 2", 5 },
+	{ 2, "Sunny 3", 5 },
+	{ 3, "Sunny 4", 5 },
+	{ 7, "Sunny 5", 5 },
+	{ 11, "Sunny 6", 5 },
+	{ 8, "Rainy", 1 },
+	{ 10, "Clear", 3 },
+	{ 9, "Fog", 2 },
 }
 
 -- CHANGE WEATHER
@@ -26,8 +26,16 @@ addEventHandler("onResourceStart", resourceRoot, regulateWeather)
 setTimer( regulateWeather, 3600000, 0 )
 
 -- NEXT WEATHER
+-- make it more sunny: third column in {weathers}: larger value = higher chance
+local weatherChances = {}
+for k, v in ipairs(weathers) do
+	for i = 1, v[3] do
+		table.insert(weatherChances, v)
+	end
+end
+
 function setNextWeather( )
-	nextWeather = weathers[math.random(1, #weathers)]
+	nextWeather = weatherChances[math.random(1, #weatherChances)]
 end
 
 -- ADMIN COMMANDS
