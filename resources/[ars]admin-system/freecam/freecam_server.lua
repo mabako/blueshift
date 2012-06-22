@@ -48,16 +48,16 @@ function toggleFreecam( thePlayer )
 			
 			-- Hide
 			setElementAlpha( thePlayer, 0 )
-			setData( thePlayer, "invisible", 1, true )
-			setData( thePlayer, "nametag", 0, true )
+			setElementData( thePlayer, "invisible", 1, true )
+			setElementData( thePlayer, "nametag", 0, true )
 			
 		else
 			disableFreecam( thePlayer )
 			
 			-- Hide
 			setElementAlpha( thePlayer, 255 )
-			setData( thePlayer, "invisible", 0, true )
-			setData( thePlayer, "nametag", 1, true )
+			setElementData( thePlayer, "invisible", 0, true )
+			setElementData( thePlayer, "nametag", 1, true )
 		end	
 	end	
 end
