@@ -1,0 +1,8 @@
+<meta>
+	<info author="Dev" version="1.0" description="Account System"/>
+	
+	<script src="s_login.lua" type="server"/>
+	<script src="c_login.lua" type="client"/>
+	
+	<script src="s_command_block.lua" type="server"/>
+</meta>	

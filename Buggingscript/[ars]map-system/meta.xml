@@ -1,0 +1,19 @@
+<meta>
+	
+	<script src="createObject.lua" type="client"/>
+	<script src="map_help.lua" type="server"/>
+	
+	<!-- World -->
+	<map src="World/doherty.map" />
+	<map src="World/Lsmapping.map" />
+	<map src="World/stage.map" />
+	
+	<!-- Faction -->
+	<map src="Faction/SFPD/LSPD.map" />
+
+	
+	
+	<!-- Donation -->
+	
+
+</meta>

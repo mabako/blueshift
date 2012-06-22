@@ -1,0 +1,7 @@
+<meta>
+	<info author="Arsenic Roleplay" type="script" description="NPC System"/>
+	
+	<script src="s_npc.lua" type="server" />	
+	<script src="c_npc.lua" type="client" />
+	
+</meta>

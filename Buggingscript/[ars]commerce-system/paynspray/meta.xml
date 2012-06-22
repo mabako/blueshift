@@ -1,0 +1,9 @@
+<meta>
+	<script src="garages.lua"/>
+	
+	<script src="g_paynsprays.lua"/>
+	<script src="g_paynsprays.lua" type="client"/>
+
+	<script src="paynsprays.lua"/>
+	<script src="c_paynsprays.lua" type="client"/>
+</meta>

@@ -1,0 +1,6 @@
+<meta>
+	<info author="mabako" version="2.0" description="Anti-Cheat"/>
+	
+	<script src="elementdata.lua" type="server"/>
+	<script src="c_elementdata.lua" type="client"/>
+</meta>	

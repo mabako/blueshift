@@ -1,0 +1,121 @@
+FILE CREATED - 2012-06-19 15:44:21
+[2012-06-19 15:44:21] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-19 15:45:16] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Minigun with 100 Ammo.
+[2012-06-19 15:45:36] [SETHP] Sub-Owner Neil Halden set Ronald McKay's health to 100.
+[2012-06-19 15:45:45] [SETARMOR] Sub-Owner Neil Halden set Ronald McKay's armor to 100.
+[2012-06-19 16:11:54] [VEH] High Administrator Rebecca Benson created Towtruck with ID -1.
+[2012-06-19 16:12:02] [TPCAR] High Administrator Rebecca Benson teleported vehicle ID -1 to them.
+[2012-06-19 16:12:27] [VEH] High Administrator Rebecca Benson created DFT-30 with ID -2.
+[2012-06-19 16:12:31] [TPCAR] High Administrator Rebecca Benson teleported vehicle ID -2 to them.
+[2012-06-19 16:13:49] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-19 16:14:19] [VEH] High Administrator Rebecca Benson created Towtruck with ID -3.
+[2012-06-19 16:14:22] [TPCAR] High Administrator Rebecca Benson teleported vehicle ID -3 to them.
+[2012-06-19 16:14:35] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-19 16:18:49] [TPCAR] High Administrator Rebecca Benson teleported vehicle ID 99 to them.
+[2012-06-19 16:19:12] [FIXVEH] High Administrator Rebecca Benson fixed Rebecca Benson's vehicle.
+[2012-06-19 16:29:54] [TPCAR] Sub-Owner Raymond Vespucci teleported vehicle ID 135 to them.
+[2012-06-19 16:36:07] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Shelf with value 1.
+[2012-06-19 16:36:36] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Shelf with value 1.
+[2012-06-19 16:36:54] [GIVEITEM] High Administrator Rebecca Benson gave Rebecca Benson a Shelf with value 1.
+[2012-06-19 16:40:39] [PKICK] Sub-Owner Raymond Vespucci kicked Theodore Stanfield. (  )
+[2012-06-19 16:40:46] [PKICK] Sub-Owner Raymond Vespucci kicked Ronald McKay. (  )
+[2012-06-19 16:50:42] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 125 to them.
+[2012-06-19 16:51:04] [RESPAWNVEH] Sub-Owner Neil Halden respawned vehicle ID 125.
+[2012-06-19 16:51:13] [SETHP] Server Owner Paulie Moretti set Jason Perkins's health to 100.
+[2012-06-19 16:51:28] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 125 to them.
+[2012-06-19 16:51:34] [RESPAWNVEH] Sub-Owner Neil Halden respawned vehicle ID 125.
+[2012-06-19 16:51:37] [TPCAR] Sub-Owner Neil Halden teleported vehicle ID 135 to them.
+[2012-06-19 16:52:25] [DELVEH] Trial Moderator Kenneth Lynch deleted vehicle with ID 144.
+[2012-06-19 16:53:58] [FRECONNECT] Sub-Owner Neil Halden force reconnect Maxim12.
+[2012-06-19 16:54:46] [VEH] Sub-Owner Neil Halden created Buffalo with ID -1.
+[2012-06-19 16:55:44] [CHECKINV] Trial Moderator Kenneth Lynch checked Benjamin Caravella's inventory.
+[2012-06-19 16:58:20] [MAKEADMIN] High Administrator Bryan Sikro set Dominic Iniesta's administrative rank to Trial Moderator.
+[2012-06-19 16:59:43] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Generic Item with value Gaydar.
+[2012-06-19 16:59:51] [DELVEH] Server Owner Paulie Moretti deleted vehicle with ID -1.
+[2012-06-19 17:01:52] [MAKEVEH] Sub-Owner Enrique Del Fuego created Flash with ID 150.
+[2012-06-19 17:02:08] [DELVEH] Sub-Owner Enrique Del Fuego deleted vehicle with ID 150.
+[2012-06-19 17:03:24] [GIVEITEM] Sub-Owner Enrique Del Fuego gave Enrique Del Fuego a LSPD Badge with value Lieutenant Ronald McKay.
+[2012-06-19 17:05:36] [SETHP] Trial Moderator Dominic Iniesta set Dominic Iniesta's health to 100.
+[2012-06-19 17:06:20] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-19 17:06:32] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-19 17:08:05] [SETHP] Sub-Owner Enrique Del Fuego set Jason Perkins's health to 100.
+[2012-06-19 17:08:40] [SETHP] Sub-Owner Enrique Del Fuego set Jason Perkins's health to 0.
+[2012-06-19 17:12:08] [DELVEH] Trial Moderator Kenneth Lynch deleted vehicle with ID 144.
+[2012-06-19 17:12:11] [SETHP] Server Owner Paulie Moretti set Paulie Moretti's health to 0.
+[2012-06-19 17:12:38] [SETHP] Server Owner Paulie Moretti set Paulie Moretti's health to 0.
+[2012-06-19 17:21:32] [CHECKINV] Trial Moderator Kenneth Lynch checked Ray Carter's inventory.
+[2012-06-19 17:21:44] [CHECKINV] Trial Moderator Kenneth Lynch checked Dwayne Broomfield's inventory.
+[2012-06-19 17:22:23] [VEH] Sub-Owner Neil Halden created Sultan with ID -2.
+[2012-06-19 17:22:53] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 1.
+[2012-06-19 17:23:01] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 1.
+[2012-06-19 17:25:47] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-19 17:25:51] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-19 17:26:31] [VEH] Sub-Owner Neil Halden created Sunrise with ID -3.
+[2012-06-19 17:33:31] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 100.
+[2012-06-19 17:33:36] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 200.
+[2012-06-19 17:33:38] [FIXVEH] Sub-Owner Raymond Vespucci fixed Muhamed Ali's vehicle.
+[2012-06-19 17:33:50] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 80.
+[2012-06-19 17:33:53] [FIXVEH] Sub-Owner Raymond Vespucci fixed Muhamed Ali's vehicle.
+[2012-06-19 17:34:21] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 200.
+[2012-06-19 17:34:23] [FIXVEH] Sub-Owner Raymond Vespucci fixed Muhamed Ali's vehicle.
+[2012-06-19 17:34:29] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 0.
+[2012-06-19 17:34:46] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 0.
+[2012-06-19 17:34:56] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 300.
+[2012-06-19 17:35:07] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 500.
+[2012-06-19 17:40:55] [SETCARHP] Sub-Owner Raymond Vespucci set Muhamed Ali's vehicle HP to 0.
+[2012-06-19 17:41:36] [FIXVEH] Server Owner James Silva fixed James Silva's vehicle.
+[2012-06-19 17:43:46] [CHANGENAME] Sub-Owner Raymond Vespucci changed Muhamed Ali's name to Muhammed Fahad.
+[2012-06-19 17:43:47] [MAKEADMIN] Server Owner James Silva set Steven Mosley's administrative rank to Sub Owner.
+[2012-06-19 17:43:50] [SETARMOR] Sub-Owner Steven Mosley set Steven Mosley's armor to 100.
+[2012-06-19 17:43:52] [MAKEADMIN] Server Owner James Silva set Steven Mosley's administrative rank to High Administrator.
+[2012-06-19 17:46:09] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-19 18:15:50] [VEH] Sub-Owner Neil Halden created Hunter with ID -4.
+[2012-06-19 18:21:51] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID -4.
+[2012-06-19 18:21:57] [VEH] Sub-Owner Neil Halden created Seasparrow with ID -5.
+[2012-06-19 18:23:15] [VEH] High Administrator Bryan Sikro created Hunter with ID -6.
+[2012-06-19 18:25:08] [DELVEH] High Administrator Bryan Sikro deleted vehicle with ID -6.
+[2012-06-19 19:17:34] [RESPAWNVEH] Trial Moderator Marcus Bishop respawned vehicle ID 7.
+[2012-06-19 19:17:42] [RESPAWNVEH] Trial Moderator Marcus Bishop respawned vehicle ID 100.
+[2012-06-19 19:18:13] [FIXVEH] Trial Moderator Marcus Bishop fixed Marcus Bishop's vehicle.
+[2012-06-19 19:24:26] [FIXVEH] Sub-Owner Neil Halden fixed Neil Halden's vehicle.
+[2012-06-19 20:11:13] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 108 to them.
+[2012-06-19 20:12:10] [RESPAWNVEH] Trial Moderator Marcus Bishop respawned vehicle ID 7.
+[2012-06-19 20:12:52] [RESPAWNVEH] Trial Moderator Marcus Bishop respawned vehicle ID 5.
+[2012-06-19 20:13:00] [RESPAWNVEH] Trial Moderator Marcus Bishop respawned vehicle ID 1.
+[2012-06-19 20:19:13] [GIVEGUN] High Administrator Steven Mosley gave Emily O'Flanagan a AK-47 with 1 Ammo.
+[2012-06-19 20:20:30] [DISARM] High Administrator Steven Mosley disarmed Emily O'Flanagan.
+[2012-06-19 20:21:19] [SETHP] Sub-Owner Neil Halden set Neil Halden's health to 100.
+[2012-06-19 20:22:29] [HUGESLAP] Sub-Owner Neil Halden huge slapped Steven Mosley.
+[2012-06-19 20:23:13] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a House Key with value 139.
+[2012-06-19 20:25:17] [TPTOCAR] Trial Moderator Marcus Bishop teleported to vehicle ID 5.
+[2012-06-19 20:54:48] [SETHP] High Administrator Steven Mosley set Emily O'Flanagan's health to 100.
+[2012-06-19 20:58:48] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a LSPD Badge with value Sergeant Peter Fucinni #113.
+[2012-06-19 20:59:31] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a Radio with value -.
+[2012-06-19 21:01:02] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a Radio with value 0.
+[2012-06-19 21:04:01] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a LSVS ID with value J. McMiller - CEO of LSVS.
+[2012-06-19 21:04:53] [SETARMOR] Server Owner James Silva set Theodore Stanfield's armor to 100.
+[2012-06-19 21:07:23] [TPCAR] Server Owner John White teleported vehicle ID 125 to them.
+[2012-06-19 21:12:25] [CHANGENAME] Trial Moderator Placeholder changed Marcus Bishop's name to Placeholder.
+[2012-06-19 21:12:31] [CHANGENAME] Trial Moderator Marcus Bishop changed Placeholder's name to Marcus Bishop.
+[2012-06-19 21:33:22] [TPCAR] High Administrator Steven Mosley teleported vehicle ID 108 to them.
+[2012-06-19 21:33:44] [FIXVEH] High Administrator Steven Mosley fixed Steven Mosley's vehicle.
+[2012-06-20 13:46:08] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-20 13:46:59] [DELVEH] Trial Moderator Kenneth Lynch deleted vehicle with ID 144.
+[2012-06-20 13:52:34] [SETHP] Trial Moderator Kenneth Lynch set Kenneth Lynch's health to 100.
+[2012-06-20 13:55:47] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-20 14:05:07] [TPTOCAR] Trial Moderator Kenneth Lynch teleported to vehicle ID 144.
+[2012-06-20 14:06:35] [DELVEH] Sub-Owner Neil Halden deleted vehicle with ID 144.
+[2012-06-20 14:14:58] [MAKEVEH] Sub-Owner Neil Halden created Sentinel with ID 151.
+[2012-06-20 14:15:08] [GIVEITEM] Sub-Owner Neil Halden gave Neil Halden a Vehicle Key with value 151.
+[2012-06-20 14:16:14] [DELVEH] Trial Moderator Kenneth Lynch deleted vehicle with ID 151.
+[2012-06-20 14:22:44] [GIVEGUN] Sub-Owner Neil Halden gave Neil Halden a Sniper with 50 Ammo.
+[2012-06-20 14:22:54] [RESPAWNVEH] Trial Moderator Kenneth Lynch respawned vehicle ID 7.
+[2012-06-20 14:23:17] [RESPAWNVEH] Trial Moderator Kenneth Lynch respawned vehicle ID 43.
+[2012-06-20 14:23:38] [RESPAWNVEH] Trial Moderator Kenneth Lynch respawned vehicle ID 100.
+[2012-06-20 19:23:13] [GIVEITEM] Trial Moderator Marcus Bishop gave Marcus Bishop a LSPD Badge with value Sergeant M.Bishop #112.
+[2012-06-20 19:27:50] [VEH] High Administrator Rebecca Benson created Premier with ID -1.
+[2012-06-20 19:27:58] [VEH] High Administrator Rebecca Benson created Tahoma with ID -2.
+[2012-06-20 19:31:09] [VEH] High Administrator Rebecca Benson created Towtruck with ID -3.
+[2012-06-20 19:34:59] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -1.
+[2012-06-20 19:35:06] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -2.
+[2012-06-20 19:35:11] [DELVEH] High Administrator Rebecca Benson deleted vehicle with ID -3.

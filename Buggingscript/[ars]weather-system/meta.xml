@@ -1,0 +1,5 @@
+<meta>
+	<info author="Dev" version="1.0" description="Weather System"/>
+	
+	<script src="s_weather.lua" type="server"/>
+</meta>	
